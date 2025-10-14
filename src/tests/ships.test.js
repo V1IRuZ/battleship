@@ -2,7 +2,7 @@ import { Ship } from "../classes/ships.js";
 
 describe("Ship class", () => {
   let ship;
-  
+
   beforeEach(() => {
     ship = new Ship(3);
   });
@@ -11,6 +11,12 @@ describe("Ship class", () => {
     test("increases the number of hits in your ship", () => {
       ship.hit();
       expect(ship.hits).toBe(1);
+    });
+
+    test("increases the number of multiple hits in your ship", () => {
+      ship.hit();
+      ship.hit();
+      expect(ship.hits).toBe(2);
     });
   });
 });
