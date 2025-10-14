@@ -23,7 +23,7 @@ describe("Ship class", () => {
   describe("isSunk method", () => {
     test("calculates whether the ship has sunk", () => {
       ship.hit();
-      expect(ship.isSunk()).toBe(false);
+      expect(ship.isSunk).toBe(false);
     });
   });
 });
