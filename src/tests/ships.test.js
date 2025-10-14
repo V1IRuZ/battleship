@@ -25,5 +25,13 @@ describe("Ship class", () => {
       ship.hit();
       expect(ship.isSunk).toBe(false);
     });
+
+    test("returns true when the ship sinks", () => {
+      ship.hit();
+      ship.hit();
+      ship.hit();
+
+      expect(ship.isSunk).toBe(true);
+    });
   });
 });
