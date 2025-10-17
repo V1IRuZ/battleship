@@ -4,7 +4,7 @@ describe("Ship class", () => {
   let ship;
 
   beforeEach(() => {
-    ship = new Ship(3);
+    ship = new Ship("Carrier", 3);
   });
 
   describe("hit method", () => {
