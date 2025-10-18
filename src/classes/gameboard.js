@@ -1,6 +1,6 @@
 import { Ship } from "./ships.js";
 
-class Gameboard {
+export class Gameboard {
   constructor() {
     this.board = Array.from({ length: 10 }, () => Array(10).fill(null));
     this.ships = [
@@ -11,5 +11,12 @@ class Gameboard {
       new Ship("destroyer", 2),
       new Ship("submarine", 1),
     ];
+  }
+
+  placeShip(shipIndex, startPos) {
+    const ship = this.ships[shipIndex];
+    const [x, y] = startPos;
+
+    return this.board[x][y] = ship.name;
   }
 }
