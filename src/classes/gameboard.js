@@ -13,19 +13,28 @@ export class Gameboard {
     ];
   }
 
+  #validateShipPlacement(shipObj, startPos, rotation) {
+    if (rotation === "horizontal" && startPos[1] + shipObj.length > 10) {
+      throw new Error("Ship placement out of bounds horizontally");
+    }
+
+    if (rotation === "vertical" && startPos[0] + shipObj.length > 10) {
+      throw new Error("Ship placement out of bounds vertically");
+    }
+  }
+
   placeShip(shipIndex, startPos, rotation) {
     const ship = this.ships[shipIndex];
     let [x, y] = startPos;
 
+    this.#validateShipPlacement(ship, startPos, rotation);
+
     for (let i = 0; i < ship.length; i++) {
+      this.board[x][y] = ship.name;
       if (rotation === "horizontal") {
-        this.board[x][y] = ship.name;
         y++;
-      } else if (rotation === "vertical") {
-        this.board[x][y] = ship.name;
-        x++;
       } else {
-        throw new Error("Invalid input");
+        x++;
       }
     }
   }
