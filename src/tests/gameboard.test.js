@@ -67,4 +67,14 @@ describe("Gameboard class", () => {
       expect(gameBoard.ships[0].hits).toBe(1);
     });
   });
+
+  describe("allShipsSunk method", () => {
+    test("returns true if all ships are sunk", () => {
+      gameBoard.ships.forEach((ship) => {
+        ship.hits = ship.length;
+      });
+
+      expect(gameBoard.allShipsSunk).toBe(true);
+    });
+  });
 });
