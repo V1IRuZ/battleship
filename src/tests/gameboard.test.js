@@ -21,5 +21,10 @@ describe("Gameboard class", () => {
       gameBoard.placeShip(1, [1, 1]);
       expect(gameBoard.board[x][y]).toBe("battleship");
     });
+
+    test("only fills the cells marked for it", () => {
+      gameBoard.placeShip(1, [1, 1]);
+      expect(gameBoard.board[1][5]).toBe(null);
+    });
   });
 });
