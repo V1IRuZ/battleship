@@ -40,6 +40,18 @@ describe("Gameboard class", () => {
       gameBoard.placeShip(2, [2, 5], "vertical");
       expect(gameBoard.board[5][5]).toBe(null);
     });
+
+    test("throws an error for out of bounds horizontal placements", () => {
+      expect(() => gameBoard.placeShip(0, [2, 8], "horizontal")).toThrow(
+        "Ship placement out of bounds horizontally",
+      );
+    });
+
+    test("throws an error for out of bounds horizontal placements", () => {
+      expect(() => gameBoard.placeShip(1, [7, 3], "vertical")).toThrow(
+        "Ship placement out of bounds vertically",
+      );
+    });
   });
 
   describe("receiveAttack method", () => {
