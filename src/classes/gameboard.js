@@ -47,4 +47,8 @@ export class Gameboard {
     this.ships[index].hit();
     this.board[x][y] = "hit";
   }
+
+  get allShipsSunk() {
+    return this.ships.every((ship) => ship.isSunk);
+  }
 }
