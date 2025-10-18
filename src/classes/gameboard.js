@@ -15,8 +15,12 @@ export class Gameboard {
 
   placeShip(shipIndex, startPos) {
     const ship = this.ships[shipIndex];
-    const [x, y] = startPos;
+    let [x, y] = startPos;
 
-    return this.board[x][y] = ship.name;
+    for (let i = 0; i < ship.length; i++) {
+      this.board[x][y] = ship.name;
+      y++;
+    }
+
   }
 }
