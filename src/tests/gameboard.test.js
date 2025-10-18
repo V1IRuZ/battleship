@@ -76,5 +76,16 @@ describe("Gameboard class", () => {
 
       expect(gameBoard.allShipsSunk).toBe(true);
     });
+
+    test("returns false if no ships have sunk", () => {
+      expect(gameBoard.allShipsSunk).toBe(false);
+    });
+
+    test("returns false if not all ships have sunk", () => {
+      gameBoard.ships[0].hits = 5;
+      gameBoard.ships[1].hits = 4;
+
+      expect(gameBoard.allShipsSunk).toBe(false);
+    });
   });
 });
