@@ -32,11 +32,19 @@ export class Gameboard {
 
   receiveAttack(x, y) {
     const location = this.board[x][y];
-    if (location !== null) {
-      this.board[x][y] = "hit";
+
+    if (location === "miss" || location === "hit") {
       return;
     }
 
-    this.board[x][y] = "miss";
+    if (location === null) {
+      this.board[x][y] = "miss";
+      return;
+    }
+
+    const shipName = location;
+    const index = this.ships.findIndex((ship) => ship.name === shipName);
+    this.ships[index].hit();
+    this.board[x][y] = "hit";
   }
 }
