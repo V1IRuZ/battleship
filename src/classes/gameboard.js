@@ -29,4 +29,14 @@ export class Gameboard {
       }
     }
   }
+
+  receiveAttack(x, y) {
+    const location = this.board[x][y];
+    if (location !== null) {
+      this.board[x][y] = "hit";
+      return;
+    }
+
+    this.board[x][y] = "miss";
+  }
 }
