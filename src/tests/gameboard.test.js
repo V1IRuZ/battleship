@@ -59,5 +59,12 @@ describe("Gameboard class", () => {
       gameBoard.receiveAttack(1, 2);
       expect(gameBoard.ships[1].hits).toBe(1);
     });
+
+    test("does not register a hit in the same location", () => {
+      gameBoard.placeShip(0, [5, 0], "horizontal");
+      gameBoard.receiveAttack(5, 1);
+      gameBoard.receiveAttack(5, 1);
+      expect(gameBoard.ships[0].hits).toBe(1);
+    });
   });
 });
