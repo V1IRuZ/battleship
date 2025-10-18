@@ -41,4 +41,17 @@ describe("Gameboard class", () => {
       expect(gameBoard.board[5][5]).toBe(null);
     });
   });
+
+  describe("receiveAttack method", () => {
+    test("registers a missed hit", () => {
+      gameBoard.receiveAttack(2, 2);
+      expect(gameBoard.board[2][2]).toBe("miss");
+    });
+
+    test("registers a hit", () => {
+        gameBoard.placeShip(1, [1, 0], "horizontal");
+        gameBoard.receiveAttack(1, 2);
+        expect(gameBoard.board[1][2]).toBe("hit");
+    })
+  });
 });
