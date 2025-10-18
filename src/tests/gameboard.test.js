@@ -49,9 +49,15 @@ describe("Gameboard class", () => {
     });
 
     test("registers a hit", () => {
-        gameBoard.placeShip(1, [1, 0], "horizontal");
-        gameBoard.receiveAttack(1, 2);
-        expect(gameBoard.board[1][2]).toBe("hit");
-    })
+      gameBoard.placeShip(1, [1, 0], "horizontal");
+      gameBoard.receiveAttack(1, 2);
+      expect(gameBoard.board[1][2]).toBe("hit");
+    });
+
+    test("registers a hit on the right ship", () => {
+      gameBoard.placeShip(1, [1, 0], "horizontal");
+      gameBoard.receiveAttack(1, 2);
+      expect(gameBoard.ships[1].hits).toBe(1);
+    });
   });
 });
