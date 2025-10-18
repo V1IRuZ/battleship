@@ -35,5 +35,10 @@ describe("Gameboard class", () => {
       gameBoard.placeShip(2, [2, 5], "vertical");
       expect(gameBoard.board[x][y]).toBe("cruiser1");
     });
+
+    test("only filles the cells marked for it vertically", () => {
+      gameBoard.placeShip(2, [2, 5], "vertical");
+      expect(gameBoard.board[5][5]).toBe(null);
+    });
   });
 });
