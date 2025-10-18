@@ -13,14 +13,20 @@ export class Gameboard {
     ];
   }
 
-  placeShip(shipIndex, startPos) {
+  placeShip(shipIndex, startPos, rotation) {
     const ship = this.ships[shipIndex];
     let [x, y] = startPos;
 
     for (let i = 0; i < ship.length; i++) {
-      this.board[x][y] = ship.name;
-      y++;
+      if (rotation === "horizontal") {
+        this.board[x][y] = ship.name;
+        y++;
+      } else if (rotation === "vertical") {
+        this.board[x][y] = ship.name;
+        x++;
+      } else {
+        throw new Error("Invalid input");
+      }
     }
-
   }
 }
