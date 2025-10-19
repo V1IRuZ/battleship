@@ -56,14 +56,21 @@ describe("Gameboard class", () => {
     test("throws an error for overlapping placements", () => {
       gameBoard.placeShip(0, [1, 0], "horizontal");
       expect(() => gameBoard.placeShip(1, [0, 1], "vertical")).toThrow(
-        "Overlapping placements are not allowed",
+        "Overlapping or adjacent placements are not allowed",
       );
     });
 
     test("throws an error for adjacent placements", () => {
       gameBoard.placeShip(0, [0, 0], "horizontal");
       expect(() => gameBoard.placeShip(1, [1, 1], "vertical")).toThrow(
-        "Adjacent placements are not allowed",
+        "Overlapping or adjacent placements are not allowed",
+      );
+    });
+
+    test("throws an error for diagnol adjacent placements", () => {
+      gameBoard.placeShip(0, [0, 0], "horizontal");
+      expect(() => gameBoard.placeShip(1, [1, 5], "vertical")).toThrow(
+        "Overlapping or adjacent placements are not allowed",
       );
     });
   });
