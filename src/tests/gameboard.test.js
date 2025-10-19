@@ -52,6 +52,13 @@ describe("Gameboard class", () => {
         "Ship placement out of bounds vertically",
       );
     });
+
+    test("throws an error for overlapping placements", () => {
+      gameBoard.placeShip(0, [1, 0], "horizontal");
+      expect(() => gameBoard.placeShip(1, [0, 1], "vertical")).toThrow(
+        "Overlapping placements are not allowed",
+      );
+    });
   });
 
   describe("receiveAttack method", () => {
