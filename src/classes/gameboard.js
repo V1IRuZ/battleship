@@ -13,7 +13,7 @@ export class Gameboard {
     ];
   }
 
-  #validateShipPlacement(shipObj, startPos, rotation) {
+  #validateShipOutOfBounds(shipObj, startPos, rotation) {
     if (rotation === "horizontal" && startPos[1] + shipObj.length > 10) {
       throw new Error("Ship placement out of bounds horizontally");
     }
@@ -27,7 +27,7 @@ export class Gameboard {
     const ship = this.ships[shipIndex];
     let [x, y] = startPos;
 
-    this.#validateShipPlacement(ship, startPos, rotation);
+    this.#validateShipOutOfBounds(ship, startPos, rotation);
 
     for (let i = 0; i < ship.length; i++) {
       this.board[x][y] = ship.name;
