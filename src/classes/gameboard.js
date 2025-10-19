@@ -23,9 +23,28 @@ export class Gameboard {
     }
   }
 
-  #validateShipOverLapping(shipObj, position) {
-    if (typeof position === "string") {
-      throw new Error("Overlapping placements are not allowed");
+  #validateShipOverLapping(x, y, shipObj) {
+    const adjacentPositions = [
+      [x - 1, y - 1],
+      [x, y - 1],
+      [x + 1, y - 1],
+      [x - 1, y],
+      [x + 1, y],
+      [x - 1, y + 1],
+      [x, y + 1],
+      [x + 1, y + 1],
+    ];
+
+    const validPositions = adjacentPositions.filter(
+      ([x, y]) => x >= 0 && x < 10 && y >= 0 && y < 10,
+    );
+
+    const invalidAdjacent = validPositions
+      .map(([x, y]) => this.board[x][y])
+      .some((pos) => typeof pos === "string" && pos !== shipObj.name);
+
+    if (typeof this.board[x][y] === "string" || invalidAdjacent) {
+      throw new Error("Overlapping or adjacent placements are not allowed");
     }
   }
 
@@ -36,7 +55,7 @@ export class Gameboard {
     this.#validateShipOutOfBounds(ship, startPos, rotation);
 
     for (let i = 0; i < ship.length; i++) {
-      this.#validateShipOverLapping(ship, this.board[x][y]);
+      this.#validateShipOverLapping(x, y, ship);
       this.board[x][y] = ship.name;
       if (rotation === "horizontal") {
         y++;
