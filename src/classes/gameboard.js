@@ -23,6 +23,12 @@ export class Gameboard {
     }
   }
 
+  #validateShipOverLapping(shipObj, position) {
+    if (typeof position === "string") {
+      throw new Error("Overlapping placements are not allowed");
+    }
+  }
+
   placeShip(shipIndex, startPos, rotation) {
     const ship = this.ships[shipIndex];
     let [x, y] = startPos;
@@ -30,6 +36,7 @@ export class Gameboard {
     this.#validateShipOutOfBounds(ship, startPos, rotation);
 
     for (let i = 0; i < ship.length; i++) {
+      this.#validateShipOverLapping(ship, this.board[x][y]);
       this.board[x][y] = ship.name;
       if (rotation === "horizontal") {
         y++;
