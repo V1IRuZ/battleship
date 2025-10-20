@@ -67,3 +67,24 @@ h6 {
 #__next {
   isolation: isolate;
 }
+
+:root {
+  --board-color: rgba(82, 82, 82, 0.562)
+}
+
+#page {
+  margin: 0 auto;
+}
+
+.board {
+  display: grid;
+  grid-template-rows: repeat(10, 1fr);
+  grid-template-columns: repeat(10, 1fr);
+  border: 2px solid var(--board-color);
+  width: 500px;
+  height: 500px;
+}
+
+.cell {
+  border: 2px solid var(--board-color);
+}
