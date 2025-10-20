@@ -69,11 +69,24 @@ h6 {
 }
 
 :root {
-  --board-color: rgba(82, 82, 82, 0.562)
+  --board-color: rgba(82, 82, 82, 0.562);
 }
 
 #page {
+  display: grid;
+  grid-template-rows: 100px 1fr 100px;
+  min-height: 100vh;
+  max-width: 1920px;
   margin: 0 auto;
+}
+
+main {
+  justify-items: center;
+}
+
+#content {
+  display: flex;
+  gap: 4em;
 }
 
 .board {
