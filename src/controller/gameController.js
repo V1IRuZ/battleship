@@ -14,12 +14,15 @@ export class GameController {
 
     const player1Board = document.createElement("div");
     player1Board.classList.add("board");
-    render.drawBoard(player1Board);
+    this.player1.defaultPlacement();
+    render.drawBoard(player1Board, this.player1.gameBoard.board);
     content.appendChild(player1Board);
 
     const player2Board = document.createElement("div");
     player2Board.classList.add("board");
-    render.drawBoard(player2Board);
-    content.appendChild(player2Board);  
+    player2Board.classList.add("opponent");
+    this.player2.defaultPlacement();
+    render.drawBoard(player2Board, this.player2.gameBoard.board);
+    content.appendChild(player2Board);
   }
 }
