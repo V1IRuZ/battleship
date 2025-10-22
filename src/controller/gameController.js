@@ -1,5 +1,6 @@
 import { Player } from "../classes/player.js";
 import { render } from "../ui/render.js";
+import { events } from "../ui/events.js";
 
 export class GameController {
   constructor() {
@@ -24,5 +25,12 @@ export class GameController {
     this.player2.defaultPlacement();
     render.drawBoard(player2Board, this.player2.gameBoard.board);
     content.appendChild(player2Board);
+
+    events.bindBoardClicks((x, y) => this.handleBoardClicks(x, y));
+  }
+
+  handleBoardClicks(x, y) {
+    this.player2.gameBoard.receiveAttack(x, y);
+    render.showHitandMiss(x, y);
   }
 }
