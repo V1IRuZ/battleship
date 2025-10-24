@@ -18,6 +18,17 @@ class Player {
 
 class RealPlayer extends Player {}
 
-class ComputerPlayer extends Player {}
+class ComputerPlayer extends Player {
+  constructor() {
+    super(id);
+  }
 
-export { Player };
+  attack(callback) {
+    const randomX = Math.floor(Math.random() * 10);
+    const randomY = Math.floor(Math.random() * 10);
+
+    callback(randomX, randomY);
+  }
+}
+
+export { Player, ComputerPlayer };
