@@ -19,7 +19,7 @@ class Player {
 class RealPlayer extends Player {}
 
 class ComputerPlayer extends Player {
-  constructor() {
+  constructor(id) {
     super(id);
   }
 
