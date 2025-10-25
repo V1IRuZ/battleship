@@ -25,7 +25,7 @@ class ComputerPlayer extends Player {
   }
 
   switchAlgorithmState() {
-    return (this.successfulHit = this.successfulHit === false ? true : false);
+    this.successfulHit = this.successfulHit === false ? true : false;
   }
 
   attack(realPlayer) {
