@@ -74,13 +74,14 @@ export class Gameboard {
 
     if (location === null) {
       this.board[x][y] = "miss";
-      return;
+      return "miss";
     }
 
     const shipName = location;
     const index = this.ships.findIndex((ship) => ship.name === shipName);
     this.ships[index].hit();
     this.board[x][y] = "hit";
+    return "hit";
   }
 
   get allShipsSunk() {
