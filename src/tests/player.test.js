@@ -23,4 +23,16 @@ describe("ComputerPlayer class", () => {
       expect(player.successfulHit).toBe(false);
     });
   });
+
+  describe("updateQueue method", () => {
+    test("returns array length of 2", () => {
+      player.updateQueue([0, 0]);
+      expect(player.algorithmQueue.length).toBe(2);
+    });
+
+    test("returns array length of 4", () => {
+      player.updateQueue([5, 5]);
+      expect(player.algorithmQueue.length).toBe(4);
+    });
+  });
 });
