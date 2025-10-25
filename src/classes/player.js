@@ -21,13 +21,31 @@ class RealPlayer extends Player {}
 class ComputerPlayer extends Player {
   constructor(id) {
     super(id);
+    this.successfulHit = false;
   }
 
-  attack() {
-    const randomX = Math.floor(Math.random() * 10);
-    const randomY = Math.floor(Math.random() * 10);
+  switchAlgorithmState() {
+    return this.successfulHit === false ? true : false;
+  }
 
-    return [randomX, randomY];
+  attack(realPlayer) {
+    let attempts = 0;
+
+    while (attempts < 101) {
+      let x = Math.floor(Math.random() * 10);
+      let y = Math.floor(Math.random() * 10);
+      const player1Coords = realPlayer.gameBoard.board[x][y];
+
+      const allreadyAttacked =
+        player1Coords === "miss" || player1Coords === "hit";
+
+      if (!allreadyAttacked) {
+        realPlayer.gameBoard.receiveAttack(x, y);
+        return [x, y];
+      }
+
+      attempts++;
+    } 
   }
 }
 

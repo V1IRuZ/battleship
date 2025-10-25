@@ -24,31 +24,12 @@ export class GameController {
     });
   }
 
-  validateComputerAttacks() {
-    let attempts = 0;
-
-    while (attempts < 100) {
-      const [x, y] = this.player2.attack();
-      const player1Coords = this.player1.gameBoard.board[x][y];
-      console.log(player1Coords);
-
-      const allreadyAttacked =
-        player1Coords === "miss" || player1Coords === "hit";
-
-      if (!allreadyAttacked) {
-        this.player1.gameBoard.receiveAttack(x, y);
-        render.showHitandMiss(x, y, this.player1.id);
-        return;
-      }
-
-      attempts++;
-    }
-  }
-
   handleSinglePlayerClicks(x, y) {
     this.player2.gameBoard.receiveAttack(x, y);
     render.showHitandMiss(x, y, this.player2.id);
 
-    this.validateComputerAttacks();
+    // Return allowed computer player hits
+    const [targetX, targetY] = this.player2.attack(this.player1);
+    render.showHitandMiss(targetX, targetY, this.player1.id);
   }
 }
