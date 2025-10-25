@@ -17,25 +17,38 @@ export class GameController {
 
     render.showBoards(this.player1, content);
     render.showBoards(this.player2, content);
-    
+
     const board = document.querySelector(".player2");
     events.bindBoardClicks(board, (x, y) => {
-      this.handleSinglePlayerClicks(x, y)
+      this.handleSinglePlayerClicks(x, y);
     });
   }
 
-  handleSinglePlayerClicks(x, y) {
-    try {
-      this.player2.gameBoard.receiveAttack(x, y);
-      render.showHitandMiss(x, y, this.player2.id);
-      
-      const randomX = Math.floor(Math.random() * 10);
-      const randomY = Math.floor(Math.random() * 10);
-      
-      this.player1.gameBoard.receiveAttack(randomX, randomY);
-      render.showHitandMiss(randomX, randomY, this.player1.id);
-    } catch(err) {
-      console.log(err);
+  validateComputerAttacks() {
+    let attempts = 0;
+
+    while (attempts < 100) {
+      const [x, y] = this.player2.attack();
+      const player1Coords = this.player1.gameBoard.board[x][y];
+      console.log(player1Coords);
+
+      const allreadyAttacked =
+        player1Coords === "miss" || player1Coords === "hit";
+
+      if (!allreadyAttacked) {
+        this.player1.gameBoard.receiveAttack(x, y);
+        render.showHitandMiss(x, y, this.player1.id);
+        return;
+      }
+
+      attempts++;
     }
+  }
+
+  handleSinglePlayerClicks(x, y) {
+    this.player2.gameBoard.receiveAttack(x, y);
+    render.showHitandMiss(x, y, this.player2.id);
+
+    this.validateComputerAttacks();
   }
 }
