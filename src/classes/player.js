@@ -25,7 +25,7 @@ class ComputerPlayer extends Player {
   }
 
   switchAlgorithmState() {
-    return this.successfulHit === false ? true : false;
+    return (this.successfulHit = this.successfulHit === false ? true : false);
   }
 
   attack(realPlayer) {
@@ -40,12 +40,15 @@ class ComputerPlayer extends Player {
         player1Coords === "miss" || player1Coords === "hit";
 
       if (!allreadyAttacked) {
-        realPlayer.gameBoard.receiveAttack(x, y);
+        const shotResult = realPlayer.gameBoard.receiveAttack(x, y);
+        if (shotResult === "hit") {
+          this.switchAlgorithmState();
+        }
         return [x, y];
       }
 
       attempts++;
-    } 
+    }
   }
 }
 
