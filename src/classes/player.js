@@ -23,11 +23,11 @@ class ComputerPlayer extends Player {
     super(id);
   }
 
-  attack(callback) {
+  attack() {
     const randomX = Math.floor(Math.random() * 10);
     const randomY = Math.floor(Math.random() * 10);
 
-    callback(randomX, randomY);
+    return [randomX, randomY];
   }
 }
 
