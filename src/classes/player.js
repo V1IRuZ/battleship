@@ -22,6 +22,7 @@ class ComputerPlayer extends Player {
   constructor(id) {
     super(id);
     this.successfulHit = false;
+    this.algorithmQueue = [];
   }
 
   switchAlgorithmState() {
@@ -29,6 +30,14 @@ class ComputerPlayer extends Player {
   }
 
   attack(realPlayer) {
+    if (this.successfulHit === false) {
+      return this.randomAttack(realPlayer);
+    } else {
+      return this.adjacentAttack(realPlayer);
+    }
+  }
+
+  randomAttack(realPlayer) {
     let attempts = 0;
 
     while (attempts < 101) {
@@ -43,12 +52,54 @@ class ComputerPlayer extends Player {
         const shotResult = realPlayer.gameBoard.receiveAttack(x, y);
         if (shotResult === "hit") {
           this.switchAlgorithmState();
+          this.updateQueue([x, y], realPlayer);
         }
         return [x, y];
       }
 
       attempts++;
     }
+  }
+
+  updateQueue(coords, realPlayer) {
+    const [x, y] = coords;
+
+    const adjacentPositions = [
+      [x - 1, y],
+      [x + 1, y],
+      [x, y + 1],
+      [x, y - 1],
+    ];
+
+    const validPositions = adjacentPositions.filter(
+      ([x, y]) => x >= 0 && x < 10 && y >= 0 && y < 10,
+    );
+
+    const allreadyUsedPositions = validPositions.filter(
+      ([x, y]) =>
+        realPlayer.gameBoard.board[x][y] !== "miss" &&
+        realPlayer.gameBoard.board[x][y] !== "hit",
+    );
+
+    allreadyUsedPositions.forEach((pos) => {
+      this.algorithmQueue.push(pos);
+    });
+  }
+
+  adjacentAttack(realPlayer) {
+    const checkAdjacentCoords = this.algorithmQueue.shift();
+    const [x, y] = checkAdjacentCoords;
+    const shotResult = realPlayer.gameBoard.receiveAttack(x, y);
+
+    if (shotResult === "hit") {
+      this.updateQueue([x, y], realPlayer);
+    }
+
+    if (this.algorithmQueue.length <= 0) {
+      this.switchAlgorithmState();
+    }
+
+    return [x, y];
   }
 }
 
