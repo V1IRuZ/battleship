@@ -82,7 +82,7 @@ class ComputerPlayer extends Player {
           this.setOriginalHit([x, y]);
           this.enemyHit();
           this.switchAlgorithmState("adjacent");
-          this.updateQueue([x, y], realPlayer);
+          this.updateAdjacentQueue([x, y], realPlayer);
         }
         return [x, y];
       }
@@ -91,7 +91,7 @@ class ComputerPlayer extends Player {
     }
   }
 
-  updateQueue(coords, realPlayer) {
+  updateAdjacentQueue(coords, realPlayer) {
     const [x, y] = coords;
 
     const adjacentPositions = [
@@ -122,7 +122,7 @@ class ComputerPlayer extends Player {
     const shotResult = realPlayer.gameBoard.receiveAttack(x, y);
 
     if (shotResult === "hit") {
-      this.updateQueue([x, y], realPlayer);
+      this.updateAdjacentQueue([x, y], realPlayer);
     }
 
     if (this.algorithmQueue.length <= 0) {
