@@ -1,38 +1,44 @@
-import { ComputerPlayer } from "../classes/player.js";
+import { ComputerPlayer, Player } from "../classes/player.js";
 
 describe("ComputerPlayer class", () => {
-  let player;
+  let computerPlayer;
+  let realPlayer;
 
   beforeEach(() => {
-    player = new ComputerPlayer("player");
+    computerPlayer = new ComputerPlayer("player");
+    realPlayer = new Player("opponent");
   });
 
   describe("switchAlgorithmState method", () => {
-    test("return false by default", () => {
-      expect(player.successfulHit).toBe(false);
+    test("algorithm property returns random by default", () => {
+      expect(computerPlayer.algorithm).toBe("random");
     });
 
-    test("switches property state", () => {
-      player.switchAlgorithmState();
-      expect(player.successfulHit).toBe(true);
+    test("switches algorithm property state to adjacent", () => {
+      computerPlayer.switchAlgorithmState("adjacent");
+      expect(computerPlayer.algorithm).toBe("adjacent");
     });
 
-    test("swiches property state multiple times", () => {
-      player.switchAlgorithmState();
-      player.switchAlgorithmState();
-      expect(player.successfulHit).toBe(false);
+    test("swiches algorithm property state to horizontal", () => {
+      computerPlayer.switchAlgorithmState("horizontal");
+      expect(computerPlayer.algorithm).toBe("horizontal");
+    });
+
+    test("switches algorithm property state to vertical", () => {
+      computerPlayer.switchAlgorithmState("vertical");
+      expect(computerPlayer.algorithm).toBe("vertical");
     });
   });
 
   describe("updateQueue method", () => {
     test("returns array length of 2", () => {
-      player.updateQueue([0, 0]);
-      expect(player.algorithmQueue.length).toBe(2);
+      computerPlayer.updateQueue([0, 0], realPlayer);
+      expect(computerPlayer.algorithmQueue.length).toBe(2);
     });
 
     test("returns array length of 4", () => {
-      player.updateQueue([5, 5]);
-      expect(player.algorithmQueue.length).toBe(4);
+      computerPlayer.updateQueue([5, 5], realPlayer);
+      expect(computerPlayer.algorithmQueue.length).toBe(4);
     });
   });
 });
