@@ -30,14 +30,14 @@ describe("ComputerPlayer class", () => {
     });
   });
 
-  describe("updateQueue method", () => {
+  describe("updateAdjacentQueue method", () => {
     test("returns array length of 2", () => {
-      computerPlayer.updateQueue([0, 0], realPlayer);
+      computerPlayer.updateAdjacentQueue([0, 0], realPlayer);
       expect(computerPlayer.algorithmQueue.length).toBe(2);
     });
 
     test("returns array length of 4", () => {
-      computerPlayer.updateQueue([5, 5], realPlayer);
+      computerPlayer.updateAdjacentQueue([5, 5], realPlayer);
       expect(computerPlayer.algorithmQueue.length).toBe(4);
     });
   });
