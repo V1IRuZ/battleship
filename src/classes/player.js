@@ -23,7 +23,7 @@ class ComputerPlayer extends Player {
     super(id);
     this.algorithm = "random";
     this.algorithmQueue = [];
-    this.enemyShipsLengths = [5,4,3,3,2,1];
+    this.enemyShipsLengths = [5, 4, 3, 3, 2, 1];
     this.enemyHits = 0;
     this.originalHit = null;
   }
@@ -34,6 +34,18 @@ class ComputerPlayer extends Player {
 
   setOriginalHit(coords) {
     this.originalHit = coords;
+  }
+
+  resetQueue() {
+    this.algorithmQueue = [];
+  }
+
+  resetOriginalHit() {
+    this.originalHit = null;
+  }
+
+  resetHits() {
+    this.enemyHits = 0;
   }
 
   switchAlgorithmState(algorithm) {
@@ -61,7 +73,9 @@ class ComputerPlayer extends Player {
     } else if (this.algorithm === "adjacent") {
       return this.adjacentAttack(realPlayer);
     } else if (this.algorithm === "horizontal") {
-      return this.horizontalAttack(realPlayer);
+      return this.horizontalVerticalAttack(realPlayer);
+    } else if (this.algorithm === "vertical") {
+      return this.horizontalVerticalAttack(realPlayer);
     }
   }
 
@@ -82,7 +96,7 @@ class ComputerPlayer extends Player {
           this.setOriginalHit([x, y]);
           this.enemyHit();
           this.switchAlgorithmState("adjacent");
-          this.updateAdjacentQueue([x, y], realPlayer);
+          this.updateQueue([x, y], realPlayer);
         }
         return [x, y];
       }
@@ -91,8 +105,9 @@ class ComputerPlayer extends Player {
     }
   }
 
-  updateAdjacentQueue(coords, realPlayer) {
+  updateQueue(coords, realPlayer) {
     const [x, y] = coords;
+    const [originalX, originalY] = this.originalHit;
 
     const adjacentPositions = [
       [x - 1, y],
@@ -111,9 +126,34 @@ class ComputerPlayer extends Player {
         realPlayer.gameBoard.board[x][y] !== "hit",
     );
 
-    removedUsedPositions.forEach((pos) => {
-      this.algorithmQueue.push(pos);
-    });
+    if (this.algorithm === "adjacent") {
+      removedUsedPositions.forEach((pos) => {
+        this.algorithmQueue.push(pos);
+      });
+      return;
+    }
+
+    if (this.algorithm === "horizontal") {
+      const onlyHorizontals = removedUsedPositions.filter(
+        ([posX]) => posX === originalX,
+      );
+
+      onlyHorizontals.forEach((pos) => {
+        this.algorithmQueue.push(pos);
+      });
+
+      return;
+    }
+
+    if (this.algorithm === "vertical") {
+      const onlyVerticals = removedUsedPositions.filter(
+        ([posX, posY]) => posY === originalY,
+      );
+
+      onlyVerticals.forEach((pos) => {
+        this.algorithmQueue.push(pos);
+      });
+    }
   }
 
   adjacentAttack(realPlayer) {
@@ -122,19 +162,52 @@ class ComputerPlayer extends Player {
     const shotResult = realPlayer.gameBoard.receiveAttack(x, y);
 
     if (shotResult === "hit") {
-      this.updateAdjacentQueue([x, y], realPlayer);
+      const isHorizontal = x === this.originalHit[0];
+      if (isHorizontal) {
+        this.switchAlgorithmState("horizontal");
+      } else {
+        this.switchAlgorithmState("vertical");
+      }
+
+      this.resetQueue();
+      this.enemyHit();
+      this.updateQueue([x, y], realPlayer);
     }
 
     if (this.algorithmQueue.length <= 0) {
       this.switchAlgorithmState("random");
+      this.resetOriginalHit();
+      this.resetHits();
     }
 
     return [x, y];
   }
 
-  // horizontalAttack(realPlayer) {
+  horizontalVerticalAttack(realPlayer) {
+    const checkNextCoords = this.algorithmQueue.shift();
+    const [x, y] = checkNextCoords;
+    const shotResult = realPlayer.gameBoard.receiveAttack(x, y);
 
-  // }
+    const maxValue = [...this.enemyShipsLengths];
+
+    if (shotResult === "hit") {
+      this.updateQueue([x, y], realPlayer);
+      this.enemyHit();
+
+      if (maxValue <= this.enemyHits) {
+        this.switchAlgorithmState("random");
+        this.resetOriginalHit();
+        this.resetQueue();
+      }
+    }
+    if (this.algorithmQueue.length <= 0) {
+      this.switchAlgorithmState("random");
+      this.resetOriginalHit();
+      this.resetHits();
+    }
+
+    return [x, y];
+  }
 }
 
 export { Player, ComputerPlayer };
