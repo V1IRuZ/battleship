@@ -23,6 +23,17 @@ class ComputerPlayer extends Player {
     super(id);
     this.algorithm = "random";
     this.algorithmQueue = [];
+    this.enemyShipsLengths = [5,4,3,3,2,1];
+    this.enemyHits = 0;
+    this.originalHit = null;
+  }
+
+  enemyHit() {
+    this.enemyHits++;
+  }
+
+  setOriginalHit(coords) {
+    this.originalHit = coords;
   }
 
   switchAlgorithmState(algorithm) {
@@ -49,6 +60,8 @@ class ComputerPlayer extends Player {
       return this.randomAttack(realPlayer);
     } else if (this.algorithm === "adjacent") {
       return this.adjacentAttack(realPlayer);
+    } else if (this.algorithm === "horizontal") {
+      return this.horizontalAttack(realPlayer);
     }
   }
 
@@ -66,6 +79,8 @@ class ComputerPlayer extends Player {
       if (!allreadyAttacked) {
         const shotResult = realPlayer.gameBoard.receiveAttack(x, y);
         if (shotResult === "hit") {
+          this.setOriginalHit([x, y]);
+          this.enemyHit();
           this.switchAlgorithmState("adjacent");
           this.updateQueue([x, y], realPlayer);
         }
@@ -90,13 +105,13 @@ class ComputerPlayer extends Player {
       ([x, y]) => x >= 0 && x < 10 && y >= 0 && y < 10,
     );
 
-    const allreadyUsedPositions = validPositions.filter(
+    const removedUsedPositions = validPositions.filter(
       ([x, y]) =>
         realPlayer.gameBoard.board[x][y] !== "miss" &&
         realPlayer.gameBoard.board[x][y] !== "hit",
     );
 
-    allreadyUsedPositions.forEach((pos) => {
+    removedUsedPositions.forEach((pos) => {
       this.algorithmQueue.push(pos);
     });
   }
@@ -116,6 +131,10 @@ class ComputerPlayer extends Player {
 
     return [x, y];
   }
+
+  // horizontalAttack(realPlayer) {
+
+  // }
 }
 
 export { Player, ComputerPlayer };
