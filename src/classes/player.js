@@ -21,18 +21,33 @@ class RealPlayer extends Player {}
 class ComputerPlayer extends Player {
   constructor(id) {
     super(id);
-    this.successfulHit = false;
+    this.algorithm = "random";
     this.algorithmQueue = [];
   }
 
-  switchAlgorithmState() {
-    this.successfulHit = this.successfulHit === false ? true : false;
+  switchAlgorithmState(algorithm) {
+    switch (algorithm) {
+      case "random":
+        this.algorithm = "random";
+        break;
+      case "adjacent":
+        this.algorithm = "adjacent";
+        break;
+      case "horizontal":
+        this.algorithm = "horizontal";
+        break;
+      case "vertical":
+        this.algorithm = "vertical";
+        break;
+      default:
+        this.algorithm = "random";
+    }
   }
 
   attack(realPlayer) {
-    if (this.successfulHit === false) {
+    if (this.algorithm === "random") {
       return this.randomAttack(realPlayer);
-    } else {
+    } else if (this.algorithm === "adjacent") {
       return this.adjacentAttack(realPlayer);
     }
   }
@@ -51,7 +66,7 @@ class ComputerPlayer extends Player {
       if (!allreadyAttacked) {
         const shotResult = realPlayer.gameBoard.receiveAttack(x, y);
         if (shotResult === "hit") {
-          this.switchAlgorithmState();
+          this.switchAlgorithmState("adjacent");
           this.updateQueue([x, y], realPlayer);
         }
         return [x, y];
@@ -96,7 +111,7 @@ class ComputerPlayer extends Player {
     }
 
     if (this.algorithmQueue.length <= 0) {
-      this.switchAlgorithmState();
+      this.switchAlgorithmState("random");
     }
 
     return [x, y];
