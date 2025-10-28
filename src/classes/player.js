@@ -80,9 +80,7 @@ class ComputerPlayer extends Player {
   }
 
   randomAttack(realPlayer) {
-    let attempts = 0;
-
-    while (attempts < 101) {
+    while (true) {
       let x = Math.floor(Math.random() * 10);
       let y = Math.floor(Math.random() * 10);
       const player1Coords = realPlayer.gameBoard.board[x][y];
@@ -98,10 +96,16 @@ class ComputerPlayer extends Player {
           this.switchAlgorithmState("adjacent");
           this.updateQueue([x, y], realPlayer);
         }
+
+        if (this.algorithmQueue.length <= 0) {
+          this.switchAlgorithmState("random");
+          this.resetOriginalHit();
+          this.resetHits();
+        }
+
         return [x, y];
       }
 
-      attempts++;
     }
   }
 
@@ -130,6 +134,7 @@ class ComputerPlayer extends Player {
       removedUsedPositions.forEach((pos) => {
         this.algorithmQueue.push(pos);
       });
+
       return;
     }
 
@@ -179,7 +184,6 @@ class ComputerPlayer extends Player {
       this.resetOriginalHit();
       this.resetHits();
     }
-
     return [x, y];
   }
 
@@ -198,6 +202,7 @@ class ComputerPlayer extends Player {
         this.switchAlgorithmState("random");
         this.resetOriginalHit();
         this.resetQueue();
+        this.resetHits();
       }
     }
     if (this.algorithmQueue.length <= 0) {
@@ -205,7 +210,6 @@ class ComputerPlayer extends Player {
       this.resetOriginalHit();
       this.resetHits();
     }
-
     return [x, y];
   }
 }
