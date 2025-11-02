@@ -122,39 +122,49 @@ class ComputerPlayer extends Player {
 
   updateQueue(coords, realPlayer) {
     const [x, y] = coords;
-    const [originalX, originalY] = this.originalHit;
 
     const validPositions = this.#getValidAdjacentPositions(x, y, realPlayer);
 
-    if (this.algorithm === "adjacent") {
-      validPositions.forEach((pos) => {
-        this.algorithmQueue.push(pos);
-      });
-
-      return;
+    switch (this.algorithm) {
+      case "adjacent":
+        this.#adjacentQueue(validPositions);
+        break;
+      case "horizontal":
+        this.#horizontalQueue(validPositions);
+        break;
+      case "vertical":
+        this.#verticalQueue(validPositions);
+        break;
     }
+    // if (this.algorithm === "adjacent") {
+    //   validPositions.forEach((pos) => {
+    //     this.algorithmQueue.push(pos);
+    //   });
 
-    if (this.algorithm === "horizontal") {
-      const onlyHorizontals = validPositions.filter(
-        ([posX]) => posX === originalX,
-      );
+    //   return;
+    // }
 
-      onlyHorizontals.forEach((pos) => {
-        this.algorithmQueue.push(pos);
-      });
+    // if (this.algorithm === "horizontal") {
+    //   const onlyHorizontals = validPositions.filter(
+    //     ([posX]) => posX === originalX,
+    //   );
 
-      return;
-    }
+    //   onlyHorizontals.forEach((pos) => {
+    //     this.algorithmQueue.push(pos);
+    //   });
 
-    if (this.algorithm === "vertical") {
-      const onlyVerticals = validPositions.filter(
-        ([posX, posY]) => posY === originalY,
-      );
+    //   return;
+    // }
 
-      onlyVerticals.forEach((pos) => {
-        this.algorithmQueue.push(pos);
-      });
-    }
+    // if (this.algorithm === "vertical") {
+    //   const onlyVerticals = validPositions.filter(
+    //     ([posX, posY]) => posY === originalY,
+    //   );
+
+    //   onlyVerticals.forEach((pos) => {
+    //     this.algorithmQueue.push(pos);
+    //   });
+    // }
   }
 
   #getValidAdjacentPositions(x, y, realPlayer) {
@@ -173,6 +183,24 @@ class ComputerPlayer extends Player {
           realPlayer.gameBoard.board[x][y] !== "miss" &&
           realPlayer.gameBoard.board[x][y] !== "hit",
       );
+  }
+
+  #adjacentQueue(positions) {
+    this.algorithmQueue.push(...positions);
+  }
+
+  #horizontalQueue(positions) {
+    const [originalX, originalY] = this.originalHit;
+    const onlyHorizontals = positions.filter(([posX]) => posX === originalX);
+
+    this.algorithmQueue.push(...onlyHorizontals);
+  }
+
+  #verticalQueue(positions) {
+    const [originalX, originalY] = this.originalHit;
+    const onlyVerticals = positions.filter(([posX, posY]) => posY === originalY);
+
+    this.algorithmQueue.push(...onlyVerticals);
   }
 
   adjacentAttack(realPlayer) {
