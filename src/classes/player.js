@@ -105,8 +105,19 @@ class ComputerPlayer extends Player {
 
         return [x, y];
       }
-
     }
+  }
+
+  filterHorizontalQueue() {
+    const [originalX, originalY] = this.originalHit;
+    const filtered = this.algorithmQueue.filter(([x, y]) => x === originalX);
+    this.algorithmQueue = filtered;
+  }
+
+  filterVerticalQueue() {
+    const [originalX, originalY] = this.originalHit;
+    const filtered = this.algorithmQueue.filter(([x, y]) => y === originalY);
+    this.algorithmQueue = filtered;
   }
 
   updateQueue(coords, realPlayer) {
@@ -170,11 +181,13 @@ class ComputerPlayer extends Player {
       const isHorizontal = x === this.originalHit[0];
       if (isHorizontal) {
         this.switchAlgorithmState("horizontal");
+        this.filterHorizontalQueue();
       } else {
         this.switchAlgorithmState("vertical");
+        this.filterVerticalQueue();
       }
 
-      this.resetQueue();
+      // this.resetQueue();
       this.enemyHit();
       this.updateQueue([x, y], realPlayer);
     }
