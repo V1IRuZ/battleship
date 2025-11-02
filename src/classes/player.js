@@ -68,14 +68,14 @@ class ComputerPlayer extends Player {
   }
 
   attack(realPlayer) {
-    if (this.algorithm === "random") {
-      return this.randomAttack(realPlayer);
-    } else if (this.algorithm === "adjacent") {
-      return this.adjacentAttack(realPlayer);
-    } else if (this.algorithm === "horizontal") {
-      return this.horizontalVerticalAttack(realPlayer);
-    } else if (this.algorithm === "vertical") {
-      return this.horizontalVerticalAttack(realPlayer);
+    switch (this.algorithm) {
+      case "random":
+        return this.randomAttack(realPlayer);
+      case "adjacent":
+        return this.adjacentAttack(realPlayer);
+      case "horizontal":
+      case "vertical":
+        return this.horizontalVerticalAttack(realPlayer);
     }
   }
 
@@ -136,35 +136,6 @@ class ComputerPlayer extends Player {
         this.#verticalQueue(validPositions);
         break;
     }
-    // if (this.algorithm === "adjacent") {
-    //   validPositions.forEach((pos) => {
-    //     this.algorithmQueue.push(pos);
-    //   });
-
-    //   return;
-    // }
-
-    // if (this.algorithm === "horizontal") {
-    //   const onlyHorizontals = validPositions.filter(
-    //     ([posX]) => posX === originalX,
-    //   );
-
-    //   onlyHorizontals.forEach((pos) => {
-    //     this.algorithmQueue.push(pos);
-    //   });
-
-    //   return;
-    // }
-
-    // if (this.algorithm === "vertical") {
-    //   const onlyVerticals = validPositions.filter(
-    //     ([posX, posY]) => posY === originalY,
-    //   );
-
-    //   onlyVerticals.forEach((pos) => {
-    //     this.algorithmQueue.push(pos);
-    //   });
-    // }
   }
 
   #getValidAdjacentPositions(x, y, realPlayer) {
@@ -198,7 +169,9 @@ class ComputerPlayer extends Player {
 
   #verticalQueue(positions) {
     const [originalX, originalY] = this.originalHit;
-    const onlyVerticals = positions.filter(([posX, posY]) => posY === originalY);
+    const onlyVerticals = positions.filter(
+      ([posX, posY]) => posY === originalY,
+    );
 
     this.algorithmQueue.push(...onlyVerticals);
   }
