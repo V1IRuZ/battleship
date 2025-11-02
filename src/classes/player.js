@@ -124,25 +124,10 @@ class ComputerPlayer extends Player {
     const [x, y] = coords;
     const [originalX, originalY] = this.originalHit;
 
-    const adjacentPositions = [
-      [x - 1, y],
-      [x + 1, y],
-      [x, y + 1],
-      [x, y - 1],
-    ];
-
-    const validPositions = adjacentPositions.filter(
-      ([x, y]) => x >= 0 && x < 10 && y >= 0 && y < 10,
-    );
-
-    const removedUsedPositions = validPositions.filter(
-      ([x, y]) =>
-        realPlayer.gameBoard.board[x][y] !== "miss" &&
-        realPlayer.gameBoard.board[x][y] !== "hit",
-    );
+    const validPositions = this.#getValidAdjacentPositions(x, y, realPlayer);
 
     if (this.algorithm === "adjacent") {
-      removedUsedPositions.forEach((pos) => {
+      validPositions.forEach((pos) => {
         this.algorithmQueue.push(pos);
       });
 
@@ -150,7 +135,7 @@ class ComputerPlayer extends Player {
     }
 
     if (this.algorithm === "horizontal") {
-      const onlyHorizontals = removedUsedPositions.filter(
+      const onlyHorizontals = validPositions.filter(
         ([posX]) => posX === originalX,
       );
 
@@ -162,7 +147,7 @@ class ComputerPlayer extends Player {
     }
 
     if (this.algorithm === "vertical") {
-      const onlyVerticals = removedUsedPositions.filter(
+      const onlyVerticals = validPositions.filter(
         ([posX, posY]) => posY === originalY,
       );
 
@@ -170,6 +155,24 @@ class ComputerPlayer extends Player {
         this.algorithmQueue.push(pos);
       });
     }
+  }
+
+  #getValidAdjacentPositions(x, y, realPlayer) {
+    const adjacentPositions = [
+      [x - 1, y],
+      [x + 1, y],
+      [x, y + 1],
+      [x, y - 1],
+    ];
+
+    // Remove off-board and used locations
+    return adjacentPositions
+      .filter(([x, y]) => x >= 0 && x < 10 && y >= 0 && y < 10)
+      .filter(
+        ([x, y]) =>
+          realPlayer.gameBoard.board[x][y] !== "miss" &&
+          realPlayer.gameBoard.board[x][y] !== "hit",
+      );
   }
 
   adjacentAttack(realPlayer) {
