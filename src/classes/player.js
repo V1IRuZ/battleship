@@ -187,7 +187,6 @@ class ComputerPlayer extends Player {
         this.filterVerticalQueue();
       }
 
-      // this.resetQueue();
       this.enemyHit();
       this.updateQueue([x, y], realPlayer);
     }
@@ -200,26 +199,38 @@ class ComputerPlayer extends Player {
     return [x, y];
   }
 
+  removeShipLength() {
+    const enemyShipLengthIndex = this.enemyShipsLengths.findIndex(
+      (num) => num === this.enemyHits,
+    );
+
+    this.enemyShipsLengths.splice(enemyShipLengthIndex, 1);
+  }
+
   horizontalVerticalAttack(realPlayer) {
     const checkNextCoords = this.algorithmQueue.shift();
     const [x, y] = checkNextCoords;
     const shotResult = realPlayer.gameBoard.receiveAttack(x, y);
 
-    const maxValue = [...this.enemyShipsLengths];
+    const maxValue = Math.max(...this.enemyShipsLengths);
 
     if (shotResult === "hit") {
-      this.updateQueue([x, y], realPlayer);
       this.enemyHit();
 
       if (maxValue <= this.enemyHits) {
         this.switchAlgorithmState("random");
+        this.removeShipLength();
         this.resetOriginalHit();
         this.resetQueue();
         this.resetHits();
+        return [x, y];
       }
+
+      this.updateQueue([x, y], realPlayer);
     }
     if (this.algorithmQueue.length <= 0) {
       this.switchAlgorithmState("random");
+      this.removeShipLength();
       this.resetOriginalHit();
       this.resetHits();
     }
