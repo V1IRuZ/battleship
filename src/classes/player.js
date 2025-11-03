@@ -6,6 +6,37 @@ class Player {
     this.gameBoard = new Gameboard();
   }
 
+  #placeShipRandomly(index) {
+    let attempts = 0;
+    let placed = false;
+    while (!placed && attempts < 1000) {
+      try {
+        const x = Math.floor(Math.random() * 10);
+        const y = Math.floor(Math.random() * 10);
+
+        const rotation = Math.random() < 0.5 ? "horizontal" : "vertical";
+
+        this.gameBoard.placeShip(index, [x, y], rotation);
+        placed = true;
+      } catch (err) {
+        console.error(err);
+
+        attempts++;
+      }
+    }
+    console.log(this.gameBoard.board);
+
+    if (!placed) {
+      throw new Error(`Could not place ships after ${attempts} attempts`);
+    }
+  }
+
+  placeAllShipsRandomly() {
+    this.gameBoard.ships.forEach((ship, index) => {
+      this.#placeShipRandomly(index);
+    });
+  }
+
   defaultPlacement() {
     this.gameBoard.placeShip(0, [1, 1], "horizontal");
     this.gameBoard.placeShip(1, [3, 0], "vertical");
