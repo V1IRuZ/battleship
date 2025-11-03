@@ -48,21 +48,28 @@ export class Gameboard {
     }
   }
 
+  #validateShipPlacement(shipObj, startPos, rotation) {
+    const [startX, startY] = startPos;
+    const positions = [];
+
+    for (let i = 0; i < shipObj.length; i++) {
+      const x = rotation === "vertical" ? startX + i : startX;
+      const y = rotation === "horizontal" ? startY + i : startY;
+      this.#validateShipOverLapping(x, y, shipObj);
+
+      positions.push([x, y]);
+    }
+
+    return positions;
+  }
+
   placeShip(shipIndex, startPos, rotation) {
     const ship = this.ships[shipIndex];
-    let [x, y] = startPos;
 
     this.#validateShipOutOfBounds(ship, startPos, rotation);
+    const positions = this.#validateShipPlacement(ship, startPos, rotation);
 
-    for (let i = 0; i < ship.length; i++) {
-      this.#validateShipOverLapping(x, y, ship);
-      this.board[x][y] = ship.name;
-      if (rotation === "horizontal") {
-        y++;
-      } else {
-        x++;
-      }
-    }
+    positions.forEach(([x, y]) => (this.board[x][y] = ship.name));
   }
 
   receiveAttack(x, y) {
