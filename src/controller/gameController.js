@@ -12,8 +12,8 @@ export class GameController {
 
   initSinglePlayer() {
     const content = document.querySelector("#content");
-    this.player1.defaultPlacement();
-    this.player2.defaultPlacement();
+    this.player1.placeAllShipsRandomly();
+    this.player2.placeAllShipsRandomly();
 
     render.showBoards(this.player1, content);
     render.showBoards(this.player2, content);
