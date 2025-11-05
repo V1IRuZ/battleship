@@ -6,6 +6,7 @@ export class GameController {
   constructor() {
     this.player1 = new Player("player1");
     this.player2 = new ComputerPlayer("player2");
+    this.gameState = "playing";
 
     this.initSinglePlayer();
   }
@@ -20,16 +21,36 @@ export class GameController {
 
     const board = document.querySelector(".player2");
     events.bindBoardClicks(board, (x, y) => {
-      this.handleSinglePlayerClicks(x, y);
+      this.handleAttack(x, y);
     });
   }
 
-  handleSinglePlayerClicks(x, y) {
+  handleAttack(x, y) {
+    if (this.gameState !== "playing") return;
+    
     this.player2.gameBoard.receiveAttack(x, y);
     render.showHitandMiss(x, y, this.player2.id);
 
-    // Return allowed computer player hits
+    if (this.player2.gameBoard.allShipsSunk) {
+      this.endGame(this.player1);
+    } else {
+      this.validateComputerAttacks();
+    }
+  }
+
+  validateComputerAttacks() {
+    if (this.gameState !== "playing") return;
+
     const [targetX, targetY] = this.player2.attack(this.player1);
     render.showHitandMiss(targetX, targetY, this.player1.id);
+
+    if (this.player1.gameBoard.allShipsSunk) {
+      this.endGame(this.player2);
+    }
+  }
+
+  endGame(winner) {
+    this.gameState = "gameover";
+    console.log(`${winner.id} wins!`);
   }
 }
