@@ -81,8 +81,8 @@ class ComputerPlayer extends Player {
 
   validateEmptyQueue() {
     if (this.algorithmQueue.length <= 0) {
-      this.switchAlgorithmState("random");
       this.removeShipLength();
+      this.switchAlgorithmState("random");
       this.originalHit = null;
       this.algorithmQueue = [];
       this.enemyHits = 0;
@@ -139,24 +139,19 @@ class ComputerPlayer extends Player {
         }
 
         this.validateEmptyQueue();
-        // if (this.algorithmQueue.length <= 0) {
-        //   this.switchAlgorithmState("random");
-        //   this.resetOriginalHit();
-        //   this.resetHits();
-        // }
 
         return [x, y];
       }
     }
   }
 
-  filterHorizontalQueue() {
+  #filterHorizontalQueue() {
     const [originalX, originalY] = this.originalHit;
     const filtered = this.algorithmQueue.filter(([x, y]) => x === originalX);
     this.algorithmQueue = filtered;
   }
 
-  filterVerticalQueue() {
+  #filterVerticalQueue() {
     const [originalX, originalY] = this.originalHit;
     const filtered = this.algorithmQueue.filter(([x, y]) => y === originalY);
     this.algorithmQueue = filtered;
@@ -218,35 +213,37 @@ class ComputerPlayer extends Player {
     this.algorithmQueue.push(...onlyVerticals);
   }
 
+  validateAlgorithmRotation(targetX) {
+    const isHorizontal = targetX === this.originalHit[0];
+    if (isHorizontal) {
+      this.switchAlgorithmState("horizontal");
+      this.#filterHorizontalQueue();
+    } else {
+      this.switchAlgorithmState("vertical");
+      this.#filterVerticalQueue();
+    }
+  }
+
   adjacentAttack(realPlayer) {
     const checkAdjacentCoords = this.algorithmQueue.shift();
     const [x, y] = checkAdjacentCoords;
     const shotResult = realPlayer.gameBoard.receiveAttack(x, y);
 
     if (shotResult === "hit") {
-      const isHorizontal = x === this.originalHit[0];
-      if (isHorizontal) {
-        this.switchAlgorithmState("horizontal");
-        this.filterHorizontalQueue();
-      } else {
-        this.switchAlgorithmState("vertical");
-        this.filterVerticalQueue();
-      }
+      this.validateAlgorithmRotation(x);
 
       this.enemyHit();
       this.updateQueue([x, y], realPlayer);
     }
 
     this.validateEmptyQueue();
-    // if (this.algorithmQueue.length <= 0) {
-    //   this.switchAlgorithmState("random");
-    //   this.resetOriginalHit();
-    //   this.resetHits();
-    // }
+
     return [x, y];
   }
 
   removeShipLength() {
+    if (this.algorithm === "random") return;
+
     const enemyShipLengthIndex = this.enemyShipsLengths.findIndex(
       (num) => num === this.enemyHits,
     );
@@ -265,8 +262,8 @@ class ComputerPlayer extends Player {
       this.enemyHit();
 
       if (maxValue <= this.enemyHits) {
-        this.switchAlgorithmState("random");
         this.removeShipLength();
+        this.switchAlgorithmState("random");
         this.resetOriginalHit();
         this.resetQueue();
         this.resetHits();
@@ -277,12 +274,7 @@ class ComputerPlayer extends Player {
     }
 
     this.validateEmptyQueue();
-    // if (this.algorithmQueue.length <= 0) {
-    //   this.switchAlgorithmState("random");
-    //   this.removeShipLength();
-    //   this.resetOriginalHit();
-    //   this.resetHits();
-    // }
+
     return [x, y];
   }
 }
