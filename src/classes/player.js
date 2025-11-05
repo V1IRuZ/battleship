@@ -79,6 +79,16 @@ class ComputerPlayer extends Player {
     this.enemyHits = 0;
   }
 
+  validateEmptyQueue() {
+    if (this.algorithmQueue.length <= 0) {
+      this.switchAlgorithmState("random");
+      this.removeShipLength();
+      this.originalHit = null;
+      this.algorithmQueue = [];
+      this.enemyHits = 0;
+    }
+  }
+
   switchAlgorithmState(algorithm) {
     switch (algorithm) {
       case "random":
@@ -128,11 +138,12 @@ class ComputerPlayer extends Player {
           this.updateQueue([x, y], realPlayer);
         }
 
-        if (this.algorithmQueue.length <= 0) {
-          this.switchAlgorithmState("random");
-          this.resetOriginalHit();
-          this.resetHits();
-        }
+        this.validateEmptyQueue();
+        // if (this.algorithmQueue.length <= 0) {
+        //   this.switchAlgorithmState("random");
+        //   this.resetOriginalHit();
+        //   this.resetHits();
+        // }
 
         return [x, y];
       }
@@ -226,11 +237,12 @@ class ComputerPlayer extends Player {
       this.updateQueue([x, y], realPlayer);
     }
 
-    if (this.algorithmQueue.length <= 0) {
-      this.switchAlgorithmState("random");
-      this.resetOriginalHit();
-      this.resetHits();
-    }
+    this.validateEmptyQueue();
+    // if (this.algorithmQueue.length <= 0) {
+    //   this.switchAlgorithmState("random");
+    //   this.resetOriginalHit();
+    //   this.resetHits();
+    // }
     return [x, y];
   }
 
@@ -263,12 +275,14 @@ class ComputerPlayer extends Player {
 
       this.updateQueue([x, y], realPlayer);
     }
-    if (this.algorithmQueue.length <= 0) {
-      this.switchAlgorithmState("random");
-      this.removeShipLength();
-      this.resetOriginalHit();
-      this.resetHits();
-    }
+
+    this.validateEmptyQueue();
+    // if (this.algorithmQueue.length <= 0) {
+    //   this.switchAlgorithmState("random");
+    //   this.removeShipLength();
+    //   this.resetOriginalHit();
+    //   this.resetHits();
+    // }
     return [x, y];
   }
 }
