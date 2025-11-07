@@ -24,7 +24,6 @@ class Player {
         attempts++;
       }
     }
-    console.log(this.gameBoard.board);
 
     if (!placed) {
       throw new Error(`Could not place ships after ${attempts} attempts`);
@@ -120,6 +119,17 @@ class ComputerPlayer extends Player {
     }
   }
 
+  #validateRandomHit(hitX, hitY, realPlayer) {
+    const shotResult = realPlayer.gameBoard.receiveAttack(hitX, hitY);
+
+    if (shotResult === "hit") {
+      this.setOriginalHit([hitX, hitY]);
+      this.enemyHit();
+      this.switchAlgorithmState("adjacent");
+      this.updateQueue([hitX, hitY], realPlayer);
+    }
+  }
+
   randomAttack(realPlayer) {
     while (true) {
       let x = Math.floor(Math.random() * 10);
@@ -130,14 +140,7 @@ class ComputerPlayer extends Player {
         player1Coords === "miss" || player1Coords === "hit";
 
       if (!allreadyAttacked) {
-        const shotResult = realPlayer.gameBoard.receiveAttack(x, y);
-        if (shotResult === "hit") {
-          this.setOriginalHit([x, y]);
-          this.enemyHit();
-          this.switchAlgorithmState("adjacent");
-          this.updateQueue([x, y], realPlayer);
-        }
-
+        this.#validateRandomHit(x, y, realPlayer);
         this.validateEmptyQueue();
 
         return [x, y];
