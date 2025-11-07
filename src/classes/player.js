@@ -53,9 +53,13 @@ class ComputerPlayer extends Player {
     super(id);
     this.algorithm = "random";
     this.algorithmQueue = [];
-    this.enemyShipsLengths = [5, 4, 3, 3, 2, 1];
+    this.enemyShipsLengths = this.getShipsLengths();
     this.enemyHits = 0;
     this.originalHit = null;
+  }
+
+  getShipsLengths() {
+    return this.gameBoard.ships.map((ship) => ship.length);
   }
 
   enemyHit() {
