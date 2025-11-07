@@ -63,6 +63,10 @@ export class Gameboard {
     return positions;
   }
 
+  getPosition(x, y) {
+    return this.board[x][y];
+  }
+
   placeShip(shipIndex, startPos, rotation) {
     const ship = this.ships[shipIndex];
 
