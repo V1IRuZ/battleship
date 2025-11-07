@@ -134,10 +134,10 @@ class ComputerPlayer extends Player {
     while (true) {
       let x = Math.floor(Math.random() * 10);
       let y = Math.floor(Math.random() * 10);
-      const player1Coords = realPlayer.gameBoard.board[x][y];
+      const playerCoords = realPlayer.gameBoard.getPosition(x, y);
 
       const allreadyAttacked =
-        player1Coords === "miss" || player1Coords === "hit";
+        playerCoords === "miss" || playerCoords === "hit";
 
       if (!allreadyAttacked) {
         this.#validateRandomHit(x, y, realPlayer);
@@ -191,8 +191,8 @@ class ComputerPlayer extends Player {
       .filter(([x, y]) => x >= 0 && x < 10 && y >= 0 && y < 10)
       .filter(
         ([x, y]) =>
-          realPlayer.gameBoard.board[x][y] !== "miss" &&
-          realPlayer.gameBoard.board[x][y] !== "hit",
+          realPlayer.gameBoard.getPosition(x, y) !== "miss" &&
+          realPlayer.gameBoard.getPosition(x, y) !== "hit",
       );
   }
 
@@ -228,8 +228,7 @@ class ComputerPlayer extends Player {
   }
 
   adjacentAttack(realPlayer) {
-    const checkAdjacentCoords = this.algorithmQueue.shift();
-    const [x, y] = checkAdjacentCoords;
+    const [x, y] = this.algorithmQueue.shift();
     const shotResult = realPlayer.gameBoard.receiveAttack(x, y);
 
     if (shotResult === "hit") {
@@ -270,8 +269,7 @@ class ComputerPlayer extends Player {
   }
 
   horizontalVerticalAttack(realPlayer) {
-    const checkNextCoords = this.algorithmQueue.shift();
-    const [x, y] = checkNextCoords;
+    const [x, y] = this.algorithmQueue.shift();
     const shotResult = realPlayer.gameBoard.receiveAttack(x, y);
 
     if (shotResult === "hit") {
