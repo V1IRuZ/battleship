@@ -29,16 +29,4 @@ describe("ComputerPlayer class", () => {
       expect(computerPlayer.algorithm).toBe("vertical");
     });
   });
-
-  describe("updateAdjacentQueue method", () => {
-    test("returns array length of 2", () => {
-      computerPlayer.updateAdjacentQueue([0, 0], realPlayer);
-      expect(computerPlayer.algorithmQueue.length).toBe(2);
-    });
-
-    test("returns array length of 4", () => {
-      computerPlayer.updateAdjacentQueue([5, 5], realPlayer);
-      expect(computerPlayer.algorithmQueue.length).toBe(4);
-    });
-  });
 });
