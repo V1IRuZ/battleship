@@ -121,4 +121,10 @@ describe("Gameboard class", () => {
       expect(gameBoard.allShipsSunk).toBe(false);
     });
   });
+
+  describe("getPosition method", () => {
+    test("returns null", () => {
+      expect(gameBoard.getPosition(5, 5)).toBe(null);
+    });
+  });
 });
