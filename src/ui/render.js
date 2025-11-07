@@ -43,7 +43,7 @@ const render = {
     return board;
   },
 
-  renderGrid(boardElement, gameBoard) {
+  renderGrid(boardElement, gameBoardObj) {
     boardElement.innerHTML = "";
     for (let x = 0; x < 10; x++) {
       for (let y = 0; y < 10; y++) {
@@ -52,7 +52,8 @@ const render = {
         cell.dataset.x = x;
         cell.dataset.y = y;
 
-        if (typeof gameBoard[x][y] === "string") {
+        const position = gameBoardObj.getPosition(x, y);
+        if (typeof position === "string") {
           cell.classList.add("ship");
         }
 
@@ -67,8 +68,8 @@ const render = {
     const topCoords = this.drawTopCoordinates();
     const gridContainer = this.drawGridContainer(playerObj.id);
 
-    this.renderGrid(gridContainer, playerObj.gameBoard.board);
-    
+    this.renderGrid(gridContainer, playerObj.gameBoard);
+
     mainBoardContainer.appendChild(topCoords);
     mainBoardContainer.appendChild(leftCoords);
     mainBoardContainer.appendChild(gridContainer);
