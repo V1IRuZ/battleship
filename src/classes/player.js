@@ -82,9 +82,9 @@ class ComputerPlayer extends Player {
     if (this.algorithmQueue.length <= 0) {
       this.removeShipLength();
       this.switchAlgorithmState("random");
-      this.originalHit = null;
-      this.algorithmQueue = [];
-      this.enemyHits = 0;
+      this.resetOriginalHit();
+      this.resetQueue();
+      this.resetHits();
     }
   }
 
@@ -254,22 +254,30 @@ class ComputerPlayer extends Player {
     this.enemyShipsLengths.splice(enemyShipLengthIndex, 1);
   }
 
+  #checkIfShipSunk() {
+    const maxValue = Math.max(...this.enemyShipsLengths);
+
+    if (this.enemyHits >= maxValue) {
+      this.removeShipLength();
+      this.switchAlgorithmState("random");
+      this.resetOriginalHit();
+      this.resetQueue();
+      this.resetHits();
+      return true;
+    }
+
+    return false;
+  }
+
   horizontalVerticalAttack(realPlayer) {
     const checkNextCoords = this.algorithmQueue.shift();
     const [x, y] = checkNextCoords;
     const shotResult = realPlayer.gameBoard.receiveAttack(x, y);
 
-    const maxValue = Math.max(...this.enemyShipsLengths);
-
     if (shotResult === "hit") {
       this.enemyHit();
 
-      if (maxValue <= this.enemyHits) {
-        this.removeShipLength();
-        this.switchAlgorithmState("random");
-        this.resetOriginalHit();
-        this.resetQueue();
-        this.resetHits();
+      if (this.#checkIfShipSunk()) {
         return [x, y];
       }
 
