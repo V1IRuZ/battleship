@@ -126,5 +126,16 @@ describe("Gameboard class", () => {
     test("returns null", () => {
       expect(gameBoard.getPosition(5, 5)).toBe(null);
     });
+
+    test("returns miss", () => {
+      gameBoard.receiveAttack(2, 3);
+      expect(gameBoard.getPosition(2, 3)).toBe("miss");
+    });
+
+    test("returns hit", () => {
+      gameBoard.placeShip(0, [1, 1], "vertical");
+      gameBoard.receiveAttack(1, 1);
+      expect(gameBoard.getPosition(1, 1)).toBe("hit");
+    });
   });
 });
