@@ -29,4 +29,10 @@ describe("ComputerPlayer class", () => {
       expect(computerPlayer.algorithm).toBe("vertical");
     });
   });
+
+  describe("getShipsLengths method", () => {
+    test("update the property that contains the lengths of the ships in the game", () => {
+      expect(computerPlayer.enemyShipsLengths).toEqual([5, 4, 3, 3, 2, 1]);
+    });
+  });
 });
