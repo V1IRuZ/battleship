@@ -32,8 +32,8 @@ export class GameController {
     this.player1.placeAllShipsRandomly();
     this.player2.placeAllShipsRandomly();
 
-    render.showBoards(this.player1, this.html.content);
-    render.showBoards(this.player2, this.html.content);
+    render.showPlayingBoard(this.player1, this.html.content);
+    render.showPlayingBoard(this.player2, this.html.content);
 
     const board = document.querySelector(".player2");
     events.bindBoardClicks(board, (x, y) => {
