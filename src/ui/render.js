@@ -64,6 +64,13 @@ const render = {
     return board;
   },
 
+  renderShips(x, y, gameBoardObj, cellEl) {
+    const position = gameBoardObj.getPosition(x, y);
+    if (typeof position === "string") {
+      cellEl.classList.add("ship");
+    }
+  },
+
   renderGrid(boardElement, gameBoardObj) {
     boardElement.innerHTML = "";
     for (let x = 0; x < 10; x++) {
@@ -73,9 +80,8 @@ const render = {
         cell.dataset.x = x;
         cell.dataset.y = y;
 
-        const position = gameBoardObj.getPosition(x, y);
-        if (typeof position === "string") {
-          cell.classList.add("ship");
+        if (gameBoardObj) {
+          this.renderShips(x, y, gameBoardObj, cell);
         }
 
         boardElement.appendChild(cell);
