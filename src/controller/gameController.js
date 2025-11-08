@@ -6,13 +6,24 @@ export class GameController {
   constructor() {
     this.player1 = new Player("player1");
     this.player2 = new ComputerPlayer("player2");
-    this.gameState = "playing";
+    this.gameState = "setup";
 
-    this.initSinglePlayer();
+    this.initMenu();
+  }
+
+  initMenu() {
+    this.gameState = "setup";
+    const content = document.querySelector("#content");
+    content.innerHTML = "";
+
+    render.showMenu(content);
+    events.bindSinglePlayerClick(content, () => this.initSinglePlayer());
   }
 
   initSinglePlayer() {
+    this.gameState = "playing";
     const content = document.querySelector("#content");
+    content.innerHTML = "";
     this.player1.placeAllShipsRandomly();
     this.player2.placeAllShipsRandomly();
 
@@ -27,7 +38,7 @@ export class GameController {
 
   handleAttack(x, y) {
     if (this.gameState !== "playing") return;
-    
+
     this.player2.gameBoard.receiveAttack(x, y);
     render.showHitandMiss(x, y, this.player2.id);
 
