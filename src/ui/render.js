@@ -1,9 +1,30 @@
 const render = {
-  drawBoardContainer() {
+  drawContainer(className) {
     const container = document.createElement("div");
-    container.classList.add("board-container");
+    container.classList.add(className);
+
     return container;
   },
+
+  // MENU
+
+  drawButton(className, text) {
+    const button = document.createElement("button");
+    button.classList.add(className);
+    button.textContent = text;
+
+    return button;
+  },
+
+  showMenu(container) {
+    const menuContainer = this.drawContainer("menu");
+    const singlePlayerBtn = this.drawButton("single-player", "Single player");
+    menuContainer.appendChild(singlePlayerBtn);
+
+    container.appendChild(menuContainer);
+  },
+
+  // GAMEBOARDS
 
   drawTopCoordinates() {
     const coords = document.createElement("div");
@@ -63,7 +84,7 @@ const render = {
   },
 
   showBoards(playerObj, container) {
-    const mainBoardContainer = this.drawBoardContainer();
+    const mainBoardContainer = this.drawContainer("board-container");
     const leftCoords = this.drawLeftCoordinates();
     const topCoords = this.drawTopCoordinates();
     const gridContainer = this.drawGridContainer(playerObj.id);
