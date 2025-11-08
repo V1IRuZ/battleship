@@ -1,7 +1,10 @@
 const render = {
-  drawContainer(className) {
+  drawContainer(...classNames) {
     const container = document.createElement("div");
-    container.classList.add(className);
+
+    classNames.forEach((className) => {
+      container.classList.add(className);
+    });
 
     return container;
   },
@@ -57,13 +60,6 @@ const render = {
     return coords;
   },
 
-  drawGridContainer(playerId) {
-    const board = document.createElement("div");
-    board.classList.add("board-grid");
-    board.classList.add(`${playerId}`);
-    return board;
-  },
-
   renderShips(x, y, gameBoardObj, cellEl) {
     const position = gameBoardObj.getPosition(x, y);
     if (typeof position === "string") {
@@ -71,8 +67,9 @@ const render = {
     }
   },
 
-  renderGrid(boardElement, gameBoardObj) {
-    boardElement.innerHTML = "";
+  renderGrid(playerObj, gameState) {
+    const board = this.drawContainer("board-grid", playerObj.id);
+    board.innerHTML = "";
     for (let x = 0; x < 10; x++) {
       for (let y = 0; y < 10; y++) {
         const cell = document.createElement("div");
@@ -80,27 +77,34 @@ const render = {
         cell.dataset.x = x;
         cell.dataset.y = y;
 
-        if (gameBoardObj) {
-          this.renderShips(x, y, gameBoardObj, cell);
+        if (gameState === "playing") {
+          this.renderShips(x, y, playerObj.gameBoard, cell);
         }
 
-        boardElement.appendChild(cell);
+        board.appendChild(cell);
       }
     }
+
+    return board;
   },
 
-  showBoards(playerObj, container) {
+  buildBoard() {
     const mainBoardContainer = this.drawContainer("board-container");
     const leftCoords = this.drawLeftCoordinates();
     const topCoords = this.drawTopCoordinates();
-    const gridContainer = this.drawGridContainer(playerObj.id);
-
-    this.renderGrid(gridContainer, playerObj.gameBoard);
 
     mainBoardContainer.appendChild(topCoords);
     mainBoardContainer.appendChild(leftCoords);
-    mainBoardContainer.appendChild(gridContainer);
-    container.appendChild(mainBoardContainer);
+
+    return mainBoardContainer;
+  },
+
+  showPlayingBoard(playerObj, container) {
+    const boardContainer = this.buildBoard();
+    const grid = this.renderGrid(playerObj, "playing");
+
+    boardContainer.appendChild(grid)
+    container.appendChild(boardContainer);
   },
 
   showHitandMiss(x, y, playerId) {
