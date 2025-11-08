@@ -89,6 +89,15 @@ main {
   gap: 4em;
 }
 
+/* MENU */
+
+.single-player {
+  padding: 1em 2em;
+  font-size: 2rem;
+}
+
+/* GAMEBOARD */
+
 .board-container {
   display: grid;
   grid-template-columns: 50px 500px;
