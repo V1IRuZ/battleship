@@ -130,11 +130,12 @@ main {
   border: 2px solid var(--board-color);
 }
 
-.ship {
+.player1 > .ship {
   background-color: aquamarine;
 }
 
-.hit {
+.player1 > .hit,
+.player2 > .hit {
   background-color: red;
 }
 
