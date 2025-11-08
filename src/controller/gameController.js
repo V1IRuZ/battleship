@@ -8,27 +8,32 @@ export class GameController {
     this.player2 = new ComputerPlayer("player2");
     this.gameState = "setup";
 
+    this.html = {
+      content: document.querySelector("#content"),
+    };
+
     this.initMenu();
   }
 
   initMenu() {
     this.gameState = "setup";
-    const content = document.querySelector("#content");
-    content.innerHTML = "";
+    this.html.content.innerHTML = "";
 
-    render.showMenu(content);
-    events.bindSinglePlayerClick(content, () => this.initSinglePlayer());
+    render.showMenu(this.html.content);
+    events.bindSinglePlayerClick(this.html.content, () =>
+      this.initSinglePlayer(),
+    );
   }
 
   initSinglePlayer() {
     this.gameState = "playing";
-    const content = document.querySelector("#content");
-    content.innerHTML = "";
+    this.html.content.innerHTML = "";
+
     this.player1.placeAllShipsRandomly();
     this.player2.placeAllShipsRandomly();
 
-    render.showBoards(this.player1, content);
-    render.showBoards(this.player2, content);
+    render.showBoards(this.player1, this.html.content);
+    render.showBoards(this.player2, this.html.content);
 
     const board = document.querySelector(".player2");
     events.bindBoardClicks(board, (x, y) => {
