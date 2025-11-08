@@ -53,42 +53,42 @@ class ComputerPlayer extends Player {
     super(id);
     this.algorithm = "random";
     this.algorithmQueue = [];
-    this.enemyShipsLengths = this.getShipsLengths();
+    this.enemyShipsLengths = this.#getShipsLengths();
     this.enemyHits = 0;
     this.originalHit = null;
   }
 
-  getShipsLengths() {
+  #getShipsLengths() {
     return this.gameBoard.ships.map((ship) => ship.length);
   }
 
-  enemyHit() {
+  #enemyHit() {
     this.enemyHits++;
   }
 
-  setOriginalHit(coords) {
+  #setOriginalHit(coords) {
     this.originalHit = coords;
   }
 
-  resetQueue() {
+  #resetQueue() {
     this.algorithmQueue = [];
   }
 
-  resetOriginalHit() {
+  #resetOriginalHit() {
     this.originalHit = null;
   }
 
-  resetHits() {
+  #resetHits() {
     this.enemyHits = 0;
   }
 
-  validateEmptyQueue() {
+  #validateEmptyQueue() {
     if (this.algorithmQueue.length <= 0) {
-      this.removeShipLength();
+      this.#removeShipLength();
       this.switchAlgorithmState("random");
-      this.resetOriginalHit();
-      this.resetQueue();
-      this.resetHits();
+      this.#resetOriginalHit();
+      this.#resetQueue();
+      this.#resetHits();
     }
   }
 
@@ -127,10 +127,10 @@ class ComputerPlayer extends Player {
     const shotResult = realPlayer.gameBoard.receiveAttack(hitX, hitY);
 
     if (shotResult === "hit") {
-      this.setOriginalHit([hitX, hitY]);
-      this.enemyHit();
+      this.#setOriginalHit([hitX, hitY]);
+      this.#enemyHit();
       this.switchAlgorithmState("adjacent");
-      this.updateQueue([hitX, hitY], realPlayer);
+      this.#updateQueue([hitX, hitY], realPlayer);
     }
   }
 
@@ -145,7 +145,7 @@ class ComputerPlayer extends Player {
 
       if (!allreadyAttacked) {
         this.#validateRandomHit(x, y, realPlayer);
-        this.validateEmptyQueue();
+        this.#validateEmptyQueue();
 
         return [x, y];
       }
@@ -164,7 +164,7 @@ class ComputerPlayer extends Player {
     this.algorithmQueue = filtered;
   }
 
-  updateQueue(coords, realPlayer) {
+  #updateQueue(coords, realPlayer) {
     const [x, y] = coords;
 
     const validPositions = this.#getValidAdjacentPositions(x, y, realPlayer);
@@ -220,7 +220,7 @@ class ComputerPlayer extends Player {
     this.algorithmQueue.push(...onlyVerticals);
   }
 
-  validateAlgorithmRotation(targetX) {
+  #validateAlgorithmRotation(targetX) {
     const isHorizontal = targetX === this.originalHit[0];
     if (isHorizontal) {
       this.switchAlgorithmState("horizontal");
@@ -236,18 +236,18 @@ class ComputerPlayer extends Player {
     const shotResult = realPlayer.gameBoard.receiveAttack(x, y);
 
     if (shotResult === "hit") {
-      this.validateAlgorithmRotation(x);
+      this.#validateAlgorithmRotation(x);
 
-      this.enemyHit();
-      this.updateQueue([x, y], realPlayer);
+      this.#enemyHit();
+      this.#updateQueue([x, y], realPlayer);
     }
 
-    this.validateEmptyQueue();
+    this.#validateEmptyQueue();
 
     return [x, y];
   }
 
-  removeShipLength() {
+  #removeShipLength() {
     if (this.algorithm === "random") return;
 
     const enemyShipLengthIndex = this.enemyShipsLengths.findIndex(
@@ -261,11 +261,11 @@ class ComputerPlayer extends Player {
     const maxValue = Math.max(...this.enemyShipsLengths);
 
     if (this.enemyHits >= maxValue) {
-      this.removeShipLength();
+      this.#removeShipLength();
       this.switchAlgorithmState("random");
-      this.resetOriginalHit();
-      this.resetQueue();
-      this.resetHits();
+      this.#resetOriginalHit();
+      this.#resetQueue();
+      this.#resetHits();
       return true;
     }
 
@@ -277,16 +277,16 @@ class ComputerPlayer extends Player {
     const shotResult = realPlayer.gameBoard.receiveAttack(x, y);
 
     if (shotResult === "hit") {
-      this.enemyHit();
+      this.#enemyHit();
 
       if (this.#checkIfShipSunk()) {
         return [x, y];
       }
 
-      this.updateQueue([x, y], realPlayer);
+      this.#updateQueue([x, y], realPlayer);
     }
 
-    this.validateEmptyQueue();
+    this.#validateEmptyQueue();
 
     return [x, y];
   }
