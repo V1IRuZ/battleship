@@ -76,4 +76,15 @@ describe("Ship class", () => {
       expect(ship.placed).toBe(false);
     });
   });
+
+  describe("isPlaced method", () => {
+    test("returns boolean value true", () => {
+      ship.setPlaced();
+      expect(ship.isPlaced).toBe(true);
+    });
+
+    test("returns false", () => {
+      expect(ship.isPlaced).toBe(false);
+    });
+  });
 });
