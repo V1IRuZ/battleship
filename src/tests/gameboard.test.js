@@ -138,4 +138,13 @@ describe("Gameboard class", () => {
       expect(gameBoard.getPosition(1, 1)).toBe("hit");
     });
   });
+
+  describe("removeShip method", () => {
+    test("removes ship from the board", () => {
+      gameBoard.placeShip(4, [1, 1], "horizontal");
+      gameBoard.removeShip(4);
+      expect(gameBoard.getPosition(1, 1)).toBe(null);
+      expect(gameBoard.getPosition(1, 2)).toBe(null);
+    });
+  });
 });
