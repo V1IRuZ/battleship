@@ -15,6 +15,10 @@ export class Ship {
     return this.coords.push(coords);
   }
 
+  resetCoords() {
+    this.coords = [];
+  }
+
   get isSunk() {
     return this.length <= this.hits;
   }
