@@ -147,4 +147,25 @@ describe("Gameboard class", () => {
       expect(gameBoard.getPosition(1, 2)).toBe(null);
     });
   });
+
+  describe("allShipsPlaced method", () => {
+    test("returns false if every ship is not placed", () => {
+      expect(gameBoard.allShipsPlaced).toBe(false);
+    });
+
+    test("return true if every ship is placed", () => {
+      gameBoard.ships.forEach((ship) => {
+        ship.setPlaced();
+      });
+
+      expect(gameBoard.allShipsPlaced).toBe(true);
+    });
+
+    test("returns false if some of the ships are placed", () => {
+      gameBoard.ships[2].setPlaced();
+      gameBoard.ships[4].setPlaced();
+
+      expect(gameBoard.allShipsPlaced).toBe(false);
+    });
+  });
 });
