@@ -81,6 +81,18 @@ export class Gameboard {
     ship.setPlaced();
   }
 
+  removeShip(shipIndex) {
+    const ship = this.ships[shipIndex];
+
+    if (!ship.isPlaced) return;
+
+    ship.coords.forEach(([x, y]) => {
+      this.board[x][y] = null;
+    })
+
+    ship.setPlaced();
+    ship.resetCoords();
+  }
 
   receiveAttack(x, y) {
     const location = this.board[x][y];
