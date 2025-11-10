@@ -34,4 +34,20 @@ describe("Ship class", () => {
       expect(ship.isSunk).toBe(true);
     });
   });
+
+  describe("setCoords method", () => {
+    test("adds ship coordinates", () => {
+      ship.setCoords([2, 3]);
+      expect(ship.coords).toEqual([[2, 3]]);
+    });
+  });
+
+  test("adds multiple coordinates", () => {
+    ship.setCoords([3, 5]);
+    ship.setCoords([3, 6]);
+    expect(ship.coords).toEqual([
+      [3, 5],
+      [3, 6],
+    ]);
+  });
 });
