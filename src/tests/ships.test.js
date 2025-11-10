@@ -59,4 +59,21 @@ describe("Ship class", () => {
       expect(ship.coords).toEqual([]);
     });
   });
+
+  describe("setPlaced method", () => {
+    test("property returns false by defaul", () => {
+      expect(ship.placed).toBe(false);
+    });
+
+    test("switches to true", () => {
+      ship.setPlaced();
+      expect(ship.placed).toBe(true);
+    });
+
+    test("switches back to false", () => {
+      ship.setPlaced();
+      ship.setPlaced();
+      expect(ship.placed).toBe(false);
+    });
+  });
 });
