@@ -19,6 +19,10 @@ export class Ship {
     this.coords = [];
   }
 
+  setPlaced() {
+    this.placed = this.placed ? false : true;
+  }
+
   get isSunk() {
     return this.length <= this.hits;
   }
