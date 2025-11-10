@@ -50,4 +50,13 @@ describe("Ship class", () => {
       [3, 6],
     ]);
   });
+
+  describe("resetCoords method", () => {
+    test("resets coordinates", () => {
+      ship.setCoords([3, 5]);
+      ship.setCoords([3, 6]);
+      ship.resetCoords();
+      expect(ship.coords).toEqual([]);
+    });
+  });
 });
