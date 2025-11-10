@@ -73,8 +73,14 @@ export class Gameboard {
     this.#validateShipOutOfBounds(ship, startPos, rotation);
     const positions = this.#validateShipPlacement(ship, startPos, rotation);
 
-    positions.forEach(([x, y]) => (this.board[x][y] = ship.name));
+    positions.forEach(([x, y]) => {
+      this.board[x][y] = ship.name
+      ship.setCoords([x, y]);
+    });
+
+    ship.setPlaced();
   }
+
 
   receiveAttack(x, y) {
     const location = this.board[x][y];
