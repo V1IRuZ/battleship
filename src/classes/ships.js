@@ -23,6 +23,10 @@ export class Ship {
     this.placed = this.placed ? false : true;
   }
 
+  get isPlaced() {
+    return this.placed;
+  }
+
   get isSunk() {
     return this.length <= this.hits;
   }
