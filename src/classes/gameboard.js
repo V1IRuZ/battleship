@@ -74,7 +74,7 @@ export class Gameboard {
     const positions = this.#validateShipPlacement(ship, startPos, rotation);
 
     positions.forEach(([x, y]) => {
-      this.board[x][y] = ship.name
+      this.board[x][y] = ship.name;
       ship.setCoords([x, y]);
     });
 
@@ -88,7 +88,7 @@ export class Gameboard {
 
     ship.coords.forEach(([x, y]) => {
       this.board[x][y] = null;
-    })
+    });
 
     ship.setPlaced();
     ship.resetCoords();
@@ -111,6 +111,10 @@ export class Gameboard {
     this.ships[index].hit();
     this.board[x][y] = "hit";
     return "hit";
+  }
+
+  get allShipsPlaced() {
+    return this.ships.every((ship) => ship.isPlaced);
   }
 
   get allShipsSunk() {
