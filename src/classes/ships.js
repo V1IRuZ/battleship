@@ -5,6 +5,7 @@ export class Ship {
     this.name = name;
     this.coords = [];
     this.placed = false;
+    this.rotation;
   }
 
   hit() {
@@ -21,6 +22,14 @@ export class Ship {
 
   setPlaced() {
     this.placed = this.placed ? false : true;
+  }
+
+  setRotation(rotation) {
+    this.rotation = rotation;
+  }
+
+  getRotation() {
+    return this.rotation;
   }
 
   get isPlaced() {
