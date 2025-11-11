@@ -178,4 +178,13 @@ describe("Gameboard class", () => {
       expect(gameBoard.getShipIndex("carrier")).toBe(0);
     });
   });
+
+  describe("getShip method", () => {
+    test("returns ship object", () => {
+      const index = gameBoard.getShipIndex("carrier");
+      const ship = gameBoard.getShip(index);
+
+      expect(ship.name).toBe("carrier");
+    });
+  });
 });
