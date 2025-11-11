@@ -168,4 +168,14 @@ describe("Gameboard class", () => {
       expect(gameBoard.allShipsPlaced).toBe(false);
     });
   });
+
+  describe("getShipIndex method", () => {
+    test("returns ship index", () => {
+      expect(gameBoard.getShipIndex("destroyer")).toBe(4);
+    });
+
+    test("returns another ship index", () => {
+      expect(gameBoard.getShipIndex("carrier")).toBe(0);
+    });
+  });
 });
