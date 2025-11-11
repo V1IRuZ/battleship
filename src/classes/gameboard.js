@@ -71,6 +71,10 @@ export class Gameboard {
     return this.ships.findIndex((ship) => ship.name === shipName);
   }
 
+  getShip(index) {
+    return this.ships[index];
+  }
+
   placeShip(shipIndex, startPos, rotation) {
     const ship = this.ships[shipIndex];
 
@@ -83,6 +87,7 @@ export class Gameboard {
     });
 
     ship.setPlaced();
+    ship.setRotation(rotation);
   }
 
   removeShip(shipIndex) {
