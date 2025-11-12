@@ -32,6 +32,14 @@ export class GameController {
     render.showPlayingBoard(player, this.html.content);
 
     this.handleDragEvents(player, boardSelector);
+    this.handleRotationClicks(player, boardSelector);
+  }
+
+  handleRotationClicks(player, boardSelector) {
+    const board = document.querySelector(boardSelector);
+    events.bindRotationClicks(board, (shipIndex) => {
+      this.handleRotation(shipIndex, player);
+    });
   }
 
   handleDragStart(x, y, shipIndex, player) {
@@ -63,6 +71,27 @@ export class GameController {
     } catch (err) {
       console.error(err);
       player.gameBoard.placeShip(shipIndex, originalPosition, rotation);
+
+      render.updateShip(ship, shipIndex);
+    }
+  }
+
+  handleRotation(shipIndex, player) {
+    const ship = player.gameBoard.getShip(shipIndex);
+    const oldRotation = ship.getRotation();
+    const newRotation = ship.getRotation() === "horizontal" ? "vertical" : "horizontal";
+    const [x, y] = ship.getFirstPosition();
+
+    try {
+      render.removeShip(ship);
+
+      player.gameBoard.removeShip(shipIndex);
+      player.gameBoard.placeShip(shipIndex, [x, y], newRotation);
+
+      render.updateShip(ship, shipIndex);
+    } catch (err) {
+      console.error(err);
+      player.gameBoard.placeShip(shipIndex, [x, y], oldRotation);
 
       render.updateShip(ship, shipIndex);
     }
