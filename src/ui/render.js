@@ -27,7 +27,7 @@ const render = {
     container.appendChild(menuContainer);
   },
 
-  // GAMEBOARDS
+  // GAMEBOARD
 
   drawTopCoordinates() {
     const coords = document.createElement("div");
@@ -60,14 +60,7 @@ const render = {
     return coords;
   },
 
-  renderShips(x, y, gameBoardObj, cellEl) {
-    const position = gameBoardObj.getPosition(x, y);
-    if (typeof position === "string") {
-      cellEl.classList.add("ship");
-    }
-  },
-
-  renderGrid(playerObj, gameState) {
+  renderGrid(playerObj) {
     const board = this.drawContainer("board-grid", playerObj.id);
     board.innerHTML = "";
     for (let x = 0; x < 10; x++) {
@@ -77,8 +70,14 @@ const render = {
         cell.dataset.x = x;
         cell.dataset.y = y;
 
-        if (gameState === "playing") {
-          this.renderShips(x, y, playerObj.gameBoard, cell);
+        const position = playerObj.gameBoard.getPosition(x, y);
+        if (typeof position === "string") {
+          const index = playerObj.gameBoard.getShipIndex(position);
+          cell.classList.add("ship");
+          cell.dataset.shipIndex = index;
+
+          const ship = playerObj.gameBoard.getShip(index);
+          cell.dataset.rotation = ship.getRotation();
         }
 
         board.appendChild(cell);
@@ -88,8 +87,8 @@ const render = {
     return board;
   },
 
-  buildBoard() {
-    const mainBoardContainer = this.drawContainer("board-container");
+  buildBoard(containerClass) {
+    const mainBoardContainer = this.drawContainer(containerClass);
     const leftCoords = this.drawLeftCoordinates();
     const topCoords = this.drawTopCoordinates();
 
@@ -100,10 +99,10 @@ const render = {
   },
 
   showPlayingBoard(playerObj, container) {
-    const boardContainer = this.buildBoard();
-    const grid = this.renderGrid(playerObj, "playing");
+    const boardContainer = this.buildBoard("board-container");
+    const grid = this.renderGrid(playerObj);
 
-    boardContainer.appendChild(grid)
+    boardContainer.appendChild(grid);
     container.appendChild(boardContainer);
   },
 
