@@ -77,4 +77,13 @@ export const events = {
       draggedShip = null;
     });
   },
+
+  bindRotationClicks(board, callback) {
+    board.addEventListener("dblclick", (e) => {
+      if (!e.target.classList.contains("ship")) return;
+      const shipIndex = Number(e.target.dataset.shipIndex);
+      console.log(shipIndex);
+      callback(shipIndex);
+    });
+  },
 };
