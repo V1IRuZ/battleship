@@ -21,8 +21,68 @@ export class GameController {
 
     render.showMenu(this.html.content);
     events.bindSinglePlayerClick(this.html.content, () =>
-      this.initSinglePlayer(),
+      // this.initSinglePlayer(),
+      this.initSinglePlayerSetup(this.player1, ".player1"),
     );
+  }
+
+  initSinglePlayerSetup(player, boardSelector) {
+    this.html.content.innerHTML = "";
+    this.player1.placeAllShipsRandomly();
+    render.showPlayingBoard(player, this.html.content);
+
+    this.handleDragEvents(player, boardSelector);
+  }
+
+  handleDragStart(x, y, shipIndex, player) {
+    const ship = player.gameBoard.getShip(shipIndex);
+    const length = ship.length;
+    const rotation = ship.rotation;
+    render.showGhostShip(x, y, rotation, length);
+  }
+
+  handleDragEnter(x, y, shipIndex, player) {
+    const ship = player.gameBoard.getShip(shipIndex);
+    const length = ship.length;
+    const rotation = ship.rotation;
+    render.showGhostShip(x, y, rotation, length);
+  }
+
+  handleDragDrop(x, y, shipIndex, player) {
+    const ship = player.gameBoard.getShip(shipIndex);
+    const rotation = ship.rotation;
+    const originalPosition = ship.getFirstPosition();
+
+    try {
+      render.removeShip(ship);
+
+      player.gameBoard.removeShip(shipIndex);
+      player.gameBoard.placeShip(shipIndex, [x, y], rotation);
+
+      render.updateShip(ship, shipIndex);
+    } catch (err) {
+      console.error(err);
+      player.gameBoard.placeShip(shipIndex, originalPosition, rotation);
+
+      render.updateShip(ship, shipIndex);
+    }
+  }
+
+  handleDragEvents(player, boardSelector) {
+    const board = document.querySelector(boardSelector);
+    events.bindDragStart(board, (x, y, shipIndex) => {
+      this.handleDragStart(x, y, shipIndex, player);
+    });
+
+    events.bindDragOver(board);
+
+    events.bindDragEnter(board, (x, y, shipIndex) => {
+      this.handleDragEnter(x, y, shipIndex, player);
+    });
+
+    events.bindDragDrop(board, (x, y, shipIndex) => {
+      this.handleDragDrop(x, y, shipIndex, player);
+    });
   }
 
   initSinglePlayer() {
