@@ -11,11 +11,30 @@ export const events = {
       callback(x, y);
     });
   },
+
   bindSinglePlayerClick(board, callback) {
     board.addEventListener("click", (e) => {
       if (!e.target.classList.contains("single-player")) return;
-      
+
       callback();
+    });
+  },
+
+  bindDragStart(board, callback) {
+    board.addEventListener("dragstart", (e) => {
+      if (!e.target.classList.contains("cell")) return;
+      const x = Number(e.target.dataset.x);
+      const y = Number(e.target.dataset.y);
+      const shipIndex = Number(e.target.dataset.shipIndex);
+      const rotation = Number(e.target.dataset.rotation);
+
+      callback(x, y, shipIndex, rotation);
+    });
+  },
+
+  bindDragOver(board) {
+    board.addEventListener("dragover", (e) => {
+      e.preventDefault();
     });
   },
 };
