@@ -75,9 +75,6 @@ const render = {
           const index = playerObj.gameBoard.getShipIndex(position);
           cell.classList.add("ship");
           cell.dataset.shipIndex = index;
-
-          const ship = playerObj.gameBoard.getShip(index);
-          cell.dataset.rotation = ship.getRotation();
         }
 
         board.appendChild(cell);
@@ -114,6 +111,54 @@ const render = {
     cell.classList.contains("ship")
       ? cell.classList.add("hit")
       : cell.classList.add("miss");
+  },
+
+  removeShip(shipObj) {
+    shipObj.coords.forEach(([x, y]) => {
+      const selector = `.cell[data-x="${x}"][data-y="${y}"]`;
+      const shipCell = document.querySelector(selector);
+      shipCell.classList.remove("ship");
+
+      delete shipCell.dataset.shipIndex;
+    });
+  },
+
+  updateShip(shipObj, shipIndex) {
+    shipObj.coords.forEach(([x, y]) => {
+      const selector = `.cell[data-x="${x}"][data-y="${y}"]`;
+      const shipCell = document.querySelector(selector);
+      shipCell.classList.add("ship");
+      shipCell.dataset.shipIndex = shipIndex;
+    });
+  },
+
+  showGhostShip(x, y, shipRotation, shipLength) {
+    document
+      .querySelectorAll(".ghost")
+      .forEach((c) => c.classList.remove("ghost"));
+
+    for (let i = 0; i < shipLength; i++) {
+      let selector;
+      if (shipRotation === "vertical") {
+        const currentX = x + i;
+        const currentY = y;
+        if (currentX >= 10) break;
+        selector = `.cell[data-x="${currentX}"][data-y="${currentY}"]`;
+      } else if (shipRotation === "horizontal") {
+        const currentX = x;
+        const currentY = y + i;
+        if (currentY >= 10) break;
+        selector = `.cell[data-x="${currentX}"][data-y="${currentY}"]`;
+      } else {
+        const currentX = x + i;
+        const currentY = y;
+        if (currentX >= 10) break;
+        selector = `.cell[data-x="${currentX}"][data-y="${currentY}"]`;
+      }
+
+      const shipCell = document.querySelector(selector);
+      if (shipCell) shipCell.classList.add("ghost");
+    }
   },
 };
 
