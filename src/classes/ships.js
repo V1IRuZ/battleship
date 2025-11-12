@@ -20,6 +20,10 @@ export class Ship {
     this.coords = [];
   }
 
+  getFirstPosition() {
+    return this.coords[0];
+  }
+
   setPlaced() {
     this.placed = this.placed ? false : true;
   }
