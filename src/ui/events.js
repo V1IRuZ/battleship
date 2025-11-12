@@ -1,3 +1,5 @@
+let draggedShip = null;
+
 export const events = {
   bindBoardClicks(board, callback) {
     board.addEventListener("click", (e) => {
@@ -22,19 +24,57 @@ export const events = {
 
   bindDragStart(board, callback) {
     board.addEventListener("dragstart", (e) => {
-      if (!e.target.classList.contains("cell")) return;
-      const x = Number(e.target.dataset.x);
-      const y = Number(e.target.dataset.y);
-      const shipIndex = Number(e.target.dataset.shipIndex);
-      const rotation = Number(e.target.dataset.rotation);
-
-      callback(x, y, shipIndex, rotation);
+      if (e.target.classList.contains("ship")) {
+        draggedShip = e.target;
+        const x = Number(e.target.dataset.x);
+        const y = Number(e.target.dataset.y);
+        const shipIndex = Number(e.target.dataset.shipIndex);
+        callback(x, y, shipIndex);
+      } else {
+        e.preventDefault();
+      }
     });
   },
 
   bindDragOver(board) {
     board.addEventListener("dragover", (e) => {
       e.preventDefault();
+    });
+  },
+
+  bindDragEnter(board, callback) {
+    board.addEventListener("dragenter", (e) => {
+      if (!draggedShip) return;
+
+      if (!e.target.classList.contains("cell")) return;
+
+      const x = Number(e.target.dataset.x);
+      const y = Number(e.target.dataset.y);
+      const shipIndex = draggedShip.dataset.shipIndex;
+
+      callback(x, y, shipIndex);
+    });
+  },
+
+  bindDragDrop(board, callback) {
+    board.addEventListener("dragend", () => {
+      document
+        .querySelectorAll(".ghost")
+        .forEach((c) => c.classList.remove("ghost"));
+    });
+
+    board.addEventListener("drop", (e) => {
+      e.preventDefault();
+      if (!draggedShip) return;
+
+      if (!e.target.classList.contains("cell")) return;
+
+      const x = Number(e.target.dataset.x);
+      const y = Number(e.target.dataset.y);
+      const shipIndex = draggedShip.dataset.shipIndex;
+
+      callback(x, y, shipIndex);
+      draggedShip = null;
     });
   },
 };
