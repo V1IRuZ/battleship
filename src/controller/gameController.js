@@ -1,61 +1,62 @@
 import { ComputerPlayer, Player } from "../classes/player.js";
-import { render } from "../ui/render.js";
-import { events } from "../ui/events.js";
+import { createRender} from "../ui/render.js";
+import { createEvents} from "../ui/events.js";
 
 export class GameController {
   constructor() {
-    this.player1 = new Player("player1");
-    this.player2 = new ComputerPlayer("player2");
     this.gameState = "setup";
-
+    this.events = createEvents();
+    this.render = createRender();
+    
     this.html = {
       content: document.querySelector("#content"),
       buttonMenu: document.querySelector("#button-menu"),
     };
-
+    
     this.initMenu();
   }
-
+  
   resetContainers() {
     this.html.content.innerHTML = "";
     this.html.buttonMenu.innerHTML = "";
   }
-
+  
   //INITIALIZE METHODS
-
+  
   initMenu() {
+    this.player1 = new Player("player1");
+    this.player2 = new ComputerPlayer("player2");
+    
     this.gameState = "setup";
     this.resetContainers();
 
-    render.showMenu(this.html.content);
-    events.bindSinglePlayerClick(this.html.content, () =>
-      // this.initSinglePlayer(),
+    this.render.showMenu(this.html.content);
+    this.events.bindSinglePlayerClick(this.html.content, () =>
       this.initSinglePlayerSetup(this.player1, ".player1"),
     );
   }
 
   initSinglePlayerSetup(player, boardSelector) {
-    this.html.content.innerHTML = "";
     this.player1.placeAllShipsRandomly();
-    render.showPlayingBoard(player, this.html.content);
+    this.player2.placeAllShipsRandomly(); 
+    
+    this.resetContainers();
+    this.render.showPlayingBoard(player, this.html.content);
 
     this.handleDragEvents(player, boardSelector);
     this.handleRotationClicks(player, boardSelector);
-    this.handleSetupBtns(player);
+    this.handleSetupBtns();
   }
 
   initSinglePlayer() {
     this.gameState = "playing";
     this.resetContainers();
 
-    // this.player1.placeAllShipsRandomly();
-    this.player2.placeAllShipsRandomly();
-
-    render.showPlayingBoard(this.player1, this.html.content);
-    render.showPlayingBoard(this.player2, this.html.content);
+    this.render.showPlayingBoard(this.player1, this.html.content);
+    this.render.showPlayingBoard(this.player2, this.html.content);
 
     const board = document.querySelector(".player2");
-    events.bindBoardClicks(board, (x, y) => {
+    this.events.bindBoardClicks(board, (x, y) => {
       this.handleAttack(x, y);
     });
   }
@@ -64,17 +65,17 @@ export class GameController {
 
   handleDragEvents(player, boardSelector) {
     const board = document.querySelector(boardSelector);
-    events.bindDragStart(board, (x, y, shipIndex) => {
+    this.events.bindDragStart(board, (x, y, shipIndex) => {
       this.handleDragStart(x, y, shipIndex, player);
     });
 
-    events.bindDragOver(board);
+    this.events.bindDragOver(board);
 
-    events.bindDragEnter(board, (x, y, shipIndex) => {
+    this.events.bindDragEnter(board, (x, y, shipIndex) => {
       this.handleDragEnter(x, y, shipIndex, player);
     });
 
-    events.bindDragDrop(board, (x, y, shipIndex) => {
+    this.events.bindDragDrop(board, (x, y, shipIndex) => {
       this.handleDragDrop(x, y, shipIndex, player);
     });
   }
@@ -85,7 +86,7 @@ export class GameController {
     const ship = player.gameBoard.getShip(shipIndex);
     const length = ship.length;
     const rotation = ship.rotation;
-    render.showGhostShip(x, y, rotation, length);
+    this.render.showGhostShip(x, y, rotation, length);
   }
 
   handleDragEnter(x, y, shipIndex, player) {
@@ -94,7 +95,7 @@ export class GameController {
     const ship = player.gameBoard.getShip(shipIndex);
     const length = ship.length;
     const rotation = ship.rotation;
-    render.showGhostShip(x, y, rotation, length);
+    this.render.showGhostShip(x, y, rotation, length);
   }
 
   handleDragDrop(x, y, shipIndex, player) {
@@ -105,17 +106,17 @@ export class GameController {
     const originalPosition = ship.getFirstPosition();
 
     try {
-      render.removeShip(ship);
+      this.render.removeShip(ship);
 
       player.gameBoard.removeShip(shipIndex);
       player.gameBoard.placeShip(shipIndex, [x, y], rotation);
 
-      render.updateShip(ship, shipIndex);
+      this.render.updateShip(ship, shipIndex);
     } catch (err) {
       console.error(err);
       player.gameBoard.placeShip(shipIndex, originalPosition, rotation);
 
-      render.updateShip(ship, shipIndex);
+      this.render.updateShip(ship, shipIndex);
     }
   }
 
@@ -123,7 +124,7 @@ export class GameController {
 
   handleRotationClicks(player, boardSelector) {
     const board = document.querySelector(boardSelector);
-    events.bindRotationClicks(board, (shipIndex) => {
+    this.events.bindRotationClicks(board, (shipIndex) => {
       this.handleRotation(shipIndex, player);
     });
   }
@@ -138,27 +139,31 @@ export class GameController {
     const [x, y] = ship.getFirstPosition();
 
     try {
-      render.removeShip(ship);
+      this.render.removeShip(ship);
 
       player.gameBoard.removeShip(shipIndex);
       player.gameBoard.placeShip(shipIndex, [x, y], newRotation);
 
-      render.updateShip(ship, shipIndex);
+      this.render.updateShip(ship, shipIndex);
     } catch (err) {
       console.error(err);
       player.gameBoard.placeShip(shipIndex, [x, y], oldRotation);
 
-      render.updateShip(ship, shipIndex);
+      this.render.updateShip(ship, shipIndex);
     }
   }
 
   // SETUP BUTTONS
 
-  handleSetupBtns(player) {
-    render.showSetupButtons(this.html.buttonMenu);
-    events.bindStartGameClick(this.html.buttonMenu, () => {
+  handleSetupBtns() {
+    this.render.showSetupButtons(this.html.buttonMenu);
+    this.events.bindStartGameClick(this.html.buttonMenu, () => {
       this.initSinglePlayer();
-    })
+    });
+
+    this.events.bindBackMenuClick(this.html.buttonMenu, () => {
+      this.initMenu();
+    });
   }
 
   // PLAYER VS COMPUTER
@@ -167,7 +172,7 @@ export class GameController {
     if (this.gameState !== "playing") return;
 
     this.player2.gameBoard.receiveAttack(x, y);
-    render.showHitandMiss(x, y, this.player2.id);
+    this.render.showHitandMiss(x, y, this.player2.id);
 
     if (this.player2.gameBoard.allShipsSunk) {
       this.endGame(this.player1);
@@ -180,7 +185,7 @@ export class GameController {
     if (this.gameState !== "playing") return;
 
     const [targetX, targetY] = this.player2.attack(this.player1);
-    render.showHitandMiss(targetX, targetY, this.player1.id);
+    this.render.showHitandMiss(targetX, targetY, this.player1.id);
 
     if (this.player1.gameBoard.allShipsSunk) {
       this.endGame(this.player2);
