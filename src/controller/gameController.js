@@ -10,16 +10,22 @@ export class GameController {
 
     this.html = {
       content: document.querySelector("#content"),
+      buttonMenu: document.querySelector("#button-menu"),
     };
 
     this.initMenu();
+  }
+
+  resetContainers() {
+    this.html.content.innerHTML = "";
+    this.html.buttonMenu.innerHTML = "";
   }
 
   //INITIALIZE METHODS
 
   initMenu() {
     this.gameState = "setup";
-    this.html.content.innerHTML = "";
+    this.resetContainers();
 
     render.showMenu(this.html.content);
     events.bindSinglePlayerClick(this.html.content, () =>
@@ -35,13 +41,14 @@ export class GameController {
 
     this.handleDragEvents(player, boardSelector);
     this.handleRotationClicks(player, boardSelector);
+    this.handleSetupBtns(player);
   }
 
   initSinglePlayer() {
     this.gameState = "playing";
-    this.html.content.innerHTML = "";
+    this.resetContainers();
 
-    this.player1.placeAllShipsRandomly();
+    // this.player1.placeAllShipsRandomly();
     this.player2.placeAllShipsRandomly();
 
     render.showPlayingBoard(this.player1, this.html.content);
@@ -143,6 +150,15 @@ export class GameController {
 
       render.updateShip(ship, shipIndex);
     }
+  }
+
+  // SETUP BUTTONS
+
+  handleSetupBtns(player) {
+    render.showSetupButtons(this.html.buttonMenu);
+    events.bindStartGameClick(this.html.buttonMenu, () => {
+      this.initSinglePlayer();
+    })
   }
 
   // PLAYER VS COMPUTER
