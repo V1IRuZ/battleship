@@ -15,6 +15,8 @@ export class GameController {
     this.initMenu();
   }
 
+  //INITIALIZE METHODS
+
   initMenu() {
     this.gameState = "setup";
     this.html.content.innerHTML = "";
@@ -35,16 +37,44 @@ export class GameController {
     this.handleRotationClicks(player, boardSelector);
   }
 
-  handleRotationClicks(player, boardSelector) {
+  initSinglePlayer() {
+    this.gameState = "playing";
+    this.html.content.innerHTML = "";
+
+    this.player1.placeAllShipsRandomly();
+    this.player2.placeAllShipsRandomly();
+
+    render.showPlayingBoard(this.player1, this.html.content);
+    render.showPlayingBoard(this.player2, this.html.content);
+
+    const board = document.querySelector(".player2");
+    events.bindBoardClicks(board, (x, y) => {
+      this.handleAttack(x, y);
+    });
+  }
+
+  // DRAG EVENT HANDLERS
+
+  handleDragEvents(player, boardSelector) {
     const board = document.querySelector(boardSelector);
-    events.bindRotationClicks(board, (shipIndex) => {
-      this.handleRotation(shipIndex, player);
+    events.bindDragStart(board, (x, y, shipIndex) => {
+      this.handleDragStart(x, y, shipIndex, player);
+    });
+
+    events.bindDragOver(board);
+
+    events.bindDragEnter(board, (x, y, shipIndex) => {
+      this.handleDragEnter(x, y, shipIndex, player);
+    });
+
+    events.bindDragDrop(board, (x, y, shipIndex) => {
+      this.handleDragDrop(x, y, shipIndex, player);
     });
   }
 
   handleDragStart(x, y, shipIndex, player) {
     if (this.gameState !== "setup") return;
-    
+
     const ship = player.gameBoard.getShip(shipIndex);
     const length = ship.length;
     const rotation = ship.rotation;
@@ -82,12 +112,22 @@ export class GameController {
     }
   }
 
+  // ROTATION SWITCHES
+
+  handleRotationClicks(player, boardSelector) {
+    const board = document.querySelector(boardSelector);
+    events.bindRotationClicks(board, (shipIndex) => {
+      this.handleRotation(shipIndex, player);
+    });
+  }
+
   handleRotation(shipIndex, player) {
     if (this.gameState !== "setup") return;
 
     const ship = player.gameBoard.getShip(shipIndex);
     const oldRotation = ship.getRotation();
-    const newRotation = ship.getRotation() === "horizontal" ? "vertical" : "horizontal";
+    const newRotation =
+      ship.getRotation() === "horizontal" ? "vertical" : "horizontal";
     const [x, y] = ship.getFirstPosition();
 
     try {
@@ -105,38 +145,7 @@ export class GameController {
     }
   }
 
-  handleDragEvents(player, boardSelector) {
-    const board = document.querySelector(boardSelector);
-    events.bindDragStart(board, (x, y, shipIndex) => {
-      this.handleDragStart(x, y, shipIndex, player);
-    });
-
-    events.bindDragOver(board);
-
-    events.bindDragEnter(board, (x, y, shipIndex) => {
-      this.handleDragEnter(x, y, shipIndex, player);
-    });
-
-    events.bindDragDrop(board, (x, y, shipIndex) => {
-      this.handleDragDrop(x, y, shipIndex, player);
-    });
-  }
-
-  initSinglePlayer() {
-    this.gameState = "playing";
-    this.html.content.innerHTML = "";
-
-    this.player1.placeAllShipsRandomly();
-    this.player2.placeAllShipsRandomly();
-
-    render.showPlayingBoard(this.player1, this.html.content);
-    render.showPlayingBoard(this.player2, this.html.content);
-
-    const board = document.querySelector(".player2");
-    events.bindBoardClicks(board, (x, y) => {
-      this.handleAttack(x, y);
-    });
-  }
+  // PLAYER VS COMPUTER
 
   handleAttack(x, y) {
     if (this.gameState !== "playing") return;
@@ -161,6 +170,8 @@ export class GameController {
       this.endGame(this.player2);
     }
   }
+
+  // GAME OVER
 
   endGame(winner) {
     this.gameState = "gameover";
