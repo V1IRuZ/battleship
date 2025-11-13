@@ -27,6 +27,19 @@ const render = {
     container.appendChild(menuContainer);
   },
 
+  showSetupButtons(container) {
+    const buttonsContainer = this.drawContainer("options");
+    const backBtn = this.drawButton("back-btn", "Menu");
+    const randomizeBtn = this.drawButton("randomize", "Randomise")
+    const startBtn = this.drawButton("start-game", "Start");
+
+    buttonsContainer.appendChild(backBtn);
+    buttonsContainer.appendChild(randomizeBtn);
+    buttonsContainer.appendChild(startBtn);
+
+    container.appendChild(buttonsContainer);
+  },
+
   // GAMEBOARD
 
   drawTopCoordinates() {
@@ -102,6 +115,8 @@ const render = {
     boardContainer.appendChild(grid);
     container.appendChild(boardContainer);
   },
+
+  //ACTIONS
 
   showHitandMiss(x, y, playerId) {
     const cell = document.querySelector(
