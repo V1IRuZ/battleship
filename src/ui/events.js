@@ -14,8 +14,8 @@ export const events = {
     });
   },
 
-  bindSinglePlayerClick(board, callback) {
-    board.addEventListener("click", (e) => {
+  bindSinglePlayerClick(container, callback) {
+    container.addEventListener("click", (e) => {
       if (!e.target.classList.contains("single-player")) return;
 
       callback();
@@ -84,6 +84,14 @@ export const events = {
       const shipIndex = Number(e.target.dataset.shipIndex);
       console.log(shipIndex);
       callback(shipIndex);
+    });
+  },
+
+  bindStartGameClick(container, callback) {
+    container.addEventListener("click", (e) => {
+      if (!e.target.classList.contains("start-game")) return;
+
+      callback();
     });
   },
 };
