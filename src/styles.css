@@ -70,6 +70,10 @@ h6 {
 
 :root {
   --board-color: rgba(82, 82, 82, 0.562);
+  --board-size: 500px;
+  --border-size: 2px;
+  --cell-size: calc(var(--board-size) / 10);
+  --setup-board-width: (var(--board-size) / 2);
 }
 
 #page {
@@ -94,6 +98,13 @@ main {
 .single-player {
   padding: 1em 2em;
   font-size: 2rem;
+}
+
+/* SETUP */
+
+.ghost,
+.cell.ship.ghost {
+  background-color: rgb(144, 238, 144);
 }
 
 /* GAMEBOARD */
@@ -131,8 +142,8 @@ main {
   grid-template-rows: repeat(10, 1fr);
   grid-template-columns: repeat(10, 1fr);
   border: 2px solid var(--board-color);
-  width: 500px;
-  height: 500px;
+  width: var(--board-size);
+  height: var(--board-size);
 }
 
 .cell {
@@ -140,6 +151,7 @@ main {
 }
 
 .player1 > .ship {
+  cursor: grab;
   background-color: aquamarine;
 }
 
