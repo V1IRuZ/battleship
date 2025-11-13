@@ -43,6 +43,8 @@ export class GameController {
   }
 
   handleDragStart(x, y, shipIndex, player) {
+    if (this.gameState !== "setup") return;
+    
     const ship = player.gameBoard.getShip(shipIndex);
     const length = ship.length;
     const rotation = ship.rotation;
@@ -50,6 +52,8 @@ export class GameController {
   }
 
   handleDragEnter(x, y, shipIndex, player) {
+    if (this.gameState !== "setup") return;
+
     const ship = player.gameBoard.getShip(shipIndex);
     const length = ship.length;
     const rotation = ship.rotation;
@@ -57,6 +61,8 @@ export class GameController {
   }
 
   handleDragDrop(x, y, shipIndex, player) {
+    if (this.gameState !== "setup") return;
+
     const ship = player.gameBoard.getShip(shipIndex);
     const rotation = ship.rotation;
     const originalPosition = ship.getFirstPosition();
@@ -77,6 +83,8 @@ export class GameController {
   }
 
   handleRotation(shipIndex, player) {
+    if (this.gameState !== "setup") return;
+
     const ship = player.gameBoard.getShip(shipIndex);
     const oldRotation = ship.getRotation();
     const newRotation = ship.getRotation() === "horizontal" ? "vertical" : "horizontal";
