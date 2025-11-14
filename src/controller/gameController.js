@@ -54,10 +54,15 @@ export class GameController {
 
     this.render.showPlayingBoard(this.player1, this.html.content);
     this.render.showPlayingBoard(this.player2, this.html.content);
+    this.render.showBackButton(this.html.buttonMenu);
 
     const board = document.querySelector(".player2");
     this.events.bindBoardClicks(board, (x, y) => {
       this.handleAttack(x, y);
+    });
+
+    this.events.bindBackMenuClick(this.html.buttonMenu, () => {
+      this.initMenu();
     });
   }
 
@@ -158,7 +163,7 @@ export class GameController {
   handleRandomise(playerObj) {
     this.player1.gameBoard.removeAllShipsFromBoard();
     this.player1.placeAllShipsRandomly();
-    
+
     this.render.removeAllShips(playerObj.id);
     this.render.updateAllShips(playerObj);
   }
