@@ -104,6 +104,10 @@ main {
 
 /* SETUP */
 
+.player1 > .ship.dragging {
+  background-color: blueviolet;
+}
+
 .ghost,
 .cell.ship.ghost {
   background-color: rgb(144, 238, 144);
