@@ -106,5 +106,13 @@ export function createEvents() {
         callback();
       });
     },
+
+    bindRandomiseClick(container, callback) {
+      container.addEventListener("click", (e) => {
+        if (!e.target.classList.contains("randomise")) return;
+
+        callback();
+      });
+    },
   };
 }
