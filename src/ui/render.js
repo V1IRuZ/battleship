@@ -125,7 +125,7 @@ export function createRender() {
     },
 
     showPlayingBoard(playerObj, container) {
-      const boardContainer = this.buildBoard("board-container", playerObj.id);
+      const boardContainer = this.buildBoard("board-container", playerObj.name);
       const gridContainer = this.drawContainer(
         "board-grid",
         "setup",
