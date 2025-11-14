@@ -104,6 +104,14 @@ main {
 
 /* SETUP */
 
+.setup > .cell {
+  cursor: default;
+}
+
+.setup > .ship {
+  cursor: grab;
+}
+
 .player1 > .ship.dragging {
   background-color: blueviolet;
 }
@@ -167,11 +175,11 @@ main {
 }
 
 .cell {
+  cursor: crosshair;
   border: 2px solid var(--board-color);
 }
 
 .player1 > .ship {
-  cursor: grab;
   background-color: aquamarine;
 }
 
