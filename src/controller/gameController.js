@@ -24,16 +24,15 @@ export class GameController {
   //INITIALIZE METHODS
 
   initMenu() {
-    this.player1 = new Player("player1");
-    this.player2 = new ComputerPlayer("player2");
-
     this.gameState = "setup";
     this.resetContainers();
 
     this.render.showMenu(this.html.content);
-    this.events.bindSinglePlayerClick(this.html.content, () =>
-      this.initSinglePlayerSetup(this.player1, ".player1"),
-    );
+    this.events.bindSinglePlayerClick(this.html.content, () => {
+      this.player1 = new Player("player1");
+      this.player2 = new ComputerPlayer("player2");
+      this.initSinglePlayerSetup(this.player1, ".player1");
+    });
   }
 
   initSinglePlayerSetup(player, boardSelector) {
