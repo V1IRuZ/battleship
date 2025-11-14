@@ -10,7 +10,7 @@ export function createRender() {
       return container;
     },
 
-    // MENU
+    // MENU AND BUTTONS
 
     drawButton(className, text) {
       const button = document.createElement("button");
@@ -26,6 +26,11 @@ export function createRender() {
       menuContainer.appendChild(singlePlayerBtn);
 
       container.appendChild(menuContainer);
+    },
+
+    showBackButton(container) {
+      const backBtn = this.drawButton("back-btn", "Menu");
+      container.appendChild(backBtn);
     },
 
     showSetupButtons(container) {
@@ -117,11 +122,6 @@ export function createRender() {
       container.appendChild(boardContainer);
     },
 
-    updateGrid(playerObj) {
-      const container = document.querySelector(`.board-grid${playerObj.id}`);
-      this.renderGrid(playerObj, container);
-    },
-
     //ACTIONS
 
     showHitandMiss(x, y, playerId) {
@@ -183,10 +183,12 @@ export function createRender() {
     },
 
     removeAllShips(playerId) {
-      document.querySelectorAll(`.board-grid.${playerId} > .ship`).forEach((cell) => {
-        cell.classList.remove("ship");
-        delete cell.dataset.shipIndex;
-      });
+      document
+        .querySelectorAll(`.board-grid.${playerId} > .ship`)
+        .forEach((cell) => {
+          cell.classList.remove("ship");
+          delete cell.dataset.shipIndex;
+        });
     },
 
     updateAllShips(playerObj) {
