@@ -103,6 +103,12 @@ export class Gameboard {
     ship.resetCoords();
   }
 
+  removeAllShipsFromBoard() {
+    this.ships.forEach((_, index) => {
+      this.removeShip(index);
+    });
+  }
+
   receiveAttack(x, y) {
     const location = this.board[x][y];
 
