@@ -91,6 +91,8 @@ export class GameController {
     const ship = player.gameBoard.getShip(shipIndex);
     const length = ship.length;
     const rotation = ship.rotation;
+    
+    this.render.showDraggedShip(ship);
     this.render.showGhostShip(x, y, rotation, length);
   }
 
