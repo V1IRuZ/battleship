@@ -22,22 +22,22 @@ export function createRender() {
 
     showMenu(container) {
       const menuContainer = this.drawContainer("menu");
-      const singlePlayerBtn = this.drawButton("single-player", "Single player");
+      const singlePlayerBtn = this.drawButton("single-player", "PLAYER VS CPU");
       menuContainer.appendChild(singlePlayerBtn);
 
       container.appendChild(menuContainer);
     },
 
     showBackButton(container) {
-      const backBtn = this.drawButton("back-btn", "Menu");
+      const backBtn = this.drawButton("back-btn", "MENU");
       container.appendChild(backBtn);
     },
 
     showSetupButtons(container) {
       const buttonsContainer = this.drawContainer("options");
-      const backBtn = this.drawButton("back-btn", "Menu");
-      const randomizeBtn = this.drawButton("randomise", "Randomise");
-      const startBtn = this.drawButton("start-game", "Start");
+      const backBtn = this.drawButton("back-btn", "MENU");
+      const randomizeBtn = this.drawButton("randomise", "RANDOMISE");
+      const startBtn = this.drawButton("start-game", "START");
 
       buttonsContainer.appendChild(backBtn);
       buttonsContainer.appendChild(randomizeBtn);
