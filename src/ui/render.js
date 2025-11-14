@@ -112,7 +112,7 @@ export function createRender() {
     },
 
     buildBoard(containerClass, playerName) {
-      const nameBoard = this.drawNameTag(playerName)
+      const nameBoard = this.drawNameTag(playerName);
       const mainBoardContainer = this.drawContainer(containerClass);
       const leftCoords = this.drawLeftCoordinates();
       const topCoords = this.drawTopCoordinates();
@@ -161,6 +161,22 @@ export function createRender() {
         const shipCell = document.querySelector(selector);
         shipCell.classList.add("ship");
         shipCell.dataset.shipIndex = shipIndex;
+      });
+    },
+
+    showDraggedShip(shipObj) {
+      shipObj.coords.forEach(([x, y]) => {
+        const selector = `.cell[data-x="${x}"][data-y="${y}"]`;
+        const shipCell = document.querySelector(selector);
+        shipCell.classList.add("dragging");
+      });
+    },
+
+    removeDraggedShip(coords) {
+      coords.forEach(([x, y]) => {
+        const selector = `.cell[data-x="${x}"][data-y="${y}"]`;
+        const shipCell = document.querySelector(selector);
+        shipCell.classList.remove("dragging");
       });
     },
 
