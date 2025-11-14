@@ -126,7 +126,11 @@ export function createRender() {
 
     showPlayingBoard(playerObj, container) {
       const boardContainer = this.buildBoard("board-container", playerObj.id);
-      const gridContainer = this.drawContainer("board-grid", playerObj.id);
+      const gridContainer = this.drawContainer(
+        "board-grid",
+        "setup",
+        playerObj.id,
+      );
       const grid = this.renderGrid(playerObj, gridContainer);
 
       boardContainer.appendChild(grid);
@@ -134,6 +138,12 @@ export function createRender() {
     },
 
     //ACTIONS
+
+    removeSetupClass() {
+      document.querySelectorAll(".setup").forEach((el) => {
+        el.classList.remove("setup");
+      });
+    },
 
     showHitandMiss(x, y, playerId) {
       const cell = document.querySelector(
