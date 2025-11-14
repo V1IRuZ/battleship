@@ -55,6 +55,7 @@ export class GameController {
     this.render.showPlayingBoard(this.player1, this.html.content);
     this.render.showPlayingBoard(this.player2, this.html.content);
     this.render.showBackButton(this.html.buttonMenu);
+    this.render.removeSetupClass();
 
     const board = document.querySelector(".player2");
     this.events.bindBoardClicks(board, (x, y) => {
@@ -91,7 +92,7 @@ export class GameController {
     const ship = player.gameBoard.getShip(shipIndex);
     const length = ship.length;
     const rotation = ship.rotation;
-    
+
     this.render.showDraggedShip(ship);
     this.render.showGhostShip(x, y, rotation, length);
   }
