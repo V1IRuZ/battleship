@@ -31,7 +31,7 @@ export function createRender() {
     showSetupButtons(container) {
       const buttonsContainer = this.drawContainer("options");
       const backBtn = this.drawButton("back-btn", "Menu");
-      const randomizeBtn = this.drawButton("randomize", "Randomise");
+      const randomizeBtn = this.drawButton("randomise", "Randomise");
       const startBtn = this.drawButton("start-game", "Start");
 
       buttonsContainer.appendChild(backBtn);
@@ -74,8 +74,7 @@ export function createRender() {
       return coords;
     },
 
-    renderGrid(playerObj) {
-      const board = this.drawContainer("board-grid", playerObj.id);
+    renderGrid(playerObj, board) {
       board.innerHTML = "";
       for (let x = 0; x < 10; x++) {
         for (let y = 0; y < 10; y++) {
@@ -111,10 +110,16 @@ export function createRender() {
 
     showPlayingBoard(playerObj, container) {
       const boardContainer = this.buildBoard("board-container");
-      const grid = this.renderGrid(playerObj);
+      const gridContainer = this.drawContainer("board-grid", playerObj.id);
+      const grid = this.renderGrid(playerObj, gridContainer);
 
       boardContainer.appendChild(grid);
       container.appendChild(boardContainer);
+    },
+
+    updateGrid(playerObj) {
+      const container = document.querySelector(`.board-grid${playerObj.id}`);
+      this.renderGrid(playerObj, container);
     },
 
     //ACTIONS
@@ -175,6 +180,21 @@ export function createRender() {
         const shipCell = document.querySelector(selector);
         if (shipCell) shipCell.classList.add("ghost");
       }
+    },
+
+    removeAllShips(playerId) {
+      document.querySelectorAll(`.board-grid.${playerId} > .ship`).forEach((cell) => {
+        cell.classList.remove("ship");
+        delete cell.dataset.shipIndex;
+      });
+    },
+
+    updateAllShips(playerObj) {
+      const ships = playerObj.gameBoard.ships;
+
+      ships.forEach((ship, index) => {
+        this.updateShip(ship, index);
+      });
     },
   };
 }
