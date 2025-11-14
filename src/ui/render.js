@@ -48,6 +48,15 @@ export function createRender() {
 
     // GAMEBOARD
 
+    drawNameTag(playerName) {
+      const container = this.drawContainer("player-name");
+      const nameTag = document.createElement("h1");
+      nameTag.textContent = playerName;
+
+      container.appendChild(nameTag);
+      return container;
+    },
+
     drawTopCoordinates() {
       const coords = document.createElement("div");
       coords.classList.add("x-coords");
@@ -102,11 +111,13 @@ export function createRender() {
       return board;
     },
 
-    buildBoard(containerClass) {
+    buildBoard(containerClass, playerName) {
+      const nameBoard = this.drawNameTag(playerName)
       const mainBoardContainer = this.drawContainer(containerClass);
       const leftCoords = this.drawLeftCoordinates();
       const topCoords = this.drawTopCoordinates();
 
+      mainBoardContainer.appendChild(nameBoard);
       mainBoardContainer.appendChild(topCoords);
       mainBoardContainer.appendChild(leftCoords);
 
@@ -114,7 +125,7 @@ export function createRender() {
     },
 
     showPlayingBoard(playerObj, container) {
-      const boardContainer = this.buildBoard("board-container");
+      const boardContainer = this.buildBoard("board-container", playerObj.id);
       const gridContainer = this.drawContainer("board-grid", playerObj.id);
       const grid = this.renderGrid(playerObj, gridContainer);
 
