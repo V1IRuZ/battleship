@@ -63,8 +63,8 @@ export function createEvents() {
     bindDragDrop(board, callback) {
       board.addEventListener("dragend", () => {
         document
-          .querySelectorAll(".ghost")
-          .forEach((c) => c.classList.remove("ghost"));
+          .querySelectorAll(".ghost, .dragging")
+          .forEach((c) => c.classList.remove("ghost", "dragging"));
       });
 
       board.addEventListener("drop", (e) => {
