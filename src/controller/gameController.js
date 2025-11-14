@@ -29,8 +29,8 @@ export class GameController {
 
     this.render.showMenu(this.html.content);
     this.events.bindSinglePlayerClick(this.html.content, () => {
-      this.player1 = new Player("player1");
-      this.player2 = new ComputerPlayer("player2");
+      this.player1 = new Player("player1", "PLAYER");
+      this.player2 = new ComputerPlayer("player2", "CPU");
       this.initSinglePlayerSetup(this.player1, ".player1");
     });
   }
