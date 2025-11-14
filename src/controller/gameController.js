@@ -35,16 +35,19 @@ export class GameController {
     });
   }
 
-  initSinglePlayerSetup(player, boardSelector) {
-    this.player1.placeAllShipsRandomly();
-    this.player2.placeAllShipsRandomly();
-
+  initBoardSetup(player, boardSelector) {
+    player.placeAllShipsRandomly();
     this.resetContainers();
     this.render.showPlayingBoard(player, this.html.content);
 
     this.handleDragEvents(player, boardSelector);
     this.handleRotationClicks(player, boardSelector);
     this.handleSetupBtns(player);
+  }
+
+  initSinglePlayerSetup(player, boardSelector) {
+    this.player2.placeAllShipsRandomly();
+    this.initBoardSetup(player, boardSelector);
   }
 
   initSinglePlayer() {
