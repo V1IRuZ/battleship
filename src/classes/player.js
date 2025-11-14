@@ -1,7 +1,8 @@
 import { Gameboard } from "./gameboard.js";
 
 class Player {
-  constructor(id) {
+  constructor(id, name) {
+    this.name = name;
     this.id = id;
     this.gameBoard = new Gameboard();
   }
@@ -31,7 +32,7 @@ class Player {
   }
 
   placeAllShipsRandomly() {
-    this.gameBoard.ships.forEach((ship, index) => {
+    this.gameBoard.ships.forEach((_, index) => {
       this.#placeShipRandomly(index);
     });
   }
@@ -49,8 +50,8 @@ class Player {
 class RealPlayer extends Player {}
 
 class ComputerPlayer extends Player {
-  constructor(id) {
-    super(id);
+  constructor(id, name) {
+    super(id, name);
     this.algorithm = "random";
     this.algorithmQueue = [];
     this.enemyShipsLengths = this.#getShipsLengths();
