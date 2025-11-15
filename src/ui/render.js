@@ -22,8 +22,10 @@ export function createRender() {
 
     showMenu(container) {
       const menuContainer = this.drawContainer("menu");
-      const singlePlayerBtn = this.drawButton("single-player", "PLAYER VS CPU");
+      const singlePlayerBtn = this.drawButton("single-player", "PLAYER VS AI");
+      const pvpBtn = this.drawButton("pvp", "PLAYER VS PLAYER");
       menuContainer.appendChild(singlePlayerBtn);
+      menuContainer.appendChild(pvpBtn);
 
       container.appendChild(menuContainer);
     },
