@@ -19,7 +19,16 @@ export function createEvents() {
       const btn = container.querySelector(".single-player");
       if (!btn) return;
 
-      // Poista aiempi kuuntelija kloonaamalla nappi
+      const newBtn = btn.cloneNode(true);
+      btn.replaceWith(newBtn);
+
+      newBtn.addEventListener("click", callback);
+    },
+
+    bindPlayerVersusPlayerClick(container, callback) {
+      const btn = container.querySelector(".pvp");
+      if (!btn) return;
+
       const newBtn = btn.cloneNode(true);
       btn.replaceWith(newBtn);
 
