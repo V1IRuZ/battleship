@@ -33,6 +33,12 @@ export class GameController {
       this.player2 = new ComputerPlayer("player2", "CPU");
       this.initSinglePlayerSetup(this.player1, ".player1");
     });
+
+    this.events.bindPlayerVersusPlayerClick(this.html.content, () => {
+      this.player1 = new RealPlayer("player1", "PLAYER 1");
+      this.player2 = new RealPlayer("player2", "PLAYER 2");
+      this.initPvPNameSetup(this.player1)
+    });
   }
 
   initBoardSetup(player, boardSelector) {
@@ -63,6 +69,17 @@ export class GameController {
     this.events.bindBoardClicks(board, (x, y) => {
       this.handleAttack(x, y);
     });
+
+    this.events.bindBackMenuClick(this.html.buttonMenu, () => {
+      this.initMenu();
+    });
+  }
+
+  initPvPNameSetup(player, selector) {
+    this.resetContainers();
+
+    this.render.showNameSetup(player, this.html.content);
+    this.render.showBackButton(this.html.buttonMenu)
 
     this.events.bindBackMenuClick(this.html.buttonMenu, () => {
       this.initMenu();
