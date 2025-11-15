@@ -35,6 +35,14 @@ export function createEvents() {
       newBtn.addEventListener("click", callback);
     },
 
+    bindPlayer1ReadyClick(container, callback) {
+      container.addEventListener("click", (e) => {
+        if (!e.target.classList.contains("player1-ready")) return;
+
+        callback();
+      });
+    },
+
     bindDragStart(board, callback) {
       board.addEventListener("dragstart", (e) => {
         if (e.target.classList.contains("ship")) {
