@@ -51,6 +51,12 @@ class RealPlayer extends Player {
   constructor(id, name) {
     super(id, name)
   }
+
+  setName(input) {
+    if(!input) return;
+
+    this.name = input;
+  }
 }
 
 class ComputerPlayer extends Player {
