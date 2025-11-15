@@ -48,6 +48,37 @@ export function createRender() {
       container.appendChild(buttonsContainer);
     },
 
+    // PVP NAME SETUP
+
+    buildNameInput(playerId) {
+      const container = this.drawContainer("pvp-name");
+      const label = document.createElement("label");
+      label.textContent = "Type your name"
+      label.setAttribute("for", `${playerId}-name`);
+      
+      const input = document.createElement("input");
+      input.id = `${playerId}-name`
+      
+      container.appendChild(label);
+      container.appendChild(input);
+      return container;
+    },
+    
+    showNameSetup(playerObj, container) {
+      const mainContainer = this.drawContainer("pvp-setup");
+      const header = document.createElement("h1");
+      header.textContent = playerObj.name;
+      
+      const nameInput = this.buildNameInput(playerObj.id);
+      const button = this.drawButton(`${playerObj.id}-ready`, "READY");
+
+      mainContainer.appendChild(header);
+      mainContainer.appendChild(nameInput);
+      mainContainer.appendChild(button);
+
+      container.appendChild(mainContainer);
+    },
+
     // GAMEBOARD
 
     drawNameTag(playerName) {
