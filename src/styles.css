@@ -97,7 +97,14 @@ main {
 
 /* MENU */
 
-.single-player {
+.menu {
+  display: flex;
+  flex-direction: column;
+  gap: 3em;
+}
+
+.single-player,
+.pvp {
   padding: 1em 2em;
   font-size: 2rem;
 }
