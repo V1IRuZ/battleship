@@ -79,6 +79,11 @@ export function createRender() {
       container.appendChild(mainContainer);
     },
 
+    getNameInputValue(playerId) {
+      const name = document.querySelector(`#${playerId}-name`).value;
+      return name;
+    },
+
     // GAMEBOARD
 
     drawNameTag(playerName) {
