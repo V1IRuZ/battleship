@@ -47,7 +47,11 @@ class Player {
   }
 }
 
-class RealPlayer extends Player {}
+class RealPlayer extends Player {
+  constructor(id, name) {
+    super(id, name)
+  }
+}
 
 class ComputerPlayer extends Player {
   constructor(id, name) {
@@ -293,4 +297,4 @@ class ComputerPlayer extends Player {
   }
 }
 
-export { Player, ComputerPlayer };
+export { Player, RealPlayer, ComputerPlayer };
