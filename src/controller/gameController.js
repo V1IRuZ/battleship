@@ -1,4 +1,4 @@
-import { ComputerPlayer, Player } from "../classes/player.js";
+import { ComputerPlayer, Player, RealPlayer } from "../classes/player.js";
 import { createRender } from "../ui/render.js";
 import { createEvents } from "../ui/events.js";
 
@@ -29,7 +29,7 @@ export class GameController {
 
     this.render.showMenu(this.html.content);
     this.events.bindSinglePlayerClick(this.html.content, () => {
-      this.player1 = new Player("player1", "PLAYER");
+      this.player1 = new RealPlayer("player1", "PLAYER");
       this.player2 = new ComputerPlayer("player2", "CPU");
       this.initSinglePlayerSetup(this.player1, ".player1");
     });
