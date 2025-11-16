@@ -137,5 +137,11 @@ export function createEvents() {
         if (e.target.matches(selector)) callback();
       });
     },
+
+    removeAllEventListeners(element) {
+      const clone = element.cloneNode(true);
+      element.replaceWith(clone);
+      return clone;
+    },
   };
 }
