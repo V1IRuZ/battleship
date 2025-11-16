@@ -19,6 +19,11 @@ export class GameController {
   resetContainers() {
     this.html.content.innerHTML = "";
     this.html.buttonMenu.innerHTML = "";
+
+    this.html.content = this.events.removeAllEventListeners(this.html.content);
+    this.html.buttonMenu = this.events.removeAllEventListeners(
+      this.html.buttonMenu,
+    );
   }
 
   //INITIALIZE METHODS
@@ -37,7 +42,7 @@ export class GameController {
     this.events.bindPlayerVersusPlayerClick(this.html.content, () => {
       this.player1 = new RealPlayer("player1", "PLAYER 1");
       this.player2 = new RealPlayer("player2", "PLAYER 2");
-      this.initPvPNameSetup(this.player1)
+      this.initPvPNameSetup(this.player1, ".player1");
     });
   }
 
@@ -48,12 +53,12 @@ export class GameController {
 
     this.handleDragEvents(player, boardSelector);
     this.handleRotationClicks(player, boardSelector);
-    this.handleSetupBtns(player);
   }
 
   initSinglePlayerSetup(player, boardSelector) {
     this.player2.placeAllShipsRandomly();
     this.initBoardSetup(player, boardSelector);
+    this.handleSetupBtns(player, "start-game");
   }
 
   initSinglePlayer() {
@@ -79,11 +84,20 @@ export class GameController {
     this.resetContainers();
 
     this.render.showNameSetup(player, this.html.content);
-    this.render.showBackButton(this.html.buttonMenu)
+    this.render.showBackButton(this.html.buttonMenu);
 
     this.events.bindBackMenuClick(this.html.buttonMenu, () => {
       this.initMenu();
     });
+
+    this.events.bindClick(this.html.content, ".player1-ready", () => {
+      this.initPvPBoardSetup(player, selector);
+    });
+  }
+
+  initPvPBoardSetup(player, boardSelector) {
+    this.initBoardSetup(player, boardSelector);
+    console.log(player);
   }
 
   // DRAG EVENT HANDLERS
@@ -190,17 +204,17 @@ export class GameController {
     this.render.updateAllShips(playerObj);
   }
 
-  handleSetupBtns(playerObj) {
-    this.render.showSetupButtons(this.html.buttonMenu);
-    this.events.bindStartGameClick(this.html.buttonMenu, () => {
+  handleSetupBtns(playerObj, readyButtonClass) {
+    this.render.showSetupButtons(this.html.buttonMenu, readyButtonClass);
+    this.events.bindClick(this.html.buttonMenu, `.${readyButtonClass}`, () => {
       this.initSinglePlayer();
     });
 
-    this.events.bindBackMenuClick(this.html.buttonMenu, () => {
+    this.events.bindClick(this.html.buttonMenu, ".back-btn", () => {
       this.initMenu();
     });
 
-    this.events.bindRandomiseClick(this.html.buttonMenu, () => {
+    this.events.bindClick(this.html.buttonMenu, ".randomise", () => {
       this.handleRandomise(playerObj);
     });
   }
