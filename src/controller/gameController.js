@@ -42,7 +42,7 @@ export class GameController {
     this.events.bindPlayerVersusPlayerClick(this.html.content, () => {
       this.player1 = new RealPlayer("player1", "PLAYER 1");
       this.player2 = new RealPlayer("player2", "PLAYER 2");
-      this.initPvPNameSetup(this.player1, ".player1");
+      this.initPvPNameSetupPlayer1();
     });
   }
 
@@ -58,7 +58,11 @@ export class GameController {
   initSinglePlayerSetup(player, boardSelector) {
     this.player2.placeAllShipsRandomly();
     this.initBoardSetup(player, boardSelector);
-    this.handleSetupBtns(player, "start-game");
+    this.handleSetupBtns(
+      player,
+      "start-game",
+      this.initSinglePlayer.bind(this),
+    );
   }
 
   initSinglePlayer() {
@@ -80,7 +84,7 @@ export class GameController {
     });
   }
 
-  initPvPNameSetup(player, selector) {
+  initPvPNameSetup(player, nextCallback) {
     this.resetContainers();
 
     this.render.showNameSetup(player, this.html.content);
@@ -90,14 +94,58 @@ export class GameController {
       this.initMenu();
     });
 
-    this.events.bindClick(this.html.content, ".player1-ready", () => {
-      this.initPvPBoardSetup(player, selector);
+    this.events.bindClick(this.html.content, `.${player.id}-name-ready`, () => {
+      nextCallback();
     });
   }
 
-  initPvPBoardSetup(player, boardSelector) {
-    this.initBoardSetup(player, boardSelector);
-    console.log(player);
+  initPvPNameSetupPlayer1() {
+    this.initPvPNameSetup(
+      this.player1,
+      this.initPvPBoardSetupPlayer1.bind(this),
+    );
+  }
+
+  initPvPNameSetupPlayer2() {
+    this.initPvPNameSetup(
+      this.player2,
+      this.initPvPBoardSetupPlayer2.bind(this),
+    );
+  }
+
+  initPvPBoardSetupPlayer1() {
+    this.initBoardSetup(this.player1, ".player1");
+    this.handleSetupBtns(
+      this.player1,
+      `${this.player1.id}-ready`,
+      this.initPvPNameSetupPlayer2.bind(this),
+    );
+  }
+
+  initPvPBoardSetupPlayer2() {
+    this.initBoardSetup(this.player2, ".player2");
+    this.handleSetupBtns(
+      this.player2,
+      `${this.player2.id}-ready`,
+      this.initPvPGame.bind(this),
+    );
+  }
+
+  initPvPGame() {
+    this.resetContainers();
+    console.log("WORKS!");
+
+    this.gameState = "playing";
+
+    this.render.showPlayingBoard(this.player1, this.html.content);
+    this.render.showPlayingBoard(this.player2, this.html.content);
+
+    this.render.showBackButton(this.html.buttonMenu);
+    this.render.removeSetupClass();
+
+    this.events.bindBackMenuClick(this.html.buttonMenu, () => {
+      this.initMenu();
+    });
   }
 
   // DRAG EVENT HANDLERS
@@ -197,17 +245,17 @@ export class GameController {
   // SETUP BUTTONS
 
   handleRandomise(playerObj) {
-    this.player1.gameBoard.removeAllShipsFromBoard();
-    this.player1.placeAllShipsRandomly();
+    playerObj.gameBoard.removeAllShipsFromBoard();
+    playerObj.placeAllShipsRandomly();
 
     this.render.removeAllShips(playerObj.id);
     this.render.updateAllShips(playerObj);
   }
 
-  handleSetupBtns(playerObj, readyButtonClass) {
+  handleSetupBtns(playerObj, readyButtonClass, gameCallback) {
     this.render.showSetupButtons(this.html.buttonMenu, readyButtonClass);
     this.events.bindClick(this.html.buttonMenu, `.${readyButtonClass}`, () => {
-      this.initSinglePlayer();
+      gameCallback();
     });
 
     this.events.bindClick(this.html.buttonMenu, ".back-btn", () => {
