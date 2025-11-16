@@ -70,7 +70,7 @@ export function createRender() {
       header.textContent = playerObj.name;
       
       const nameInput = this.buildNameInput(playerObj.id);
-      const button = this.drawButton(`${playerObj.id}-ready`, "READY");
+      const button = this.drawButton(`${playerObj.id}-name-ready`, "READY");
 
       mainContainer.appendChild(header);
       mainContainer.appendChild(nameInput);
