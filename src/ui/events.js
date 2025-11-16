@@ -131,5 +131,11 @@ export function createEvents() {
         callback();
       });
     },
+
+    bindClick(container, selector, callback) {
+      container.addEventListener("click", (e) => {
+        if (e.target.matches(selector)) callback();
+      });
+    },
   };
 }
