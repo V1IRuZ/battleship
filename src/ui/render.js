@@ -35,11 +35,11 @@ export function createRender() {
       container.appendChild(backBtn);
     },
 
-    showSetupButtons(container) {
+    showSetupButtons(container, readyButtonClass) {
       const buttonsContainer = this.drawContainer("options");
       const backBtn = this.drawButton("back-btn", "MENU");
       const randomizeBtn = this.drawButton("randomise", "RANDOMISE");
-      const startBtn = this.drawButton("start-game", "START");
+      const startBtn = this.drawButton(readyButtonClass, "READY");
 
       buttonsContainer.appendChild(backBtn);
       buttonsContainer.appendChild(randomizeBtn);
