@@ -1,4 +1,4 @@
-import { ComputerPlayer, Player, RealPlayer } from "../classes/player.js";
+import { ComputerPlayer, RealPlayer } from "../classes/player.js";
 import { createRender } from "../ui/render.js";
 import { createEvents } from "../ui/events.js";
 
@@ -42,6 +42,7 @@ export class GameController {
     this.events.bindPlayerVersusPlayerClick(this.html.content, () => {
       this.player1 = new RealPlayer("player1", "PLAYER 1");
       this.player2 = new RealPlayer("player2", "PLAYER 2");
+      this.currentPlayer = this.player1.id;
       this.initPvPNameSetupPlayer1();
     });
   }
@@ -95,6 +96,8 @@ export class GameController {
     });
 
     this.events.bindClick(this.html.content, `.${player.id}-name-ready`, () => {
+      const name = this.render.getNameInputValue(player.id);
+      player.setName(name);
       nextCallback();
     });
   }
@@ -133,7 +136,6 @@ export class GameController {
 
   initPvPGame() {
     this.resetContainers();
-    console.log("WORKS!");
 
     this.gameState = "playing";
 
@@ -143,6 +145,16 @@ export class GameController {
     this.render.showBackButton(this.html.buttonMenu);
     this.render.removeSetupClass();
 
+    const player1Board = document.querySelector(".player1");
+    this.events.bindBoardClicks(player1Board, (x, y) => {
+      this.handlePvPAttack(x, y, this.player2, this.player1)
+    });
+
+    const player2Board = document.querySelector(".player2");
+    this.events.bindBoardClicks(player2Board, (x, y) => {
+      this.handlePvPAttack(x, y, this.player1, this.player2);
+    });
+    
     this.events.bindBackMenuClick(this.html.buttonMenu, () => {
       this.initMenu();
     });
@@ -280,6 +292,28 @@ export class GameController {
     } else {
       this.validateComputerAttacks();
     }
+  }
+
+  handlePvPAttack(x, y, attacker, defender) {
+    if (this.gameState !== "playing") return;
+    if (this.currentPlayer !== attacker.id) return;
+
+    defender.gameBoard.receiveAttack(x, y);
+    this.render.showHitandMiss(x, y, defender.id);
+
+    if (defender.gameBoard.allShipsSunk) {
+      this.endGame(attacker);
+      return;
+    }
+
+    this.switchCurrentPlayer();
+  }
+
+  switchCurrentPlayer() {
+    this.currentPlayer =
+      this.currentPlayer === this.player1.id
+        ? this.player2.id
+        : this.player1.id;
   }
 
   validateComputerAttacks() {
