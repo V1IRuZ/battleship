@@ -142,20 +142,21 @@ export class GameController {
 
     this.render.showPlayingBoard(this.player1, this.html.content);
     this.render.showPlayingBoard(this.player2, this.html.content);
+    this.render.showCurrentPlayer(this.player1, this.player2);
 
     this.render.showBackButton(this.html.buttonMenu);
     this.render.removeSetupClass();
 
     const player1Board = document.querySelector(".player1");
     this.events.bindBoardClicks(player1Board, (x, y) => {
-      this.handlePvPAttack(x, y, this.player2, this.player1)
+      this.handlePvPAttack(x, y, this.player2, this.player1);
     });
 
     const player2Board = document.querySelector(".player2");
     this.events.bindBoardClicks(player2Board, (x, y) => {
       this.handlePvPAttack(x, y, this.player1, this.player2);
     });
-    
+
     this.events.bindBackMenuClick(this.html.buttonMenu, () => {
       this.initMenu();
     });
@@ -295,19 +296,24 @@ export class GameController {
     }
   }
 
-  handlePvPAttack(x, y, attacker, defender) {
+  handlePvPAttack(x, y, currentPlayer, opponentPlayer) {
     if (this.gameState !== "playing") return;
-    if (this.currentPlayer !== attacker.id) return;
+    if (this.currentPlayer !== currentPlayer.id) return;
 
-    defender.gameBoard.receiveAttack(x, y);
-    this.render.showHitandMiss(x, y, defender.id);
+    opponentPlayer.gameBoard.receiveAttack(x, y);
+    this.render.showHitandMiss(x, y, opponentPlayer.id);
 
-    if (defender.gameBoard.allShipsSunk) {
-      this.endGame(attacker);
+    if (opponentPlayer.gameBoard.allShipsSunk) {
+      this.endGame(currentPlayer);
       return;
     }
 
-    this.switchCurrentPlayer();
+    setTimeout(() => {
+      if (this.gameState !== "playing") return;
+      this.render.hideCurrentPlayer(currentPlayer, opponentPlayer);
+      this.render.showCurrentPlayer(opponentPlayer, currentPlayer);
+      this.switchCurrentPlayer();
+    }, 1500);
   }
 
   switchCurrentPlayer() {
