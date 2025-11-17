@@ -74,6 +74,7 @@ h6 {
   --border-size: 2px;
   --cell-size: calc(var(--board-size) / 10);
   --setup-board-width: (var(--board-size) / 2);
+  --current-player-color: red;
 }
 
 #page {
@@ -159,6 +160,26 @@ ul {
 
 /* GAMEBOARD */
 
+.player1-tag.active h1,
+.player2-tag.active h1 {
+  border: 2px solid var(--current-player-color);
+}
+
+.board-grid.player1.active ,
+.board-grid.player2.active {
+  border:2px solid var(--current-player-color);
+}
+
+.board-grid.player1.disabled ,
+.board-grid.player2.disabled {
+  background-color: rgba(29, 29, 29, 0.685);
+}
+
+.board-grid.player1.disabled .cell,
+.board-grid.player2.disabled  .cell{
+  background-color: rgba(29, 29, 29, 0.685);
+}
+
 .board-container {
   display: grid;
   grid-template-columns: 50px 500px;
@@ -177,7 +198,6 @@ ul {
 .player2-tag h1 {
   font-size: 1.5rem;
   padding: 8px 16px;
-  border: 2px solid black;
   align-content: center;
 }
 
