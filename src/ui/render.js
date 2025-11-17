@@ -71,13 +71,14 @@ export function createRender() {
       ul.appendChild(invalid);
 
       const randomise = document.createElement("li");
-      randomise.textContent = "Use the Randomise button to get random positions for the ships";
+      randomise.textContent =
+        "Use the Randomise button to get random positions for the ships";
       ul.appendChild(randomise);
 
       const ready = document.createElement("li");
-      ready.textContent = "Press the ready button when you are satisfied with the ship positions"
+      ready.textContent =
+        "Press the ready button when you are satisfied with the ship positions";
       ul.appendChild(ready);
-
 
       container.appendChild(info);
     },
@@ -87,22 +88,22 @@ export function createRender() {
     buildNameInput(playerId) {
       const container = this.drawContainer("pvp-name");
       const label = document.createElement("label");
-      label.textContent = "Type your name"
+      label.textContent = "Type your name";
       label.setAttribute("for", `${playerId}-name`);
-      
+
       const input = document.createElement("input");
-      input.id = `${playerId}-name`
-      
+      input.id = `${playerId}-name`;
+
       container.appendChild(label);
       container.appendChild(input);
       return container;
     },
-    
+
     showNameSetup(playerObj, container) {
       const mainContainer = this.drawContainer("pvp-setup");
       const header = document.createElement("h1");
       header.textContent = playerObj.name;
-      
+
       const nameInput = this.buildNameInput(playerObj.id);
       const button = this.drawButton(`${playerObj.id}-name-ready`, "READY");
 
@@ -306,6 +307,36 @@ export function createRender() {
       ships.forEach((ship, index) => {
         this.updateShip(ship, index);
       });
+    },
+
+    showCurrentPlayer(currentPlayer, opponentPlayer) {
+      const currentTag = document.querySelector(`.${currentPlayer.id}-tag`);
+      currentTag.classList.add("active");
+
+      const currentBoard = document.querySelector(
+        `.board-grid.${currentPlayer.id}`,
+      );
+      currentBoard.classList.add("disabled");
+
+      const opponentBoard = document.querySelector(
+        `.board-grid.${opponentPlayer.id}`,
+      );
+      opponentBoard.classList.add("active");
+    },
+
+    hideCurrentPlayer(currentPlayer, opponentPlayer) {
+      const currentTag = document.querySelector(`.${currentPlayer.id}-tag`);
+      currentTag.classList.remove("active");
+
+      const currentBoard = document.querySelector(
+        `.board-grid.${currentPlayer.id}`,
+      );
+      currentBoard.classList.remove("disabled");
+
+      const opponentBoard = document.querySelector(
+        `.board-grid.${opponentPlayer.id}`,
+      );
+      opponentBoard.classList.remove("active");
     },
   };
 }
