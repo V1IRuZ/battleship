@@ -50,6 +50,7 @@ export class GameController {
   initBoardSetup(player, boardSelector) {
     player.placeAllShipsRandomly();
     this.resetContainers();
+    this.render.showInfo(this.html.content);
     this.render.showPlayingBoard(player, this.html.content);
 
     this.handleDragEvents(player, boardSelector);
