@@ -48,6 +48,40 @@ export function createRender() {
       container.appendChild(buttonsContainer);
     },
 
+    showInfo(container) {
+      const info = this.drawContainer("info");
+
+      const h2 = document.createElement("h2");
+      h2.textContent = "Setup";
+      info.appendChild(h2);
+
+      const ul = document.createElement("ul");
+      info.appendChild(ul);
+
+      const drag = document.createElement("li");
+      drag.textContent = "Move ships by dragging";
+      ul.appendChild(drag);
+
+      const doubleClick = document.createElement("li");
+      doubleClick.textContent = "Change ship direction with a double click";
+      ul.appendChild(doubleClick);
+
+      const invalid = document.createElement("li");
+      invalid.textContent = "Ships must be at least one square apart";
+      ul.appendChild(invalid);
+
+      const randomise = document.createElement("li");
+      randomise.textContent = "Use the Randomise button to get random positions for the ships";
+      ul.appendChild(randomise);
+
+      const ready = document.createElement("li");
+      ready.textContent = "Press the ready button when you are satisfied with the ship positions"
+      ul.appendChild(ready);
+
+
+      container.appendChild(info);
+    },
+
     // PVP NAME SETUP
 
     buildNameInput(playerId) {
