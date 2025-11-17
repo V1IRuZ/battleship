@@ -120,10 +120,10 @@ export function createRender() {
 
     // GAMEBOARD
 
-    drawNameTag(playerName) {
-      const container = this.drawContainer("player-name");
+    drawNameTag(playerObj) {
+      const container = this.drawContainer(`${playerObj.id}-tag`);
       const nameTag = document.createElement("h1");
-      nameTag.textContent = playerName;
+      nameTag.textContent = playerObj.name;
 
       container.appendChild(nameTag);
       return container;
@@ -183,8 +183,8 @@ export function createRender() {
       return board;
     },
 
-    buildBoard(containerClass, playerName) {
-      const nameBoard = this.drawNameTag(playerName);
+    buildBoard(containerClass, playerObj) {
+      const nameBoard = this.drawNameTag(playerObj);
       const mainBoardContainer = this.drawContainer(containerClass);
       const leftCoords = this.drawLeftCoordinates();
       const topCoords = this.drawTopCoordinates();
@@ -197,7 +197,7 @@ export function createRender() {
     },
 
     showPlayingBoard(playerObj, container) {
-      const boardContainer = this.buildBoard("board-container", playerObj.name);
+      const boardContainer = this.buildBoard("board-container", playerObj);
       const gridContainer = this.drawContainer(
         "board-grid",
         "setup",
