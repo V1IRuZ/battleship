@@ -314,9 +314,20 @@ export function createRender() {
       board.classList.add("show-ships");
     },
 
-    showCurrentPlayer(currentPlayer, opponentPlayer) {
+    showCurrentNameTag(currentPlayer) {
       const currentTag = document.querySelector(`.${currentPlayer.id}-tag`);
       currentTag.classList.add("active");
+    },
+
+    removeCurrentNameTag(currentPlayer) {
+      const currentTag = document.querySelector(`.${currentPlayer.id}-tag`);
+      currentTag.classList.remove("active");
+    },
+
+    showCurrentPlayer(currentPlayer, opponentPlayer) {
+      this.showCurrentNameTag(currentPlayer);
+      // const currentTag = document.querySelector(`.${currentPlayer.id}-tag`);
+      // currentTag.classList.add("active");
 
       const currentBoard = document.querySelector(
         `.board-grid.${currentPlayer.id}`,
@@ -330,8 +341,9 @@ export function createRender() {
     },
 
     hideCurrentPlayer(currentPlayer, opponentPlayer) {
-      const currentTag = document.querySelector(`.${currentPlayer.id}-tag`);
-      currentTag.classList.remove("active");
+      this.removeCurrentNameTag(currentPlayer);
+      // const currentTag = document.querySelector(`.${currentPlayer.id}-tag`);
+      // currentTag.classList.remove("active");
 
       const currentBoard = document.querySelector(
         `.board-grid.${currentPlayer.id}`,
