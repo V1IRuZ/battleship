@@ -77,6 +77,7 @@ export class GameController {
     this.render.showBackButton(this.html.buttonMenu);
     this.render.removeSetupClass();
     this.render.showShipsInSinglePlayer(this.player1.id);
+    this.render.showCurrentNameTag(this.player1);
 
     const board = document.querySelector(".player2");
     this.events.bindBoardClicks(board, (x, y) => {
@@ -295,10 +296,14 @@ export class GameController {
     if (this.player2.gameBoard.allShipsSunk) {
       this.endGame(this.player1);
     } else {
+      this.render.removeCurrentNameTag(this.player1);
+      this.render.showCurrentNameTag(this.player2);
       this.switchCurrentPlayer();
       setTimeout(() => {
         if (this.gameState !== "playing") return;
         this.validateComputerAttacks();
+        this.render.removeCurrentNameTag(this.player2);
+        this.render.showCurrentNameTag(this.player1);
         this.switchCurrentPlayer();
       }, 1000);
     }
