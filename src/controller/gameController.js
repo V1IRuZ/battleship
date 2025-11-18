@@ -36,6 +36,7 @@ export class GameController {
     this.events.bindSinglePlayerClick(this.html.content, () => {
       this.player1 = new RealPlayer("player1", "PLAYER");
       this.player2 = new ComputerPlayer("player2", "CPU");
+      this.currentPlayer = this.player1.id;
       this.initSinglePlayerSetup(this.player1, ".player1");
     });
 
@@ -75,6 +76,7 @@ export class GameController {
     this.render.showPlayingBoard(this.player2, this.html.content);
     this.render.showBackButton(this.html.buttonMenu);
     this.render.removeSetupClass();
+    this.render.showShipsInSinglePlayer(this.player1.id);
 
     const board = document.querySelector(".player2");
     this.events.bindBoardClicks(board, (x, y) => {
@@ -285,6 +287,7 @@ export class GameController {
 
   handleAttack(x, y) {
     if (this.gameState !== "playing") return;
+    if (this.currentPlayer !== this.player1.id) return;
 
     this.player2.gameBoard.receiveAttack(x, y);
     this.render.showHitandMiss(x, y, this.player2.id);
@@ -292,7 +295,12 @@ export class GameController {
     if (this.player2.gameBoard.allShipsSunk) {
       this.endGame(this.player1);
     } else {
-      this.validateComputerAttacks();
+      this.switchCurrentPlayer();
+      setTimeout(() => {
+        if (this.gameState !== "playing") return;
+        this.validateComputerAttacks();
+        this.switchCurrentPlayer();
+      }, 1000);
     }
   }
 
@@ -325,6 +333,7 @@ export class GameController {
 
   validateComputerAttacks() {
     if (this.gameState !== "playing") return;
+    if (this.currentPlayer !== this.player2.id) return;
 
     const [targetX, targetY] = this.player2.attack(this.player1);
     this.render.showHitandMiss(targetX, targetY, this.player1.id);
