@@ -309,6 +309,11 @@ export function createRender() {
       });
     },
 
+    showShipsInSinglePlayer(playerId) {
+      const board = document.querySelector(`.board-grid.${playerId}`);
+      board.classList.add("show-ships");
+    },
+
     showCurrentPlayer(currentPlayer, opponentPlayer) {
       const currentTag = document.querySelector(`.${currentPlayer.id}-tag`);
       currentTag.classList.add("active");
