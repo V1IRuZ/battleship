@@ -75,6 +75,7 @@ h6 {
   --cell-size: calc(var(--board-size) / 10);
   --setup-board-width: (var(--board-size) / 2);
   --current-player-color: red;
+  --ship-color: aquamarine;
 }
 
 #page {
@@ -134,6 +135,7 @@ ul {
 }
 
 .setup > .ship {
+  background-color: var(--ship-color);
   cursor: grab;
 }
 
@@ -168,16 +170,6 @@ ul {
 .board-grid.player1.active ,
 .board-grid.player2.active {
   border:2px solid var(--current-player-color);
-}
-
-.board-grid.player1.disabled ,
-.board-grid.player2.disabled {
-  background-color: rgba(29, 29, 29, 0.685);
-}
-
-.board-grid.player1.disabled .cell,
-.board-grid.player2.disabled  .cell{
-  background-color: rgba(29, 29, 29, 0.685);
 }
 
 .board-container {
@@ -237,13 +229,13 @@ ul {
   border: 2px solid var(--board-color);
 }
 
-/* .player1 > .ship */
-.ship {
-  background-color: aquamarine;
+/* .ship */
+.show-ships > .ship {
+  background-color: var(--ship-color);
 }
 
-.player1 > .hit,
-.player2 > .hit {
+.player1 > .cell.ship.hit,
+.player2 > .cell.ship.hit {
   background-color: red;
 }
 
