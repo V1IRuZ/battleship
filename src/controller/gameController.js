@@ -296,17 +296,25 @@ export class GameController {
     if (this.player2.gameBoard.allShipsSunk) {
       this.endGame(this.player1);
     } else {
-      this.render.removeCurrentNameTag(this.player1);
-      this.render.showCurrentNameTag(this.player2);
-      this.switchCurrentPlayer();
-      setTimeout(() => {
-        if (this.gameState !== "playing") return;
-        this.validateComputerAttacks();
-        this.render.removeCurrentNameTag(this.player2);
-        this.render.showCurrentNameTag(this.player1);
-        this.switchCurrentPlayer();
-      }, 1000);
+      this.handleComputerTurn();
     }
+  }
+
+  handleComputerTurn() {
+    // Make the computer player the current player
+    this.render.removeCurrentNameTag(this.player1);
+    this.render.showCurrentNameTag(this.player2);
+    this.switchCurrentPlayer();
+
+    setTimeout(() => {
+      if (this.gameState !== "playing") return;
+      this.validateComputerAttacks();
+
+      // After the computer player's turn, make the real player the current player again
+      this.render.removeCurrentNameTag(this.player2);
+      this.render.showCurrentNameTag(this.player1);
+      this.switchCurrentPlayer();
+    }, 1000);
   }
 
   handlePvPAttack(x, y, currentPlayer, opponentPlayer) {
@@ -324,7 +332,6 @@ export class GameController {
     this.render.hideCurrentPlayer(currentPlayer, opponentPlayer);
     this.render.showCurrentPlayer(opponentPlayer, currentPlayer);
     this.switchCurrentPlayer();
-
   }
 
   switchCurrentPlayer() {
