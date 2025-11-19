@@ -321,12 +321,10 @@ export class GameController {
       return;
     }
 
-    setTimeout(() => {
-      if (this.gameState !== "playing") return;
-      this.render.hideCurrentPlayer(currentPlayer, opponentPlayer);
-      this.render.showCurrentPlayer(opponentPlayer, currentPlayer);
-      this.switchCurrentPlayer();
-    }, 1500);
+    this.render.hideCurrentPlayer(currentPlayer, opponentPlayer);
+    this.render.showCurrentPlayer(opponentPlayer, currentPlayer);
+    this.switchCurrentPlayer();
+
   }
 
   switchCurrentPlayer() {
