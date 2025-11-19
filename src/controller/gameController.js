@@ -302,18 +302,14 @@ export class GameController {
 
   handleComputerTurn() {
     // Make the computer player the current player
-    this.render.removeCurrentNameTag(this.player1);
-    this.render.showCurrentNameTag(this.player2);
-    this.switchCurrentPlayer();
+    this.handlePlayerSwitch(this.player1, this.player2);
 
     setTimeout(() => {
       if (this.gameState !== "playing") return;
       this.validateComputerAttacks();
 
       // After the computer player's turn, make the real player the current player again
-      this.render.removeCurrentNameTag(this.player2);
-      this.render.showCurrentNameTag(this.player1);
-      this.switchCurrentPlayer();
+      this.handlePlayerSwitch(this.player2, this.player1);
     }, 1000);
   }
 
@@ -329,6 +325,10 @@ export class GameController {
       return;
     }
 
+    this.handlePlayerSwitch(currentPlayer, opponentPlayer);
+  }
+
+  handlePlayerSwitch(currentPlayer, opponentPlayer) {
     this.render.hideCurrentPlayer(currentPlayer, opponentPlayer);
     this.render.showCurrentPlayer(opponentPlayer, currentPlayer);
     this.switchCurrentPlayer();
