@@ -326,13 +326,6 @@ export function createRender() {
 
     showCurrentPlayer(currentPlayer, opponentPlayer) {
       this.showCurrentNameTag(currentPlayer);
-      // const currentTag = document.querySelector(`.${currentPlayer.id}-tag`);
-      // currentTag.classList.add("active");
-
-      const currentBoard = document.querySelector(
-        `.board-grid.${currentPlayer.id}`,
-      );
-      currentBoard.classList.add("disabled");
 
       const opponentBoard = document.querySelector(
         `.board-grid.${opponentPlayer.id}`,
@@ -342,13 +335,6 @@ export function createRender() {
 
     hideCurrentPlayer(currentPlayer, opponentPlayer) {
       this.removeCurrentNameTag(currentPlayer);
-      // const currentTag = document.querySelector(`.${currentPlayer.id}-tag`);
-      // currentTag.classList.remove("active");
-
-      const currentBoard = document.querySelector(
-        `.board-grid.${currentPlayer.id}`,
-      );
-      currentBoard.classList.remove("disabled");
 
       const opponentBoard = document.querySelector(
         `.board-grid.${opponentPlayer.id}`,
