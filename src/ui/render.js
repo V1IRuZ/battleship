@@ -93,6 +93,7 @@ export function createRender() {
 
       const input = document.createElement("input");
       input.id = `${playerId}-name`;
+      input.maxLength = 20;
 
       container.appendChild(label);
       container.appendChild(input);
