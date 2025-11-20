@@ -69,13 +69,20 @@ h6 {
 }
 
 :root {
-  --board-color: rgba(82, 82, 82, 0.562);
   --board-size: 500px;
   --border-size: 2px;
   --cell-size: calc(var(--board-size) / 10);
   --setup-board-width: (var(--board-size) / 2);
   --current-player-color: red;
-  --ship-color: aquamarine;
+  --background-color: #192a51;
+  --board-color: #233d4d;
+  --hit-color: #ff595e;
+  --miss-color: #fbfbf2;
+  --ship-color: #19191a;
+}
+
+body {
+  background-color: var(--background-color);
 }
 
 #page {
@@ -114,6 +121,7 @@ main {
 /* SETUP */
 
 .info {
+  color: var(--miss-color);
   align-content: center;
 }
 
@@ -141,12 +149,12 @@ ul {
 
 .player1 > .ship.dragging,
 .player2 > .ship.dragging {
-  background-color: blueviolet;
+  background-color: #e2e8ddb9;
 }
 
 .ghost,
 .cell.ship.ghost {
-  background-color: rgb(144, 238, 144);
+  background-color: #b7d1da7c;
 }
 
 /* BUTTON MENU */
@@ -173,6 +181,7 @@ ul {
 }
 
 .board-container {
+  color: var(--miss-color);
   display: grid;
   grid-template-columns: 50px 500px;
   grid-template-rows: 80px 50px 500px;
@@ -236,9 +245,9 @@ ul {
 
 .player1 > .cell.ship.hit,
 .player2 > .cell.ship.hit {
-  background-color: red;
+  background-color: var(--hit-color);
 }
 
 .miss {
-  background-color: rgb(223, 223, 16);
+  background-color: var(--miss-color);
 }
