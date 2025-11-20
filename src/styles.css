@@ -84,6 +84,7 @@ h6 {
   --miss-color: #fbfbf2;
   --ship-color: #19191a;
   --active-color: #3498db;
+  --box-shadow: 0 0 10px rgba(52, 152, 219, 0.6);
 }
 
 body {
@@ -111,6 +112,7 @@ main {
 }
 
 button {
+  cursor: pointer;
   border-radius: 30px;
 }
 
@@ -120,6 +122,18 @@ button {
   display: flex;
   flex-direction: column;
   gap: 3em;
+}
+
+button {
+  color: var(--active-color);
+  font-weight: 900;
+  background-color: var(--background-color);
+  border-color: var(--active-color);
+  box-shadow: var(--box-shadow);
+}
+
+button:hover {
+  background-color: #1f3464;
 }
 
 .single-player,
@@ -174,8 +188,10 @@ ul {
   gap: 1.5em;
 }
 
-.options > button {
+.options > button,
+.back-btn {
   font-size: 1.25rem;
+  padding: 6px 12px;
 }
 
 /* GAMEBOARD */
@@ -291,7 +307,8 @@ h1,
 .board-grid {
   transition:
     border-color 0.4s ease,
-    box-shadow 0.4s ease;
+    box-shadow 0.4s ease,
+    border-radius 0.4 ease;
 }
 
 /* SWITCHING ACTIVE PLAYER */
