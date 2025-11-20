@@ -69,8 +69,12 @@ h6 {
 }
 
 :root {
+  --system-ui:
+    system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   --board-size: 500px;
   --border-size: 2px;
+  --border-radius: 30px;
   --cell-size: calc(var(--board-size) / 10);
   --setup-board-width: (var(--board-size) / 2);
   --current-player-color: red;
@@ -79,9 +83,11 @@ h6 {
   --hit-color: #ff595e;
   --miss-color: #fbfbf2;
   --ship-color: #19191a;
+  --active-color: #3498db;
 }
 
 body {
+  font-family: var(--system-ui);
   background-color: var(--background-color);
 }
 
@@ -102,6 +108,10 @@ main {
 #content {
   display: flex;
   gap: 4em;
+}
+
+button {
+  border-radius: 30px;
 }
 
 /* MENU */
@@ -173,11 +183,12 @@ ul {
 .player1-tag.active h1,
 .player2-tag.active h1 {
   border: 2px solid var(--current-player-color);
+  border-radius: var(--border-radius);
 }
 
-.board-grid.player1.active ,
+.board-grid.player1.active,
 .board-grid.player2.active {
-  border:2px solid var(--current-player-color);
+  border: 2px solid var(--current-player-color);
 }
 
 .board-container {
@@ -188,7 +199,7 @@ ul {
 }
 
 .player1-tag,
-.player2-tag{
+.player2-tag {
   display: grid;
   justify-content: center;
   grid-row: 1/2;
@@ -251,3 +262,56 @@ ul {
 .miss {
   background-color: var(--miss-color);
 }
+
+/* ANIMATIONS */
+
+/* BOARD ACTIONS */
+.cell.miss,
+.cell.hit,
+.setup > .ship,
+.cell.ship.hit .cell.ship {
+  animation: pop-in 150ms ease-out forwards;
+}
+
+@keyframes pop-in {
+  0% {
+    transform: scale(0.2);
+    opacity: 0;
+  }
+  80% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+h1,
+.board-grid {
+  transition:
+    border-color 0.4s ease,
+    box-shadow 0.4s ease;
+}
+
+/* SWITCHING ACTIVE PLAYER */
+
+.board-grid.active,
+.active > h1 {
+  border-color: var(--active-color) !important;
+  box-shadow: 0 0 10px rgba(52, 152, 219, 0.6);
+}
+
+/* LOADING DOM */
+
+.fade-in {
+  opacity: 0;
+  animation: fadeIn 500ms ease forwards;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
