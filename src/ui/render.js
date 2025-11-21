@@ -105,12 +105,16 @@ export function createRender() {
       const header = document.createElement("h1");
       header.textContent = playerObj.name;
 
+      const para = document.createElement("p");
+      para.textContent = "When you press ready, you will go to the ship setup view, the other player should look away from the screen at this time." 
+
       const nameInput = this.buildNameInput(playerObj.id);
       const button = this.drawButton(`${playerObj.id}-name-ready`, "READY");
 
       mainContainer.appendChild(header);
       mainContainer.appendChild(nameInput);
       mainContainer.appendChild(button);
+      mainContainer.appendChild(para);
 
       container.appendChild(mainContainer);
     },
