@@ -85,6 +85,7 @@ h6 {
   --ship-color: #19191a;
   --active-color: #3498db;
   --box-shadow: 0 0 10px rgba(52, 152, 219, 0.6);
+  --hover-color: #54b2f1;
 }
 
 body {
@@ -111,11 +112,6 @@ main {
   gap: 4em;
 }
 
-button {
-  cursor: pointer;
-  border-radius: 30px;
-}
-
 /* MENU */
 
 .menu {
@@ -125,15 +121,20 @@ button {
 }
 
 button {
+  cursor: pointer;
+  border-radius: 30px;
   color: var(--active-color);
   font-weight: 900;
   background-color: var(--background-color);
   border-color: var(--active-color);
   box-shadow: var(--box-shadow);
+  transition: transform 0.3s ease-in-out;
 }
 
 button:hover {
-  background-color: #1f3464;
+  color: var(--hover-color);
+  box-shadow: 0 0 10px rgba(75, 157, 211, 0.6);
+  transform: scale(1.2);
 }
 
 .single-player,
@@ -142,11 +143,57 @@ button:hover {
   font-size: 2rem;
 }
 
+/* PVP NAME */
+
+.pvp-setup {
+  color: var(--miss-color);
+  width: 500px;
+}
+
+.pvp-setup > h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1.5em;
+}
+
+.pvp-setup > button {
+  font-size: 1.25rem;
+  padding: 6px 12px;
+  margin-bottom: 4em;
+}
+
+.pvp-name {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 1.5em;
+}
+
+.pvp-name label {
+  font-size: 1.5rem;
+}
+
+.pvp-name input {
+  padding-left: 10px;
+  width: 400px;
+  background-color: var(--background-color);
+  color: var(--miss-color);
+  border-radius: 10px;
+  border: 4px solid var(--active-color);
+  outline: none;
+  font-size: 2rem;
+}
+
+.pvp-setup > p {
+  font-size: 1.25rem;
+  font-weight: 900;
+}
+
 /* SETUP */
 
 .info {
   color: var(--miss-color);
   align-content: center;
+  width: var(--board-size);
 }
 
 .info h2 {
@@ -159,7 +206,7 @@ ul {
   flex-direction: column;
   gap: 1em;
   padding: 0;
-  font-size: 1rem;
+  font-size: 1.25rem;
 }
 
 .setup > .cell {
@@ -331,4 +378,3 @@ h1,
     opacity: 1;
   }
 }
-
