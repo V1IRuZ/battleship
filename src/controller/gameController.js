@@ -28,7 +28,7 @@ export class GameController {
 
   applyFadeInAnimation(container) {
     container.classList.remove("fade-in");
-    void container.offsetWidth; 
+    void container.offsetWidth;
     container.classList.add("fade-in");
   }
 
@@ -364,6 +364,15 @@ export class GameController {
 
   endGame(winner) {
     this.gameState = "gameover";
-    console.log(`${winner.id} wins!`);
+
+    const modal = document.querySelector(".winner-modal");
+    const para = document.querySelector(".winner-text");
+
+    this.applyFadeInAnimation(modal);
+
+    para.textContent = `${winner.name} wins!`;
+    modal.showModal();
+
+    this.events.bindModalClose(modal);
   }
 }
