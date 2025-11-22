@@ -101,6 +101,7 @@ export function createRender() {
 
       const input = document.createElement("input");
       input.id = `${playerId}-name`;
+      input.type = "text";
       input.maxLength = 20;
 
       container.appendChild(label);
