@@ -1,3 +1,22 @@
+@font-face {
+  font-family: "Ethnocentric";
+  src:
+    url("./assets/fonts/Ethnocentric-Regular.woff2") format("woff2"),
+    url("./assets/fonts/Ethnocentric-Regular.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+    font-family: 'Kimberley';
+    src: url('./assets/fonts/Kimberley-Black.woff2') format('woff2'),
+        url('./assets/fonts/Kimberley-Black.woff') format('woff');
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+}
+
 /*
   Josh's Custom CSS Reset
   https://www.joshwcomeau.com/css/custom-css-reset/
@@ -89,13 +108,14 @@ h6 {
 }
 
 body {
-  font-family: var(--system-ui);
+  font-family: 'Kimberley', var(--system-ui);
   background-color: var(--background-color);
 }
 
 #page {
   display: grid;
-  grid-template-rows: 100px 1fr 100px;
+  gap: 1em;
+  grid-template-rows: 100px 1fr 50px;
   min-height: 100vh;
   max-width: 1920px;
   margin: 0 auto;
@@ -112,12 +132,30 @@ main {
   gap: 4em;
 }
 
+header {
+  justify-items: center;
+}
+
+header h1 {
+  font-family: "Ethnocentric", var(--system-ui);
+  padding: 0.5em;
+  font-size: 3rem;
+  color: var(--active-color);
+  text-shadow: 8px 8px var(--ship-color);
+}
+
 /* MENU */
 
 .menu {
+  margin-top: 3em;
   display: flex;
   flex-direction: column;
-  gap: 3em;
+  gap: 2em;
+}
+
+.menu img {
+  width: 400px;
+  margin-bottom: 3em;
 }
 
 button {
@@ -139,7 +177,7 @@ button:hover {
 
 .single-player,
 .pvp {
-  padding: 1em 2em;
+  padding: 0.5em 1em;
   font-size: 2rem;
 }
 
