@@ -1,3 +1,5 @@
+import battleship from "../assets/images/battleship-8533661_640.png";
+
 export function createRender() {
   return {
     drawContainer(...classNames) {
@@ -22,8 +24,14 @@ export function createRender() {
 
     showMenu(container) {
       const menuContainer = this.drawContainer("menu");
+      const image = document.createElement("img");
+      image.src = battleship;
+      image.alt = "Battleship";
+
       const singlePlayerBtn = this.drawButton("single-player", "PLAYER VS AI");
       const pvpBtn = this.drawButton("pvp", "PLAYER VS PLAYER");
+
+      menuContainer.appendChild(image);
       menuContainer.appendChild(singlePlayerBtn);
       menuContainer.appendChild(pvpBtn);
 
@@ -106,7 +114,8 @@ export function createRender() {
       header.textContent = playerObj.name;
 
       const para = document.createElement("p");
-      para.textContent = "When you press ready, you will go to the ship setup view, the other player should look away from the screen at this time." 
+      para.textContent =
+        "When you press ready, you will go to the ship setup view, the other player should look away from the screen at this time.";
 
       const nameInput = this.buildNameInput(playerObj.id);
       const button = this.drawButton(`${playerObj.id}-name-ready`, "READY");
