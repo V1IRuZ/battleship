@@ -143,5 +143,13 @@ export function createEvents() {
       element.replaceWith(clone);
       return clone;
     },
+
+    bindModalClose(modal) {
+      const button = document.querySelector(".close-btn");
+      button.addEventListener("click", (e) => {
+        modal.close();
+        e.preventDefault();
+      });
+    },
   };
 }
