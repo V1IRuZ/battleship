@@ -144,11 +144,22 @@ export function createEvents() {
       return clone;
     },
 
-    bindModalClose(modal) {
-      const button = document.querySelector(".close-btn");
+    bindModalExit(modal, callback) {
+      const button = document.querySelector(".exit-btn");
       button.addEventListener("click", (e) => {
         modal.close();
-        e.preventDefault();
+
+        callback();
+      });
+    },
+
+    bindPlayAgain(callback) {
+      const button = document.querySelector(".again-btn");
+      const modal = document.querySelector(".winner-modal");
+      button.addEventListener("click", () => {
+        modal.close();
+
+        callback();
       });
     },
   };
