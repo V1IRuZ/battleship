@@ -41,18 +41,30 @@ export class GameController {
 
     this.render.showMenu(this.html.content);
     this.events.bindSinglePlayerClick(this.html.content, () => {
-      this.player1 = new RealPlayer("player1", "PLAYER");
-      this.player2 = new ComputerPlayer("player2", "CPU");
-      this.currentPlayer = this.player1.id;
-      this.initSinglePlayerSetup(this.player1, ".player1");
+      this.initPlayersSinglePlayer();
     });
 
     this.events.bindPlayerVersusPlayerClick(this.html.content, () => {
-      this.player1 = new RealPlayer("player1", "PLAYER 1");
-      this.player2 = new RealPlayer("player2", "PLAYER 2");
-      this.currentPlayer = this.player1.id;
-      this.initPvPNameSetupPlayer1();
+      this.initPlayersPvP();
     });
+  }
+
+  initPlayersSinglePlayer() {
+    this.gameState = "setup";
+
+    this.player1 = new RealPlayer("player1", "PLAYER");
+    this.player2 = new ComputerPlayer("player2", "AI");
+    this.currentPlayer = this.player1.id;
+    this.initSinglePlayerSetup(this.player1, ".player1");
+  }
+
+  initPlayersPvP(player1Name = "PLAYER 1", player2Name = "PLAYER 2") {
+    this.gameState = "setup";
+
+    this.player1 = new RealPlayer("player1", player1Name);
+    this.player2 = new RealPlayer("player2", player2Name);
+    this.currentPlayer = this.player1.id;
+    this.initPvPNameSetupPlayer1();
   }
 
   initBoardSetup(player, boardSelector) {
@@ -302,6 +314,9 @@ export class GameController {
 
     if (this.player2.gameBoard.allShipsSunk) {
       this.endGame(this.player1);
+      this.events.bindPlayAgain(() => {
+        this.initPlayersSinglePlayer();
+      });
     } else {
       this.handleComputerTurn();
     }
@@ -329,6 +344,13 @@ export class GameController {
 
     if (opponentPlayer.gameBoard.allShipsSunk) {
       this.endGame(currentPlayer);
+      this.events.bindPlayAgain(() => {
+        const name1 = opponentPlayer.name;
+        const name2 = currentPlayer.name;
+
+        this.initPlayersPvP(name1, name2);
+      });
+
       return;
     }
 
@@ -357,6 +379,9 @@ export class GameController {
 
     if (this.player1.gameBoard.allShipsSunk) {
       this.endGame(this.player2);
+      this.events.bindPlayAgain(() => {
+        this.initPlayersSinglePlayer();
+      });
     }
   }
 
@@ -373,6 +398,6 @@ export class GameController {
     para.textContent = `${winner.name} wins!`;
     modal.showModal();
 
-    this.events.bindModalClose(modal);
+    this.events.bindModalExit(modal, this.initMenu.bind(this));
   }
 }
