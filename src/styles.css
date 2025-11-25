@@ -107,8 +107,13 @@ h6 {
 }
 
 body {
+  visibility: hidden;
   font-family: "Kimberley", var(--system-ui);
   background-color: var(--background-color);
+}
+
+body.ready {
+  visibility: visible;
 }
 
 #page {
@@ -412,8 +417,9 @@ dialog {
 .cell.miss,
 .cell.hit,
 .setup > .ship,
-.cell.ship.hit .cell.ship {
+.cell.ship.hit {
   animation: pop-in 150ms ease-out forwards;
+  will-change: transform;
 }
 
 @keyframes pop-in {
