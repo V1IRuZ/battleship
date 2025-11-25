@@ -27,6 +27,8 @@ export function createRender() {
       const image = document.createElement("img");
       image.src = battleship;
       image.alt = "Battleship";
+      image.width = 853;
+      image.height = 640;
 
       const singlePlayerBtn = this.drawButton("single-player", "PLAYER VS AI");
       const pvpBtn = this.drawButton("pvp", "PLAYER VS PLAYER");
@@ -96,7 +98,7 @@ export function createRender() {
     buildNameInput(playerId) {
       const container = this.drawContainer("pvp-name");
       const label = document.createElement("label");
-      label.textContent = "Type your name";
+      label.textContent = "Name";
       label.setAttribute("for", `${playerId}-name`);
 
       const input = document.createElement("input");
@@ -114,17 +116,21 @@ export function createRender() {
       const header = document.createElement("h1");
       header.textContent = playerObj.name;
 
-      const para = document.createElement("p");
-      para.textContent =
-        "When you press ready, you will go to the ship setup view, the other player should look away from the screen at this time.";
+      const para1 = document.createElement("p");
+      para1.textContent = "Keep your current or enter a new player name" 
+
+      const para2 = document.createElement("p");
+      para2.textContent =
+        "When you press ready, you will go to the ship setup view, the other player should look away from the screen at this time";
 
       const nameInput = this.buildNameInput(playerObj.id);
       const button = this.drawButton(`${playerObj.id}-name-ready`, "READY");
 
       mainContainer.appendChild(header);
+      mainContainer.appendChild(para1)
       mainContainer.appendChild(nameInput);
       mainContainer.appendChild(button);
-      mainContainer.appendChild(para);
+      mainContainer.appendChild(para2);
 
       container.appendChild(mainContainer);
     },
