@@ -1,6 +1,7 @@
 import "./styles.css";
 import { GameController } from "./controller/gameController.js";
 
-document.addEventListener("DOMContentLoaded", () => {
+window.addEventListener("load", () => {
   new GameController();
+  document.body.classList.add("ready");
 });
