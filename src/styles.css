@@ -1,3 +1,5 @@
+/* FONTS */
+
 @font-face {
   font-family: "Ethnocentric";
   src:
@@ -88,12 +90,13 @@ h6 {
   isolation: isolate;
 }
 
+/* VARIABLES */
+
 :root {
   --system-ui:
     system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   --board-size: 500px;
-  --border-size: 2px;
   --border-radius: 30px;
   --cell-size: calc(var(--board-size) / 10);
   --background-color: #192a51;
@@ -105,6 +108,8 @@ h6 {
   --box-shadow: 0 0 10px rgba(52, 152, 219, 0.6);
   --hover-color: #54b2f1;
 }
+
+/* BASIC LAYOUT */
 
 body {
   visibility: hidden;
@@ -123,6 +128,18 @@ body.ready {
   margin: 0 auto;
 }
 
+header {
+  justify-items: center;
+}
+
+header h1 {
+  font-family: "Ethnocentric", var(--system-ui);
+  padding: 8px;
+  font-size: 3rem;
+  color: var(--active-color);
+  text-shadow: 8px 8px var(--ship-color);
+}
+
 main {
   display: grid;
   grid-template-rows: 1fr, 100px;
@@ -136,33 +153,6 @@ main {
 
 #button-menu {
   margin-top: 3em;
-}
-
-header {
-  justify-items: center;
-}
-
-header h1 {
-  font-family: "Ethnocentric", var(--system-ui);
-  padding: 8px;
-  font-size: 3rem;
-  color: var(--active-color);
-  text-shadow: 8px 8px var(--ship-color);
-}
-
-/* MENU */
-
-.menu {
-  margin-top: 3em;
-  display: flex;
-  flex-direction: column;
-  gap: 2em;
-}
-
-.menu img {
-  width: 400px;
-  height: auto;
-  margin-bottom: 3em;
 }
 
 button {
@@ -180,6 +170,21 @@ button:hover {
   color: var(--hover-color);
   box-shadow: 0 0 10px rgba(75, 157, 211, 0.6);
   transform: scale(1.2);
+}
+
+/* MENU */
+
+.menu {
+  margin-top: 3em;
+  display: flex;
+  flex-direction: column;
+  gap: 2em;
+}
+
+.menu img {
+  width: 400px;
+  height: auto;
+  margin-bottom: 3em;
 }
 
 .single-player,
@@ -242,7 +247,7 @@ button:hover {
   font-weight: 900;
 }
 
-/* SETUP */
+/* BOARD SETUP */
 
 .info {
   color: var(--miss-color);
