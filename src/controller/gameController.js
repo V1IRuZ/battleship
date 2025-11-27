@@ -41,15 +41,15 @@ export class GameController {
 
     this.render.showMenu(this.html.content);
     this.events.bindSinglePlayerClick(this.html.content, () => {
-      this.initPlayersSinglePlayer();
+      this.setupSinglePlayerGame();
     });
 
     this.events.bindPlayerVersusPlayerClick(this.html.content, () => {
-      this.initPlayersPvP();
+      this.setupPvPGame();
     });
   }
 
-  initPlayersSinglePlayer() {
+  setupSinglePlayerGame() {
     this.gameState = "setup";
 
     this.player1 = new RealPlayer("player1", "PLAYER");
@@ -58,7 +58,7 @@ export class GameController {
     this.initSinglePlayerSetup(this.player1, ".player1");
   }
 
-  initPlayersPvP(player1Name = "PLAYER 1", player2Name = "PLAYER 2") {
+  setupPvPGame(player1Name = "PLAYER 1", player2Name = "PLAYER 2") {
     this.gameState = "setup";
 
     this.player1 = new RealPlayer("player1", player1Name);
@@ -315,7 +315,7 @@ export class GameController {
     if (this.player2.gameBoard.allShipsSunk) {
       this.endGame(this.player1);
       this.events.bindPlayAgain(() => {
-        this.initPlayersSinglePlayer();
+        this.setupSinglePlayerGame();
       });
     } else {
       this.handleComputerTurn();
@@ -348,7 +348,7 @@ export class GameController {
         const name1 = opponentPlayer.name;
         const name2 = currentPlayer.name;
 
-        this.initPlayersPvP(name1, name2);
+        this.setupPvPGame(name1, name2);
       });
 
       return;
@@ -380,7 +380,7 @@ export class GameController {
     if (this.player1.gameBoard.allShipsSunk) {
       this.endGame(this.player2);
       this.events.bindPlayAgain(() => {
-        this.initPlayersSinglePlayer();
+        this.setupSinglePlayerGame();
       });
     }
   }
