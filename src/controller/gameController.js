@@ -96,7 +96,7 @@ export class GameController {
 
     const board = document.querySelector(".player2");
     this.events.bindBoardClicks(board, (x, y) => {
-      this.handleAttack(x, y);
+      this.handleSinglePlayerTurn(x, y);
     });
 
     this.events.bindBackMenuClick(this.html.buttonMenu, () => {
@@ -301,7 +301,7 @@ export class GameController {
 
   // PLAYER VS COMPUTER
 
-  handleAttack(x, y) {
+  handleSinglePlayerTurn(x, y) {
     if (this.gameState !== "playing") return;
     if (this.currentPlayer !== this.player1.id) return;
 
@@ -310,9 +310,11 @@ export class GameController {
 
     if (this.player2.gameBoard.allShipsSunk) {
       this.endGame(this.player1);
+
       this.events.bindPlayAgain(() => {
         this.setupSinglePlayerGame();
       });
+
     } else {
       this.handleComputerTurn();
     }
