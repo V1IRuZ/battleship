@@ -26,8 +26,6 @@ export class GameController {
     );
   }
 
-
-
   //INITIALIZE METHODS
 
   initMenu() {
@@ -167,12 +165,12 @@ export class GameController {
 
     const player1Board = document.querySelector(".player1");
     this.events.bindBoardClicks(player1Board, (x, y) => {
-      this.handlePvPAttack(x, y, this.player2, this.player1);
+      this.handlePvPTurn(x, y, this.player2, this.player1);
     });
 
     const player2Board = document.querySelector(".player2");
     this.events.bindBoardClicks(player2Board, (x, y) => {
-      this.handlePvPAttack(x, y, this.player1, this.player2);
+      this.handlePvPTurn(x, y, this.player1, this.player2);
     });
 
     this.events.bindBackMenuClick(this.html.buttonMenu, () => {
@@ -314,7 +312,6 @@ export class GameController {
       this.events.bindPlayAgain(() => {
         this.setupSinglePlayerGame();
       });
-
     } else {
       this.handleComputerTurn();
     }
@@ -333,7 +330,7 @@ export class GameController {
     }, 1000);
   }
 
-  handlePvPAttack(x, y, currentPlayer, opponentPlayer) {
+  handlePvPTurn(x, y, currentPlayer, opponentPlayer) {
     if (this.gameState !== "playing") return;
     if (this.currentPlayer !== currentPlayer.id) return;
 
@@ -377,6 +374,7 @@ export class GameController {
 
     if (this.player1.gameBoard.allShipsSunk) {
       this.endGame(this.player2);
+
       this.events.bindPlayAgain(() => {
         this.setupSinglePlayerGame();
       });
