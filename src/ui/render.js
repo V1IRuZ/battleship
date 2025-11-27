@@ -117,7 +117,7 @@ export function createRender() {
       header.textContent = playerObj.name;
 
       const para1 = document.createElement("p");
-      para1.textContent = "Keep your current or enter a new player name" 
+      para1.textContent = "Keep your current or enter a new player name";
 
       const para2 = document.createElement("p");
       para2.textContent =
@@ -127,7 +127,7 @@ export function createRender() {
       const button = this.drawButton(`${playerObj.id}-name-ready`, "READY");
 
       mainContainer.appendChild(header);
-      mainContainer.appendChild(para1)
+      mainContainer.appendChild(para1);
       mainContainer.appendChild(nameInput);
       mainContainer.appendChild(button);
       mainContainer.appendChild(para2);
@@ -361,6 +361,12 @@ export function createRender() {
         `.board-grid.${opponentPlayer.id}`,
       );
       opponentBoard.classList.remove("active");
+    },
+
+    applyFadeInAnimation(container) {
+      container.classList.remove("fade-in");
+      void container.offsetWidth;
+      container.classList.add("fade-in");
     },
   };
 }

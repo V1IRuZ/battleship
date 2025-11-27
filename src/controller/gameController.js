@@ -26,18 +26,14 @@ export class GameController {
     );
   }
 
-  applyFadeInAnimation(container) {
-    container.classList.remove("fade-in");
-    void container.offsetWidth;
-    container.classList.add("fade-in");
-  }
+
 
   //INITIALIZE METHODS
 
   initMenu() {
     this.gameState = "setup";
     this.resetContainers();
-    this.applyFadeInAnimation(this.html.content);
+    this.render.applyFadeInAnimation(this.html.content);
 
     this.render.showMenu(this.html.content);
     this.events.bindSinglePlayerClick(this.html.content, () => {
@@ -393,7 +389,7 @@ export class GameController {
     const modal = document.querySelector(".winner-modal");
     const para = document.querySelector(".winner-text");
 
-    this.applyFadeInAnimation(modal);
+    this.render.applyFadeInAnimation(modal);
 
     para.textContent = `${winner.name} wins!`;
     modal.showModal();
