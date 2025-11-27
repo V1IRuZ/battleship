@@ -16,6 +16,8 @@ export class GameController {
     this.initMenu();
   }
 
+  // HELPER METHODS
+
   resetContainers() {
     this.html.content.innerHTML = "";
     this.html.buttonMenu.innerHTML = "";
@@ -49,7 +51,7 @@ export class GameController {
     this.player1 = new RealPlayer("player1", "PLAYER");
     this.player2 = new ComputerPlayer("player2", "AI");
     this.currentPlayer = this.player1.id;
-    this.initSinglePlayerSetup(this.player1, ".player1");
+    this.prepareSinglePlayerSetupPhase(this.player1, ".player1");
   }
 
   setupPvPGame(player1Name = "PLAYER 1", player2Name = "PLAYER 2") {
@@ -61,7 +63,7 @@ export class GameController {
     this.initPvPNameSetupPlayer1();
   }
 
-  initBoardSetup(player, boardSelector) {
+  prepareBoardPlacement(player, boardSelector) {
     player.placeAllShipsRandomly();
     this.resetContainers();
     this.render.showInfo(this.html.content);
@@ -71,9 +73,10 @@ export class GameController {
     this.handleRotationClicks(player, boardSelector);
   }
 
-  initSinglePlayerSetup(player, boardSelector) {
+  prepareSinglePlayerSetupPhase(player, boardSelector) {
     this.player2.placeAllShipsRandomly();
-    this.initBoardSetup(player, boardSelector);
+    this.prepareBoardPlacement(player, boardSelector);
+
     this.handleSetupBtns(
       player,
       "start-game",
@@ -134,7 +137,7 @@ export class GameController {
   }
 
   initPvPBoardSetupPlayer1() {
-    this.initBoardSetup(this.player1, ".player1");
+    this.prepareBoardPlacement(this.player1, ".player1");
     this.handleSetupBtns(
       this.player1,
       `${this.player1.id}-ready`,
@@ -143,7 +146,7 @@ export class GameController {
   }
 
   initPvPBoardSetupPlayer2() {
-    this.initBoardSetup(this.player2, ".player2");
+    this.prepareBoardPlacement(this.player2, ".player2");
     this.handleSetupBtns(
       this.player2,
       `${this.player2.id}-ready`,
