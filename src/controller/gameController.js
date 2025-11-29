@@ -105,7 +105,7 @@ export class GameController {
     });
   }
 
-  initPvPNameSetup(player, nextCallback) {
+  preparePvPNameSetupFor(player, nextCallback) {
     this.resetContainers();
 
     this.render.showNameSetup(player, this.html.content);
@@ -123,14 +123,14 @@ export class GameController {
   }
 
   initPvPNameSetupPlayer1() {
-    this.initPvPNameSetup(
+    this.preparePvPNameSetupFor(
       this.player1,
       this.initPvPBoardSetupPlayer1.bind(this),
     );
   }
 
   initPvPNameSetupPlayer2() {
-    this.initPvPNameSetup(
+    this.preparePvPNameSetupFor(
       this.player2,
       this.initPvPBoardSetupPlayer2.bind(this),
     );
