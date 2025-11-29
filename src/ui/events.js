@@ -92,7 +92,7 @@ export function createEvents() {
       return clone;
     },
 
-    bindModalExit(modal, callback) {
+    bindModalExitClick(modal, callback) {
       const button = document.querySelector(".exit-btn");
       button.addEventListener("click", (e) => {
         modal.close();
@@ -101,7 +101,7 @@ export function createEvents() {
       });
     },
 
-    bindPlayAgain(callback) {
+    bindModalPlayAgainClick(callback) {
       const button = document.querySelector(".again-btn");
       const modal = document.querySelector(".winner-modal");
       button.addEventListener("click", () => {

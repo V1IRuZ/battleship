@@ -236,7 +236,7 @@ export class GameController {
     if (this.player2.gameBoard.allShipsSunk) {
       this.handleEndGameModal(this.player1);
 
-      this.events.bindPlayAgain(() => {
+      this.events.bindModalPlayAgainClick(() => {
         this.setupSinglePlayerGame();
       });
     } else {
@@ -254,7 +254,7 @@ export class GameController {
     if (this.player1.gameBoard.allShipsSunk) {
       this.handleEndGameModal(this.player2);
 
-      this.events.bindPlayAgain(() => {
+      this.events.bindModalPlayAgainClick(() => {
         this.setupSinglePlayerGame();
       });
     }
@@ -368,7 +368,7 @@ export class GameController {
 
     if (opponentPlayer.gameBoard.allShipsSunk) {
       this.handleEndGameModal(currentPlayer);
-      this.events.bindPlayAgain(() => {
+      this.events.bindModalPlayAgainClick(() => {
         const name1 = opponentPlayer.name;
         const name2 = currentPlayer.name;
 
@@ -423,6 +423,6 @@ export class GameController {
     para.textContent = `${winner.name} wins!`;
     modal.showModal();
 
-    this.events.bindModalExit(modal, this.initMenu.bind(this));
+    this.events.bindModalExitClick(modal, this.initMenu.bind(this));
   }
 }
