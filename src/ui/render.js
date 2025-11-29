@@ -231,6 +231,15 @@ export function createRender() {
       container.appendChild(boardContainer);
     },
 
+    showStartGameUI(player1, player2, ui) {
+      this.showPlayingBoard(player1, ui.content);
+      this.showPlayingBoard(player2, ui.content);
+      this.showCurrentPlayer(player1, player2);
+
+      this.showBackButton(ui.buttonMenu);
+      this.removeSetupClass();
+    },
+
     //ACTIONS
 
     removeSetupClass() {

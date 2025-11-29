@@ -146,9 +146,13 @@ export class GameController {
 
   handleSetupBtns(playerObj, readyButtonClass, gameCallback) {
     this.render.showSetupButtons(this.html.buttonMenu, readyButtonClass);
-    this.events.bindButtonClick(this.html.buttonMenu, `.${readyButtonClass}`, () => {
-      gameCallback();
-    });
+    this.events.bindButtonClick(
+      this.html.buttonMenu,
+      `.${readyButtonClass}`,
+      () => {
+        gameCallback();
+      },
+    );
 
     this.events.bindButtonClick(this.html.buttonMenu, ".back-btn", () => {
       this.initMenu();
@@ -277,13 +281,7 @@ export class GameController {
     this.gameState = "playing";
     this.resetContainers();
 
-    this.render.showPlayingBoard(this.player1, this.html.content);
-    this.render.showPlayingBoard(this.player2, this.html.content);
-    this.render.showCurrentPlayer(this.player1, this.player2);
-
-    this.render.showBackButton(this.html.buttonMenu);
-    this.render.removeSetupClass();
-
+    this.render.showStartGameUI(this.player1, this.player2, this.html);
     this.render.showShipsInSinglePlayer(this.player1.id);
 
     const board = document.querySelector(".player2");
@@ -310,11 +308,15 @@ export class GameController {
       this.initMenu();
     });
 
-    this.events.bindButtonClick(this.html.content, `.${player.id}-name-ready`, () => {
-      const name = this.render.getNameInputValue(player.id);
-      player.setName(name);
-      nextCallback();
-    });
+    this.events.bindButtonClick(
+      this.html.content,
+      `.${player.id}-name-ready`,
+      () => {
+        const name = this.render.getNameInputValue(player.id);
+        player.setName(name);
+        nextCallback();
+      },
+    );
   }
 
   // SETUP PROCESS: PLAYER 1 NAME -> BOARD -> PLAYER 2 NAME -> BOARD -> GAME
@@ -384,16 +386,10 @@ export class GameController {
   }
 
   initPvPGame() {
+    this.gameState = "playing";
     this.resetContainers();
 
-    this.gameState = "playing";
-
-    this.render.showPlayingBoard(this.player1, this.html.content);
-    this.render.showPlayingBoard(this.player2, this.html.content);
-    this.render.showCurrentPlayer(this.player1, this.player2);
-
-    this.render.showBackButton(this.html.buttonMenu);
-    this.render.removeSetupClass();
+    this.render.showStartGameUI(this.player1, this.player2, this.html);
 
     const player1Board = document.querySelector(".player1");
     this.events.bindBoardClick(player1Board, (x, y) => {
