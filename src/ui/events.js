@@ -2,7 +2,7 @@ export function createEvents() {
   let draggedShip = null;
 
   return {
-    bindBoardClicks(board, callback) {
+    bindBoardClick(board, callback) {
       board.addEventListener("click", (e) => {
         if (!e.target.classList.contains("cell")) return;
         if (e.target.classList.contains("miss")) return;
@@ -71,7 +71,7 @@ export function createEvents() {
       });
     },
 
-    bindShipRotationClick(board, callback) {
+    bindShipRotationDoubleClick(board, callback) {
       board.addEventListener("dblclick", (e) => {
         if (!e.target.classList.contains("ship")) return;
         const shipIndex = Number(e.target.dataset.shipIndex);

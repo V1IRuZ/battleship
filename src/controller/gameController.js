@@ -105,7 +105,7 @@ export class GameController {
 
   handleRotationClicks(player, boardSelector) {
     const board = document.querySelector(boardSelector);
-    this.events.bindShipRotationClick(board, (shipIndex) => {
+    this.events.bindShipRotationDoubleClick(board, (shipIndex) => {
       this.handleShipRotation(shipIndex, player);
     });
   }
@@ -285,7 +285,7 @@ export class GameController {
     this.render.showCurrentNameTag(this.player1);
 
     const board = document.querySelector(".player2");
-    this.events.bindBoardClicks(board, (x, y) => {
+    this.events.bindBoardClick(board, (x, y) => {
       this.handleSinglePlayerTurn(x, y);
     });
 
@@ -394,12 +394,12 @@ export class GameController {
     this.render.removeSetupClass();
 
     const player1Board = document.querySelector(".player1");
-    this.events.bindBoardClicks(player1Board, (x, y) => {
+    this.events.bindBoardClick(player1Board, (x, y) => {
       this.handlePvPTurn(x, y, this.player2, this.player1);
     });
 
     const player2Board = document.querySelector(".player2");
-    this.events.bindBoardClicks(player2Board, (x, y) => {
+    this.events.bindBoardClick(player2Board, (x, y) => {
       this.handlePvPTurn(x, y, this.player1, this.player2);
     });
 
