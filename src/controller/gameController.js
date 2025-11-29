@@ -16,7 +16,9 @@ export class GameController {
     this.initMenu();
   }
 
-  // HELPER METHODS
+  // ------------------
+  // | HELPER METHODS |
+  // ------------------
 
   resetContainers() {
     this.html.content.innerHTML = "";
@@ -28,7 +30,19 @@ export class GameController {
     );
   }
 
-  //INITIALIZE METHODS
+  prepareBoardPlacement(player, boardSelector) {
+    player.placeAllShipsRandomly();
+    this.resetContainers();
+    this.render.showInfo(this.html.content);
+    this.render.showPlayingBoard(player, this.html.content);
+
+    this.handleDragEvents(player, boardSelector);
+    this.handleRotationClicks(player, boardSelector);
+  }
+
+  // --------
+  // | MENU |
+  // --------
 
   initMenu() {
     this.gameState = "setup";
@@ -60,18 +74,12 @@ export class GameController {
     this.player1 = new RealPlayer("player1", player1Name);
     this.player2 = new RealPlayer("player2", player2Name);
     this.currentPlayer = this.player1.id;
-    this.initPvPNameSetupPlayer1();
+    this.startNameSetupForPlayer1();
   }
 
-  prepareBoardPlacement(player, boardSelector) {
-    player.placeAllShipsRandomly();
-    this.resetContainers();
-    this.render.showInfo(this.html.content);
-    this.render.showPlayingBoard(player, this.html.content);
-
-    this.handleDragEvents(player, boardSelector);
-    this.handleRotationClicks(player, boardSelector);
-  }
+  // ----------------------
+  // | SINGLE PLAYER GAME |
+  // ----------------------
 
   prepareSinglePlayerSetupPhase(player, boardSelector) {
     this.player2.placeAllShipsRandomly();
@@ -105,7 +113,11 @@ export class GameController {
     });
   }
 
-  preparePvPNameSetupFor(player, nextCallback) {
+  // ------------
+  // | PVP GAME |
+  // ------------
+
+  startPvPNameSetup(player, nextCallback) {
     this.resetContainers();
 
     this.render.showNameSetup(player, this.html.content);
@@ -122,30 +134,40 @@ export class GameController {
     });
   }
 
-  initPvPNameSetupPlayer1() {
-    this.preparePvPNameSetupFor(
+  // SETUP PROCESS: PLAYER 1 NAME -> BOARD -> PLAYER 2 NAME -> BOARD -> GAME
+
+  // STEP 1
+
+  startNameSetupForPlayer1() {
+    this.startPvPNameSetup(
       this.player1,
-      this.initPvPBoardSetupPlayer1.bind(this),
+      this.startBoardPlacementForPlayer1.bind(this),
     );
   }
 
-  initPvPNameSetupPlayer2() {
-    this.preparePvPNameSetupFor(
-      this.player2,
-      this.initPvPBoardSetupPlayer2.bind(this),
-    );
-  }
+  // STEP 2
 
-  initPvPBoardSetupPlayer1() {
+  startBoardPlacementForPlayer1() {
     this.prepareBoardPlacement(this.player1, ".player1");
     this.handleSetupBtns(
       this.player1,
       `${this.player1.id}-ready`,
-      this.initPvPNameSetupPlayer2.bind(this),
+      this.startNameSetupForPlayer2.bind(this),
     );
   }
 
-  initPvPBoardSetupPlayer2() {
+  // STEP 3
+
+  startNameSetupForPlayer2() {
+    this.startPvPNameSetup(
+      this.player2,
+      this.startBoardPlacementForPlayer2.bind(this),
+    );
+  }
+
+  // STEP 4
+
+  startBoardPlacementForPlayer2() {
     this.prepareBoardPlacement(this.player2, ".player2");
     this.handleSetupBtns(
       this.player2,
@@ -153,6 +175,8 @@ export class GameController {
       this.initPvPGame.bind(this),
     );
   }
+
+  // FINAL STEP
 
   initPvPGame() {
     this.resetContainers();
