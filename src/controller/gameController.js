@@ -184,11 +184,11 @@ export class GameController {
     this.render.applyFadeInAnimation(this.html.content);
 
     this.render.showMenu(this.html.content);
-    this.events.bindSinglePlayerClick(this.html.content, () => {
+    this.events.bindButtonClick(this.html.content, ".single-player", () => {
       this.setupSinglePlayerGame();
     });
 
-    this.events.bindPlayerVersusPlayerClick(this.html.content, () => {
+    this.events.bindButtonClick(this.html.content, ".pvp", () => {
       this.setupPvPGame();
     });
   }
@@ -289,7 +289,7 @@ export class GameController {
       this.handleSinglePlayerTurn(x, y);
     });
 
-    this.events.bindBackMenuClick(this.html.buttonMenu, () => {
+    this.events.bindButtonClick(this.html.buttonMenu, ".back-btn", () => {
       this.initMenu();
     });
   }
@@ -304,7 +304,7 @@ export class GameController {
     this.render.showNameSetup(player, this.html.content);
     this.render.showBackButton(this.html.buttonMenu);
 
-    this.events.bindBackMenuClick(this.html.buttonMenu, () => {
+    this.events.bindButtonClick(this.html.buttonMenu, ".back-btn", () => {
       this.initMenu();
     });
 
@@ -403,7 +403,7 @@ export class GameController {
       this.handlePvPTurn(x, y, this.player1, this.player2);
     });
 
-    this.events.bindBackMenuClick(this.html.buttonMenu, () => {
+    this.events.bindButtonClick(this.html.buttonMenu, ".back-btn", () => {
       this.initMenu();
     });
   }
