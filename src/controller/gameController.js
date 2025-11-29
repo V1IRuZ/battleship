@@ -279,10 +279,12 @@ export class GameController {
 
     this.render.showPlayingBoard(this.player1, this.html.content);
     this.render.showPlayingBoard(this.player2, this.html.content);
+    this.render.showCurrentPlayer(this.player1, this.player2);
+
     this.render.showBackButton(this.html.buttonMenu);
     this.render.removeSetupClass();
+
     this.render.showShipsInSinglePlayer(this.player1.id);
-    this.render.showCurrentNameTag(this.player1);
 
     const board = document.querySelector(".player2");
     this.events.bindBoardClick(board, (x, y) => {
