@@ -94,7 +94,7 @@ export function createEvents() {
 
     bindModalExitClick(modal, callback) {
       const button = document.querySelector(".exit-btn");
-      button.addEventListener("click", (e) => {
+      button.addEventListener("click", () => {
         modal.close();
 
         callback();
