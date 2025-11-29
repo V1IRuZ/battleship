@@ -71,7 +71,7 @@ export function createEvents() {
       });
     },
 
-    bindRotationClicks(board, callback) {
+    bindShipRotationClick(board, callback) {
       board.addEventListener("dblclick", (e) => {
         if (!e.target.classList.contains("ship")) return;
         const shipIndex = Number(e.target.dataset.shipIndex);

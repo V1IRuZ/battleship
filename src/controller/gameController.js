@@ -105,7 +105,7 @@ export class GameController {
 
   handleRotationClicks(player, boardSelector) {
     const board = document.querySelector(boardSelector);
-    this.events.bindRotationClicks(board, (shipIndex) => {
+    this.events.bindShipRotationClick(board, (shipIndex) => {
       this.handleShipRotation(shipIndex, player);
     });
   }
