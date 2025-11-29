@@ -36,8 +36,102 @@ export class GameController {
     this.render.showInfo(this.html.content);
     this.render.showPlayingBoard(player, this.html.content);
 
-    this.handleDragEvents(player, boardSelector);
+    this.handleBoardDragEvents(player, boardSelector);
     this.handleRotationClicks(player, boardSelector);
+  }
+
+  // DRAG EVENT HANDLERS
+
+  handleBoardDragEvents(player, boardSelector) {
+    const board = document.querySelector(boardSelector);
+    this.events.bindDragStart(board, (x, y, shipIndex) => {
+      this.handleShipDragStart(x, y, shipIndex, player);
+    });
+
+    this.events.bindDragOver(board);
+
+    this.events.bindDragEnter(board, (x, y, shipIndex) => {
+      this.handleShipDragEnter(x, y, shipIndex, player);
+    });
+
+    this.events.bindDragDrop(board, (x, y, shipIndex) => {
+      this.handleShipDragDrop(x, y, shipIndex, player);
+    });
+  }
+
+  handleShipDragStart(x, y, shipIndex, player) {
+    if (this.gameState !== "setup") return;
+
+    const ship = player.gameBoard.getShip(shipIndex);
+    const length = ship.length;
+    const rotation = ship.rotation;
+
+    this.render.showDraggedShip(ship);
+    this.render.showGhostShip(x, y, rotation, length);
+  }
+
+  handleShipDragEnter(x, y, shipIndex, player) {
+    if (this.gameState !== "setup") return;
+
+    const ship = player.gameBoard.getShip(shipIndex);
+    const length = ship.length;
+    const rotation = ship.rotation;
+    this.render.showGhostShip(x, y, rotation, length);
+  }
+
+  handleShipDragDrop(x, y, shipIndex, player) {
+    if (this.gameState !== "setup") return;
+
+    const ship = player.gameBoard.getShip(shipIndex);
+    const rotation = ship.rotation;
+    const originalPosition = ship.getFirstPosition();
+
+    try {
+      this.render.removeShip(ship);
+
+      player.gameBoard.removeShip(shipIndex);
+      player.gameBoard.placeShip(shipIndex, [x, y], rotation);
+
+      this.render.updateShip(ship, shipIndex);
+    } catch (err) {
+      console.error(err);
+      player.gameBoard.placeShip(shipIndex, originalPosition, rotation);
+
+      this.render.updateShip(ship, shipIndex);
+    }
+  }
+
+  // ROTATION SWITCHES
+
+  handleRotationClicks(player, boardSelector) {
+    const board = document.querySelector(boardSelector);
+    this.events.bindRotationClicks(board, (shipIndex) => {
+      this.handleShipRotation(shipIndex, player);
+    });
+  }
+
+  handleShipRotation(shipIndex, player) {
+    if (this.gameState !== "setup") return;
+
+    const ship = player.gameBoard.getShip(shipIndex);
+    const oldRotation = ship.getRotation();
+    const newRotation =
+      ship.getRotation() === "horizontal" ? "vertical" : "horizontal";
+    const [x, y] = ship.getFirstPosition();
+
+    try {
+      this.render.removeShip(ship);
+
+      player.gameBoard.removeShip(shipIndex);
+      player.gameBoard.placeShip(shipIndex, [x, y], newRotation);
+
+      this.render.updateShip(ship, shipIndex);
+    } catch (err) {
+      console.error(err);
+      player.gameBoard.placeShip(shipIndex, [x, y], oldRotation);
+
+      this.render.updateShip(ship, shipIndex);
+    }
   }
 
   // --------
@@ -203,100 +297,6 @@ export class GameController {
     this.events.bindBackMenuClick(this.html.buttonMenu, () => {
       this.initMenu();
     });
-  }
-
-  // DRAG EVENT HANDLERS
-
-  handleDragEvents(player, boardSelector) {
-    const board = document.querySelector(boardSelector);
-    this.events.bindDragStart(board, (x, y, shipIndex) => {
-      this.handleDragStart(x, y, shipIndex, player);
-    });
-
-    this.events.bindDragOver(board);
-
-    this.events.bindDragEnter(board, (x, y, shipIndex) => {
-      this.handleDragEnter(x, y, shipIndex, player);
-    });
-
-    this.events.bindDragDrop(board, (x, y, shipIndex) => {
-      this.handleDragDrop(x, y, shipIndex, player);
-    });
-  }
-
-  handleDragStart(x, y, shipIndex, player) {
-    if (this.gameState !== "setup") return;
-
-    const ship = player.gameBoard.getShip(shipIndex);
-    const length = ship.length;
-    const rotation = ship.rotation;
-
-    this.render.showDraggedShip(ship);
-    this.render.showGhostShip(x, y, rotation, length);
-  }
-
-  handleDragEnter(x, y, shipIndex, player) {
-    if (this.gameState !== "setup") return;
-
-    const ship = player.gameBoard.getShip(shipIndex);
-    const length = ship.length;
-    const rotation = ship.rotation;
-    this.render.showGhostShip(x, y, rotation, length);
-  }
-
-  handleDragDrop(x, y, shipIndex, player) {
-    if (this.gameState !== "setup") return;
-
-    const ship = player.gameBoard.getShip(shipIndex);
-    const rotation = ship.rotation;
-    const originalPosition = ship.getFirstPosition();
-
-    try {
-      this.render.removeShip(ship);
-
-      player.gameBoard.removeShip(shipIndex);
-      player.gameBoard.placeShip(shipIndex, [x, y], rotation);
-
-      this.render.updateShip(ship, shipIndex);
-    } catch (err) {
-      console.error(err);
-      player.gameBoard.placeShip(shipIndex, originalPosition, rotation);
-
-      this.render.updateShip(ship, shipIndex);
-    }
-  }
-
-  // ROTATION SWITCHES
-
-  handleRotationClicks(player, boardSelector) {
-    const board = document.querySelector(boardSelector);
-    this.events.bindRotationClicks(board, (shipIndex) => {
-      this.handleRotation(shipIndex, player);
-    });
-  }
-
-  handleRotation(shipIndex, player) {
-    if (this.gameState !== "setup") return;
-
-    const ship = player.gameBoard.getShip(shipIndex);
-    const oldRotation = ship.getRotation();
-    const newRotation =
-      ship.getRotation() === "horizontal" ? "vertical" : "horizontal";
-    const [x, y] = ship.getFirstPosition();
-
-    try {
-      this.render.removeShip(ship);
-
-      player.gameBoard.removeShip(shipIndex);
-      player.gameBoard.placeShip(shipIndex, [x, y], newRotation);
-
-      this.render.updateShip(ship, shipIndex);
-    } catch (err) {
-      console.error(err);
-      player.gameBoard.placeShip(shipIndex, [x, y], oldRotation);
-
-      this.render.updateShip(ship, shipIndex);
-    }
   }
 
   // SETUP BUTTONS
