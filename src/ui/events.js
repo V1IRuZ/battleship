@@ -15,34 +15,6 @@ export function createEvents() {
       });
     },
 
-    bindSinglePlayerClick(container, callback) {
-      const btn = container.querySelector(".single-player");
-      if (!btn) return;
-
-      const newBtn = btn.cloneNode(true);
-      btn.replaceWith(newBtn);
-
-      newBtn.addEventListener("click", callback);
-    },
-
-    bindPlayerVersusPlayerClick(container, callback) {
-      const btn = container.querySelector(".pvp");
-      if (!btn) return;
-
-      const newBtn = btn.cloneNode(true);
-      btn.replaceWith(newBtn);
-
-      newBtn.addEventListener("click", callback);
-    },
-
-    bindPlayer1ReadyClick(container, callback) {
-      container.addEventListener("click", (e) => {
-        if (!e.target.classList.contains("player1-ready")) return;
-
-        callback();
-      });
-    },
-
     bindDragStart(board, callback) {
       board.addEventListener("dragstart", (e) => {
         if (e.target.classList.contains("ship")) {
@@ -105,30 +77,6 @@ export function createEvents() {
         const shipIndex = Number(e.target.dataset.shipIndex);
         console.log(shipIndex);
         callback(shipIndex);
-      });
-    },
-
-    bindStartGameClick(container, callback) {
-      container.addEventListener("click", (e) => {
-        if (!e.target.classList.contains("start-game")) return;
-
-        callback();
-      });
-    },
-
-    bindBackMenuClick(container, callback) {
-      container.addEventListener("click", (e) => {
-        if (!e.target.classList.contains("back-btn")) return;
-
-        callback();
-      });
-    },
-
-    bindRandomiseClick(container, callback) {
-      container.addEventListener("click", (e) => {
-        if (!e.target.classList.contains("randomise")) return;
-
-        callback();
       });
     },
 
