@@ -222,7 +222,7 @@ export class GameController {
     this.handleSetupBtns(
       player,
       "start-game",
-      this.initSinglePlayer.bind(this),
+      this.initSinglePlayerGame.bind(this),
     );
   }
 
@@ -273,7 +273,7 @@ export class GameController {
     }, 1000);
   }
 
-  initSinglePlayer() {
+  initSinglePlayerGame() {
     this.gameState = "playing";
     this.resetContainers();
 
