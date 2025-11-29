@@ -234,7 +234,7 @@ export class GameController {
     this.render.showHitandMiss(x, y, this.player2.id);
 
     if (this.player2.gameBoard.allShipsSunk) {
-      this.endGame(this.player1);
+      this.handleEndGameModal(this.player1);
 
       this.events.bindPlayAgain(() => {
         this.setupSinglePlayerGame();
@@ -252,7 +252,7 @@ export class GameController {
     this.render.showHitandMiss(targetX, targetY, this.player1.id);
 
     if (this.player1.gameBoard.allShipsSunk) {
-      this.endGame(this.player2);
+      this.handleEndGameModal(this.player2);
 
       this.events.bindPlayAgain(() => {
         this.setupSinglePlayerGame();
@@ -367,7 +367,7 @@ export class GameController {
     this.render.showHitandMiss(x, y, opponentPlayer.id);
 
     if (opponentPlayer.gameBoard.allShipsSunk) {
-      this.endGame(currentPlayer);
+      this.handleEndGameModal(currentPlayer);
       this.events.bindPlayAgain(() => {
         const name1 = opponentPlayer.name;
         const name2 = currentPlayer.name;
@@ -408,9 +408,11 @@ export class GameController {
     });
   }
 
-  // GAME OVER
+  // ------------
+  // | END GAME |
+  // ------------
 
-  endGame(winner) {
+  handleEndGameModal(winner) {
     this.gameState = "gameover";
 
     const modal = document.querySelector(".winner-modal");
