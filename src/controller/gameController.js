@@ -134,6 +134,46 @@ export class GameController {
     }
   }
 
+  // SETUP BUTTONS
+
+  handleRandomise(playerObj) {
+    playerObj.gameBoard.removeAllShipsFromBoard();
+    playerObj.placeAllShipsRandomly();
+
+    this.render.removeAllShips(playerObj.id);
+    this.render.updateAllShips(playerObj);
+  }
+
+  handleSetupBtns(playerObj, readyButtonClass, gameCallback) {
+    this.render.showSetupButtons(this.html.buttonMenu, readyButtonClass);
+    this.events.bindClick(this.html.buttonMenu, `.${readyButtonClass}`, () => {
+      gameCallback();
+    });
+
+    this.events.bindClick(this.html.buttonMenu, ".back-btn", () => {
+      this.initMenu();
+    });
+
+    this.events.bindClick(this.html.buttonMenu, ".randomise", () => {
+      this.handleRandomise(playerObj);
+    });
+  }
+
+  // PLAYER SWITCHES
+
+  switchCurrentPlayer() {
+    this.currentPlayer =
+      this.currentPlayer === this.player1.id
+        ? this.player2.id
+        : this.player1.id;
+  }
+
+  handlePlayerSwitch(currentPlayer, opponentPlayer) {
+    this.render.hideCurrentPlayer(currentPlayer, opponentPlayer);
+    this.render.showCurrentPlayer(opponentPlayer, currentPlayer);
+    this.switchCurrentPlayer();
+  }
+
   // --------
   // | MENU |
   // --------
@@ -184,6 +224,53 @@ export class GameController {
       "start-game",
       this.initSinglePlayer.bind(this),
     );
+  }
+
+  handleSinglePlayerTurn(x, y) {
+    if (this.gameState !== "playing") return;
+    if (this.currentPlayer !== this.player1.id) return;
+
+    this.player2.gameBoard.receiveAttack(x, y);
+    this.render.showHitandMiss(x, y, this.player2.id);
+
+    if (this.player2.gameBoard.allShipsSunk) {
+      this.endGame(this.player1);
+
+      this.events.bindPlayAgain(() => {
+        this.setupSinglePlayerGame();
+      });
+    } else {
+      this.handleComputerTurn();
+    }
+  }
+
+  validateComputerAttacks() {
+    if (this.gameState !== "playing") return;
+    if (this.currentPlayer !== this.player2.id) return;
+
+    const [targetX, targetY] = this.player2.attack(this.player1);
+    this.render.showHitandMiss(targetX, targetY, this.player1.id);
+
+    if (this.player1.gameBoard.allShipsSunk) {
+      this.endGame(this.player2);
+
+      this.events.bindPlayAgain(() => {
+        this.setupSinglePlayerGame();
+      });
+    }
+  }
+
+  handleComputerTurn() {
+    // Make the computer player the current player
+    this.handlePlayerSwitch(this.player1, this.player2);
+
+    setTimeout(() => {
+      if (this.gameState !== "playing") return;
+      this.validateComputerAttacks();
+
+      // After the computer player's turn, make the real player the current player again
+      this.handlePlayerSwitch(this.player2, this.player1);
+    }, 1000);
   }
 
   initSinglePlayer() {
@@ -272,6 +359,28 @@ export class GameController {
 
   // FINAL STEP
 
+  handlePvPTurn(x, y, currentPlayer, opponentPlayer) {
+    if (this.gameState !== "playing") return;
+    if (this.currentPlayer !== currentPlayer.id) return;
+
+    opponentPlayer.gameBoard.receiveAttack(x, y);
+    this.render.showHitandMiss(x, y, opponentPlayer.id);
+
+    if (opponentPlayer.gameBoard.allShipsSunk) {
+      this.endGame(currentPlayer);
+      this.events.bindPlayAgain(() => {
+        const name1 = opponentPlayer.name;
+        const name2 = currentPlayer.name;
+
+        this.setupPvPGame(name1, name2);
+      });
+
+      return;
+    }
+
+    this.handlePlayerSwitch(currentPlayer, opponentPlayer);
+  }
+
   initPvPGame() {
     this.resetContainers();
 
@@ -297,115 +406,6 @@ export class GameController {
     this.events.bindBackMenuClick(this.html.buttonMenu, () => {
       this.initMenu();
     });
-  }
-
-  // SETUP BUTTONS
-
-  handleRandomise(playerObj) {
-    playerObj.gameBoard.removeAllShipsFromBoard();
-    playerObj.placeAllShipsRandomly();
-
-    this.render.removeAllShips(playerObj.id);
-    this.render.updateAllShips(playerObj);
-  }
-
-  handleSetupBtns(playerObj, readyButtonClass, gameCallback) {
-    this.render.showSetupButtons(this.html.buttonMenu, readyButtonClass);
-    this.events.bindClick(this.html.buttonMenu, `.${readyButtonClass}`, () => {
-      gameCallback();
-    });
-
-    this.events.bindClick(this.html.buttonMenu, ".back-btn", () => {
-      this.initMenu();
-    });
-
-    this.events.bindClick(this.html.buttonMenu, ".randomise", () => {
-      this.handleRandomise(playerObj);
-    });
-  }
-
-  // PLAYER VS COMPUTER
-
-  handleSinglePlayerTurn(x, y) {
-    if (this.gameState !== "playing") return;
-    if (this.currentPlayer !== this.player1.id) return;
-
-    this.player2.gameBoard.receiveAttack(x, y);
-    this.render.showHitandMiss(x, y, this.player2.id);
-
-    if (this.player2.gameBoard.allShipsSunk) {
-      this.endGame(this.player1);
-
-      this.events.bindPlayAgain(() => {
-        this.setupSinglePlayerGame();
-      });
-    } else {
-      this.handleComputerTurn();
-    }
-  }
-
-  handleComputerTurn() {
-    // Make the computer player the current player
-    this.handlePlayerSwitch(this.player1, this.player2);
-
-    setTimeout(() => {
-      if (this.gameState !== "playing") return;
-      this.validateComputerAttacks();
-
-      // After the computer player's turn, make the real player the current player again
-      this.handlePlayerSwitch(this.player2, this.player1);
-    }, 1000);
-  }
-
-  handlePvPTurn(x, y, currentPlayer, opponentPlayer) {
-    if (this.gameState !== "playing") return;
-    if (this.currentPlayer !== currentPlayer.id) return;
-
-    opponentPlayer.gameBoard.receiveAttack(x, y);
-    this.render.showHitandMiss(x, y, opponentPlayer.id);
-
-    if (opponentPlayer.gameBoard.allShipsSunk) {
-      this.endGame(currentPlayer);
-      this.events.bindPlayAgain(() => {
-        const name1 = opponentPlayer.name;
-        const name2 = currentPlayer.name;
-
-        this.setupPvPGame(name1, name2);
-      });
-
-      return;
-    }
-
-    this.handlePlayerSwitch(currentPlayer, opponentPlayer);
-  }
-
-  handlePlayerSwitch(currentPlayer, opponentPlayer) {
-    this.render.hideCurrentPlayer(currentPlayer, opponentPlayer);
-    this.render.showCurrentPlayer(opponentPlayer, currentPlayer);
-    this.switchCurrentPlayer();
-  }
-
-  switchCurrentPlayer() {
-    this.currentPlayer =
-      this.currentPlayer === this.player1.id
-        ? this.player2.id
-        : this.player1.id;
-  }
-
-  validateComputerAttacks() {
-    if (this.gameState !== "playing") return;
-    if (this.currentPlayer !== this.player2.id) return;
-
-    const [targetX, targetY] = this.player2.attack(this.player1);
-    this.render.showHitandMiss(targetX, targetY, this.player1.id);
-
-    if (this.player1.gameBoard.allShipsSunk) {
-      this.endGame(this.player2);
-
-      this.events.bindPlayAgain(() => {
-        this.setupSinglePlayerGame();
-      });
-    }
   }
 
   // GAME OVER
