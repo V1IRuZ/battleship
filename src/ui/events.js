@@ -132,7 +132,7 @@ export function createEvents() {
       });
     },
 
-    bindClick(container, selector, callback) {
+    bindButtonClick(container, selector, callback) {
       container.addEventListener("click", (e) => {
         if (e.target.matches(selector)) callback();
       });

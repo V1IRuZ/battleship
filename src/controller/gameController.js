@@ -146,15 +146,15 @@ export class GameController {
 
   handleSetupBtns(playerObj, readyButtonClass, gameCallback) {
     this.render.showSetupButtons(this.html.buttonMenu, readyButtonClass);
-    this.events.bindClick(this.html.buttonMenu, `.${readyButtonClass}`, () => {
+    this.events.bindButtonClick(this.html.buttonMenu, `.${readyButtonClass}`, () => {
       gameCallback();
     });
 
-    this.events.bindClick(this.html.buttonMenu, ".back-btn", () => {
+    this.events.bindButtonClick(this.html.buttonMenu, ".back-btn", () => {
       this.initMenu();
     });
 
-    this.events.bindClick(this.html.buttonMenu, ".randomise", () => {
+    this.events.bindButtonClick(this.html.buttonMenu, ".randomise", () => {
       this.handleRandomise(playerObj);
     });
   }
@@ -308,7 +308,7 @@ export class GameController {
       this.initMenu();
     });
 
-    this.events.bindClick(this.html.content, `.${player.id}-name-ready`, () => {
+    this.events.bindButtonClick(this.html.content, `.${player.id}-name-ready`, () => {
       const name = this.render.getNameInputValue(player.id);
       player.setName(name);
       nextCallback();
