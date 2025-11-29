@@ -2,6 +2,11 @@ import battleship from "../assets/images/battleship-8533661_640.png";
 
 export function createRender() {
   return {
+    
+    // -----------------------
+    // | CREATE DOM ELEMENTS |
+    // -----------------------
+
     drawContainer(...classNames) {
       const container = document.createElement("div");
 
@@ -12,8 +17,6 @@ export function createRender() {
       return container;
     },
 
-    // MENU AND BUTTONS
-
     drawButton(className, text) {
       const button = document.createElement("button");
       button.classList.add(className);
@@ -21,6 +24,10 @@ export function createRender() {
 
       return button;
     },
+
+    // ---------------
+    // | RENDER MENU |
+    // ---------------
 
     showMenu(container) {
       const menuContainer = this.drawContainer("menu");
@@ -40,6 +47,10 @@ export function createRender() {
       container.appendChild(menuContainer);
     },
 
+    // ------------------
+    // | RENDER BUTTONS |
+    // ------------------
+
     showBackButton(container) {
       const backBtn = this.drawButton("back-btn", "MENU");
       container.appendChild(backBtn);
@@ -57,6 +68,10 @@ export function createRender() {
 
       container.appendChild(buttonsContainer);
     },
+
+    // --------------------------------------------
+    // | RENDER GAME BOARD PLACEMENT INSTRUCTIONS |
+    // --------------------------------------------
 
     showInfo(container) {
       const info = this.drawContainer("info");
@@ -93,7 +108,9 @@ export function createRender() {
       container.appendChild(info);
     },
 
-    // PVP NAME SETUP
+    // -------------------------
+    // | RENDER PVP NAME SETUP |
+    // -------------------------
 
     buildNameInput(playerId) {
       const container = this.drawContainer("pvp-name");
@@ -135,12 +152,9 @@ export function createRender() {
       container.appendChild(mainContainer);
     },
 
-    getNameInputValue(playerId) {
-      const name = document.querySelector(`#${playerId}-name`).value;
-      return name;
-    },
-
-    // GAMEBOARD
+    // --------------------
+    // | RENDER GAMEBOARD |
+    // --------------------
 
     drawNameTag(playerObj) {
       const container = this.drawContainer(`${playerObj.id}-tag`);
@@ -231,6 +245,10 @@ export function createRender() {
       container.appendChild(boardContainer);
     },
 
+    // ------------------
+    // | RENDER GAME UI |
+    // ------------------
+
     showStartGameUI(player1, player2, ui) {
       this.showPlayingBoard(player1, ui.content);
       this.showPlayingBoard(player2, ui.content);
@@ -240,7 +258,14 @@ export function createRender() {
       this.removeSetupClass();
     },
 
-    //ACTIONS
+    // ---------------------
+    // | RENDER UI ACTIONS |
+    // ---------------------
+
+    getNameInputValue(playerId) {
+      const name = document.querySelector(`#${playerId}-name`).value;
+      return name;
+    },
 
     removeSetupClass() {
       document.querySelectorAll(".setup").forEach((el) => {
@@ -371,6 +396,10 @@ export function createRender() {
       );
       opponentBoard.classList.remove("active");
     },
+
+    // --------------
+    // | ANIMATIONS |
+    // --------------
 
     applyFadeInAnimation(container) {
       container.classList.remove("fade-in");
