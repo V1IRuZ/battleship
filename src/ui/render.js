@@ -2,7 +2,7 @@ import battleship from "../assets/images/battleship-8533661_640.png";
 
 export function createRender() {
   return {
-    
+
     // -----------------------
     // | CREATE DOM ELEMENTS |
     // -----------------------
@@ -196,7 +196,7 @@ export function createRender() {
       return coords;
     },
 
-    renderGrid(playerObj, board) {
+    drawGrid(playerObj, board) {
       board.innerHTML = "";
       for (let x = 0; x < 10; x++) {
         for (let y = 0; y < 10; y++) {
@@ -239,7 +239,7 @@ export function createRender() {
         "setup",
         playerObj.id,
       );
-      const grid = this.renderGrid(playerObj, gridContainer);
+      const grid = this.drawGrid(playerObj, gridContainer);
 
       boardContainer.appendChild(grid);
       container.appendChild(boardContainer);
