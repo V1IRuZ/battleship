@@ -264,4 +264,4 @@ class ComputerPlayer extends Player {
   }
 }
 
-export { Player, RealPlayer, ComputerPlayer };
+export { RealPlayer, ComputerPlayer };
