@@ -92,8 +92,8 @@ export class Gameboard {
 
   #placeShipRandomly(index) {
     let attempts = 0;
-    let placed = false;
-    while (!placed && attempts < 1000) {
+
+    while (!this.ships[index].isPlaced && attempts < 1000) {
       try {
         const x = Math.floor(Math.random() * 10);
         const y = Math.floor(Math.random() * 10);
@@ -101,7 +101,7 @@ export class Gameboard {
         const rotation = Math.random() < 0.5 ? "horizontal" : "vertical";
 
         this.placeShip(index, [x, y], rotation);
-        placed = true;
+        
       } catch (err) {
         console.error(err);
 
@@ -109,7 +109,7 @@ export class Gameboard {
       }
     }
 
-    if (!placed) {
+    if (!this.ships[index].isPlaced) {
       throw new Error(`Could not place ships after ${attempts} attempts`);
     }
   }
