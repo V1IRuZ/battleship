@@ -103,7 +103,7 @@ export class Gameboard {
         this.placeShip(index, [x, y], rotation);
         
       } catch (err) {
-        console.error(err);
+        // console.error(err);
 
         attempts++;
       }
