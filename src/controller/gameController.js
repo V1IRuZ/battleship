@@ -31,7 +31,7 @@ export class GameController {
   }
 
   prepareBoardPlacement(player, boardSelector) {
-    player.placeAllShipsRandomly();
+    player.gameBoard.placeAllShipsRandomly();
     this.resetContainers();
     this.render.showInfo(this.html.content);
     this.render.showPlayingBoard(player, this.html.content);
@@ -138,7 +138,7 @@ export class GameController {
 
   handleRandomise(playerObj) {
     playerObj.gameBoard.removeAllShipsFromBoard();
-    playerObj.placeAllShipsRandomly();
+    playerObj.gameBoard.placeAllShipsRandomly();
 
     this.render.removeAllShips(playerObj.id);
     this.render.updateAllShips(playerObj);
@@ -220,7 +220,7 @@ export class GameController {
   // ----------------------
 
   prepareSinglePlayerSetupPhase(player, boardSelector) {
-    this.player2.placeAllShipsRandomly();
+    this.player2.gameBoard.placeAllShipsRandomly();
     this.prepareBoardPlacement(player, boardSelector);
 
     this.handleSetupBtns(
