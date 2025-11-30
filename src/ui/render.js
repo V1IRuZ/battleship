@@ -77,7 +77,7 @@ export function createRender() {
       const info = this.drawContainer("info");
 
       const h2 = document.createElement("h2");
-      h2.textContent = "Setup";
+      h2.textContent = "Ship Placement";
       info.appendChild(h2);
 
       const ul = document.createElement("ul");
