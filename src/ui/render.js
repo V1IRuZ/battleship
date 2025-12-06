@@ -2,7 +2,6 @@ import battleship from "../assets/images/battleship-8533661_640.png";
 
 export function createRender() {
   return {
-
     // -----------------------
     // | CREATE DOM ELEMENTS |
     // -----------------------
@@ -405,6 +404,10 @@ export function createRender() {
       container.classList.remove("fade-in");
       void container.offsetWidth;
       container.classList.add("fade-in");
+    },
+
+    applySlideInAnimation(element) {
+      element.classList.add("slide-in");
     },
   };
 }
