@@ -416,7 +416,7 @@ export class GameController {
     const modal = document.querySelector(".winner-modal");
     const para = document.querySelector(".winner-text");
 
-    this.render.applyFadeInAnimation(modal);
+    this.render.applySlideInAnimation(modal);
 
     para.textContent = `${winner.name} wins!`;
     modal.showModal();
