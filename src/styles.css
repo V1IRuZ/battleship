@@ -374,8 +374,7 @@ ul {
   border: 2px solid var(--board-color);
 }
 
-/* .show-ships >  */
-.ship {
+.show-ships > .ship {
   background-color: var(--ship-color);
 }
 
